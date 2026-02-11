@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
@@ -19,43 +19,65 @@
 
     <style>
         /* ===========================================
-           MIDNIGHT EXECUTIVE THEME
+           ANIMATED GRADIENT PROPERTIES
+           =========================================== */
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+        @property --mesh-x {
+            syntax: '<percentage>';
+            initial-value: 0%;
+            inherits: false;
+        }
+        @property --mesh-y {
+            syntax: '<percentage>';
+            initial-value: 0%;
+            inherits: false;
+        }
+
+        /* ===========================================
+           MIDNIGHT EXECUTIVE THEME v2.0
            =========================================== */
         :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-tertiary: #334155;
-            --bg-card: rgba(30, 41, 59, 0.6);
-            --bg-hover: rgba(51, 65, 85, 0.5);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --accent: #f59e0b;
-            --accent-glow: rgba(245, 158, 11, 0.15);
-            --teal: #00B69F;
-            --teal-glow: rgba(0, 182, 159, 0.15);
-            --purple: #a78bfa;
-            --purple-glow: rgba(167, 139, 250, 0.15);
-            --success: #22c55e;
-            --success-glow: rgba(34, 197, 94, 0.15);
-            --danger: #ef4444;
-            --danger-glow: rgba(239, 68, 68, 0.15);
-            --warning: #eab308;
-            --info: #3b82f6;
-            --border: rgba(148, 163, 184, 0.1);
-            --border-accent: rgba(0, 182, 159, 0.3);
-            --border-hover: rgba(148, 163, 184, 0.2);
-            --font-display: 'Libre Baskerville', Georgia, serif;
-            --font-body: 'Source Sans 3', -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --bg-primary: #06090f;
+            --bg-secondary: #0d1117;
+            --bg-tertiary: #161b22;
+            --bg-card: rgba(13, 17, 23, 0.7);
+            --bg-card-hover: rgba(22, 27, 34, 0.9);
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #484f58;
+            --accent: #f0883e;
+            --accent-glow: rgba(240, 136, 62, 0.12);
+            --teal: #3fb9a2;
+            --teal-bright: #58d5bc;
+            --teal-glow: rgba(63, 185, 162, 0.1);
+            --purple: #a371f7;
+            --purple-glow: rgba(163, 113, 247, 0.1);
+            --success: #3fb950;
+            --success-glow: rgba(63, 185, 80, 0.1);
+            --danger: #f85149;
+            --warning: #d29922;
+            --info: #58a6ff;
+            --border: rgba(48, 54, 61, 0.6);
+            --border-bright: rgba(48, 54, 61, 1);
+            --border-accent: rgba(63, 185, 162, 0.3);
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
             --slide-padding: clamp(2rem, 5vw, 6rem);
-            --content-max-width: 1100px;
+            --content-max-width: 1120px;
             --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-            --duration-fast: 0.3s;
-            --duration-normal: 0.7s;
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --duration-fast: 0.2s;
+            --duration-normal: 0.6s;
+            --duration-slow: 1.2s;
             --radius-sm: 6px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,42 +85,98 @@
         html {
             scroll-behavior: smooth;
             scroll-snap-type: y mandatory;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         body {
             font-family: var(--font-body);
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.65;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         [x-cloak] { display: none !important; }
 
-        /* Progress Bar */
+        /* ===========================================
+           NOISE TEXTURE OVERLAY
+           =========================================== */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.025;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px;
+        }
+
+        /* ===========================================
+           ANIMATED MESH GRADIENT BG
+           =========================================== */
+        .mesh-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .mesh-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.25;
+            animation: meshFloat 20s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        .mesh-orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(63,185,162,0.35) 0%, transparent 70%); top: -15%; left: -10%; animation-delay: 0s; }
+        .mesh-orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(240,136,62,0.3) 0%, transparent 70%); top: 50%; right: -10%; animation-delay: -7s; animation-duration: 25s; }
+        .mesh-orb-3 { width: 450px; height: 450px; background: radial-gradient(circle, rgba(163,113,247,0.25) 0%, transparent 70%); bottom: -10%; left: 30%; animation-delay: -14s; animation-duration: 22s; }
+
+        @keyframes meshFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 15px) scale(0.95); }
+        }
+
+        /* ===========================================
+           SHIMMER PROGRESS BAR
+           =========================================== */
         .progress-bar {
             position: fixed;
             top: 0;
             left: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--teal), var(--accent));
+            background: linear-gradient(90deg, var(--teal), var(--accent), var(--purple));
+            background-size: 200% 100%;
+            animation: shimmerBar 3s ease infinite;
             width: 0%;
-            z-index: 100;
-            transition: width 0.2s ease-out;
+            z-index: 200;
+            transition: width 0.25s ease-out;
+        }
+        @keyframes shimmerBar {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 0%; }
+            100% { background-position: 0% 0%; }
         }
 
-        /* Navigation Dots */
+        /* ===========================================
+           NAVIGATION DOTS (with tooltips)
+           =========================================== */
         .nav-dots {
             position: fixed;
-            right: 2rem;
+            right: 1.5rem;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-            z-index: 100;
+            gap: 0.6rem;
+            z-index: 200;
         }
 
         .nav-dot {
@@ -108,14 +186,28 @@
             background: var(--text-muted);
             border: none;
             cursor: pointer;
-            transition: all var(--duration-fast) var(--ease-out-expo);
-            opacity: 0.3;
+            transition: all 0.3s var(--ease-spring);
+            opacity: 0.35;
+            position: relative;
         }
 
-        .nav-dot:hover { opacity: 0.7; transform: scale(1.3); }
-        .nav-dot.active { background: var(--teal); opacity: 1; box-shadow: 0 0 12px var(--teal-glow); }
+        .nav-dot:hover {
+            opacity: 0.8;
+            transform: scale(1.5);
+        }
 
-        /* Slides */
+        .nav-dot.active {
+            background: var(--teal-bright);
+            opacity: 1;
+            box-shadow: 0 0 12px rgba(63,185,162,0.5), 0 0 30px rgba(63,185,162,0.15);
+            width: 8px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        /* ===========================================
+           SLIDES
+           =========================================== */
         .slide {
             min-height: 100vh;
             padding: var(--slide-padding);
@@ -125,233 +217,464 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
 
         .slide-content {
             max-width: var(--content-max-width);
             margin: 0 auto;
             width: 100%;
+            position: relative;
+            z-index: 2;
         }
 
         .title-slide { text-align: center; }
 
-        /* Reveal Animations */
+        /* ===========================================
+           REVEAL ANIMATIONS (staggered)
+           =========================================== */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity var(--duration-normal) var(--ease-out-expo),
-                        transform var(--duration-normal) var(--ease-out-expo);
+            transform: translateY(24px);
+            transition: opacity 0.8s var(--ease-out-expo),
+                        transform 0.8s var(--ease-out-expo);
         }
 
         .slide.visible .reveal { opacity: 1; transform: translateY(0); }
 
-        .reveal:nth-child(1) { transition-delay: 0.1s; }
-        .reveal:nth-child(2) { transition-delay: 0.2s; }
-        .reveal:nth-child(3) { transition-delay: 0.3s; }
-        .reveal:nth-child(4) { transition-delay: 0.4s; }
-        .reveal:nth-child(5) { transition-delay: 0.5s; }
-        .reveal:nth-child(6) { transition-delay: 0.6s; }
-        .reveal:nth-child(7) { transition-delay: 0.7s; }
+        .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .reveal:nth-child(2) { transition-delay: 0.12s; }
+        .reveal:nth-child(3) { transition-delay: 0.2s; }
+        .reveal:nth-child(4) { transition-delay: 0.28s; }
+        .reveal:nth-child(5) { transition-delay: 0.36s; }
+        .reveal:nth-child(6) { transition-delay: 0.44s; }
+        .reveal:nth-child(7) { transition-delay: 0.52s; }
 
-        /* Typography */
+        /* Grid children stagger */
+        .card-grid > * { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo); }
+        .slide.visible .card-grid > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.15s; }
+        .slide.visible .card-grid > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.25s; }
+        .slide.visible .card-grid > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.35s; }
+        .slide.visible .card-grid > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.45s; }
+        .slide.visible .card-grid > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.55s; }
+        .slide.visible .card-grid > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.6s; }
+        .slide.visible .card-grid > *:nth-child(7) { opacity: 1; transform: none; transition-delay: 0.65s; }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
         .label {
             font-family: var(--font-body);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--teal);
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
+        .label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: currentColor; }
         .label-amber { color: var(--accent); }
         .label-purple { color: var(--purple); }
         .label-danger { color: var(--danger); }
 
         h1 {
             font-family: var(--font-display);
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            line-height: 1.15;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.08;
             margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
         }
 
         h2 {
             font-family: var(--font-display);
-            font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+            font-size: clamp(2rem, 4vw, 3.25rem);
             font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
         }
 
         h3 {
-            font-family: var(--font-display);
-            font-size: 1.35rem;
+            font-family: var(--font-body);
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
         }
 
         h4 {
             font-family: var(--font-body);
-            font-size: 1.125rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
-            max-width: 700px;
+            max-width: 680px;
+            font-size: 0.9375rem;
         }
 
         .subtitle {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             color: var(--text-secondary);
-            max-width: 700px;
+            max-width: 640px;
+            font-weight: 300;
+            line-height: 1.7;
         }
 
-        .meta {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-top: 2rem;
+        .meta { font-size: 0.8125rem; color: var(--text-muted); margin-top: 2rem; }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--teal-bright) 0%, var(--accent) 50%, var(--purple) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 6s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         /* Decorative */
-        .accent-line { width: 80px; height: 2px; background: var(--teal); margin: 2rem 0; }
-        .accent-line-center { margin: 2rem auto; }
+        .accent-line { width: 60px; height: 2px; background: linear-gradient(90deg, var(--teal), var(--accent)); margin: 1.5rem 0; border-radius: 1px; }
+        .accent-line-center { margin: 1.5rem auto; }
 
-        .glow-bg {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            filter: blur(100px);
-            pointer-events: none;
-            opacity: 0.4;
-        }
-        .glow-teal { background: var(--teal-glow); }
-        .glow-amber { background: var(--accent-glow); }
-        .glow-purple { background: var(--purple-glow); }
-
-        /* Cards */
+        /* ===========================================
+           CARDS v2 (glassmorphism + animated border)
+           =========================================== */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            transition: transform 0.3s var(--ease-out-expo),
+                        border-color 0.3s ease,
+                        box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-bright);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 1px rgba(63,185,162,0.2);
+        }
+
+        /* Animated gradient border card */
+        .card-glow {
+            position: relative;
+            background: transparent;
+            border: none;
+            padding: 1.5rem;
+        }
+
+        .card-glow::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: conic-gradient(from var(--angle), var(--teal), var(--accent), var(--purple), var(--teal));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 4s linear infinite;
+        }
+
+        .card-glow::after {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            border-radius: calc(var(--radius-lg) - 1px);
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            z-index: -1;
+        }
+
+        @keyframes rotateBorder {
+            from { --angle: 0deg; }
+            to { --angle: 360deg; }
         }
 
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.25rem;
+            gap: 1rem;
             margin-top: 1.5rem;
         }
 
         .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
         .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
         .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
-        .card-grid-5 { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
-
-        .card-highlight {
-            border-color: var(--teal);
-            box-shadow: 0 0 20px var(--teal-glow);
-        }
+        .card-grid-5 { grid-template-columns: repeat(5, 1fr); }
 
         /* Layout */
         .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
         .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 
-        /* Tables */
-        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9375rem; }
-        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { font-weight: 600; color: var(--teal); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        td { color: var(--text-secondary); }
-        tr:last-child td { border-bottom: none; }
-
-        /* Lists */
-        ul { list-style: none; margin: 1rem 0; }
-        ul li { position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem; color: var(--text-secondary); }
-        ul li::before { content: ''; position: absolute; left: 0; top: 0.55rem; width: 6px; height: 6px; background: var(--teal); border-radius: 50%; }
-
-        /* Stats */
-        .stat { font-family: var(--font-display); font-size: 2.25rem; font-weight: 700; color: var(--teal); line-height: 1; margin-bottom: 0.5rem; }
+        /* ===========================================
+           ANIMATED STAT COUNTERS
+           =========================================== */
+        .stat {
+            font-family: var(--font-display);
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--teal-bright);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+        }
         .stat-amber { color: var(--accent); }
         .stat-purple { color: var(--purple); }
-        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 500;
+        }
 
-        /* Icon boxes */
+        /* Stat card (for metrics section) */
+        .stat-card {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(16px);
+            transition: transform 0.3s var(--ease-out-expo), border-color 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: var(--border-accent);
+        }
+
+        /* ===========================================
+           ICON BOXES
+           =========================================== */
         .icon-box {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             background: var(--teal-glow);
-            border-radius: 12px;
+            border: 1px solid rgba(63,185,162,0.15);
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             color: var(--teal);
+            transition: transform 0.3s var(--ease-spring), background 0.3s ease;
         }
-        .icon-box i { width: 24px; height: 24px; }
-        .icon-box-amber { background: var(--accent-glow); color: var(--accent); }
-        .icon-box-purple { background: var(--purple-glow); color: var(--purple); }
-        .icon-box-success { background: var(--success-glow); color: var(--success); }
-        .icon-box-info { background: rgba(59, 130, 246, 0.15); color: var(--info); }
+        .icon-box i { width: 20px; height: 20px; }
+        .icon-box-amber { background: var(--accent-glow); color: var(--accent); border-color: rgba(240,136,62,0.15); }
+        .icon-box-purple { background: var(--purple-glow); color: var(--purple); border-color: rgba(163,113,247,0.15); }
+        .icon-box-success { background: var(--success-glow); color: var(--success); border-color: rgba(63,185,80,0.15); }
+        .icon-box-info { background: rgba(88,166,255,0.1); color: var(--info); border-color: rgba(88,166,255,0.15); }
 
-        /* Highlight box */
-        .highlight-box { background: linear-gradient(135deg, var(--teal-glow) 0%, transparent 50%); border: 1px solid rgba(0, 182, 159, 0.2); border-radius: 12px; padding: 1.5rem; }
-        .highlight-box-amber { background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 1.5rem; }
-        .highlight-box-purple { background: linear-gradient(135deg, var(--purple-glow) 0%, transparent 50%); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 12px; padding: 1.5rem; }
+        .feature-item:hover .icon-box { transform: scale(1.1) rotate(-3deg); }
 
-        /* Feature items */
-        .feature-item { display: flex; gap: 1.25rem; margin-bottom: 1.5rem; }
-        .feature-item h4 { color: var(--text-primary); margin-bottom: 0.25rem; }
-        .feature-item p { font-size: 0.9375rem; margin: 0; }
+        /* ===========================================
+           HIGHLIGHT BOXES
+           =========================================== */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(63,185,162,0.08) 0%, transparent 60%);
+            border: 1px solid rgba(63,185,162,0.15);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+        .highlight-box-amber {
+            background: linear-gradient(135deg, rgba(240,136,62,0.08) 0%, transparent 60%);
+            border: 1px solid rgba(240,136,62,0.15);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+        .highlight-box-purple {
+            background: linear-gradient(135deg, rgba(163,113,247,0.08) 0%, transparent 60%);
+            border: 1px solid rgba(163,113,247,0.15);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
 
-        /* Badges */
-        .badge { display: inline-flex; align-items: center; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 500; border-radius: 9999px; background: var(--bg-tertiary); color: var(--text-secondary); }
-        .badge-teal { background: var(--teal-glow); color: var(--teal); }
-        .badge-amber { background: var(--accent-glow); color: var(--accent); }
-        .badge-purple { background: var(--purple-glow); color: var(--purple); }
-        .badge-success { background: rgba(34, 197, 94, 0.15); color: var(--success); }
-        .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        /* ===========================================
+           FEATURE ITEMS
+           =========================================== */
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            transition: background 0.3s ease;
+        }
+        .feature-item:hover { background: rgba(255,255,255,0.02); }
+        .feature-item h4 { color: var(--text-primary); margin-bottom: 0.2rem; }
+        .feature-item p { font-size: 0.875rem; margin: 0; }
 
-        /* Tabs */
-        .tabs { display: flex; gap: 0.25rem; background: var(--bg-secondary); padding: 0.25rem; border-radius: var(--radius-md); width: fit-content; flex-wrap: wrap; }
-        .tab-btn { padding: 0.5rem 1rem; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s ease; }
+        /* ===========================================
+           BADGES
+           =========================================== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+        }
+        .badge-teal { background: var(--teal-glow); color: var(--teal); border: 1px solid rgba(63,185,162,0.15); }
+        .badge-amber { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(240,136,62,0.15); }
+        .badge-purple { background: var(--purple-glow); color: var(--purple); border: 1px solid rgba(163,113,247,0.15); }
+        .badge-success { background: var(--success-glow); color: var(--success); border: 1px solid rgba(63,185,80,0.15); }
+        .badge-danger { background: rgba(248,81,73,0.1); color: var(--danger); }
+
+        /* ===========================================
+           TABS (animated indicator)
+           =========================================== */
+        .tabs {
+            display: flex;
+            gap: 0.125rem;
+            background: var(--bg-secondary);
+            padding: 4px;
+            border-radius: var(--radius-md);
+            width: fit-content;
+            border: 1px solid var(--border);
+        }
+        .tab-btn {
+            padding: 0.5rem 1.125rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.25s ease;
+        }
         .tab-btn:hover { color: var(--text-primary); }
-        .tab-btn.active { background: var(--bg-card); color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        .tab-content { margin-top: 1rem; }
+        .tab-btn.active {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
 
-        /* Progress bars */
-        .progress-track { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s var(--ease-out-expo); }
-        .progress-fill-teal { background: var(--teal); }
-        .progress-fill-amber { background: var(--accent); }
-        .progress-fill-purple { background: var(--purple); }
-        .progress-fill-success { background: var(--success); }
+        .tab-content {
+            margin-top: 1rem;
+        }
+        .tab-panel {
+            background: var(--bg-card);
+            padding: 1.75rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+        }
 
-        /* Alerts */
-        .alert { padding: 1rem 1.25rem; border-radius: var(--radius-md); display: flex; gap: 0.75rem; align-items: flex-start; }
-        .alert-warning { background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.2); color: var(--warning); }
-        .alert-icon { flex-shrink: 0; font-size: 1.25rem; }
+        /* ===========================================
+           TABLES
+           =========================================== */
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.875rem; }
+        th, td { padding: 0.875rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { font-weight: 600; color: var(--teal); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        td { color: var(--text-secondary); }
+        tr { transition: background 0.2s ease; }
+        tr:hover { background: rgba(255,255,255,0.015); }
+        tr:last-child td { border-bottom: none; }
+
+        /* ===========================================
+           LISTS
+           =========================================== */
+        ul { list-style: none; margin: 0.75rem 0; }
+        ul li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.55rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            width: 5px;
+            height: 5px;
+            background: var(--teal);
+            border-radius: 50%;
+        }
+
+        /* ===========================================
+           PROGRESS BARS (animated on view)
+           =========================================== */
+        .progress-track { height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden; }
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 1.2s var(--ease-out-expo) 0.3s;
+            position: relative;
+        }
+        .slide.visible .progress-fill { width: var(--fill-width); }
+        .progress-fill-teal { background: linear-gradient(90deg, var(--teal), var(--teal-bright)); }
+        .progress-fill-amber { background: linear-gradient(90deg, var(--accent), #f5a623); }
+        .progress-fill-purple { background: linear-gradient(90deg, var(--purple), #c084fc); }
+        .progress-fill-success { background: linear-gradient(90deg, var(--success), #56d364); }
+
+        /* ===========================================
+           ALERTS
+           =========================================== */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+        .alert-warning {
+            background: rgba(210,153,34,0.06);
+            border: 1px solid rgba(210,153,34,0.15);
+            color: var(--warning);
+        }
+        .alert-icon { flex-shrink: 0; }
         .alert-content { flex: 1; }
-        .alert-title { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.25rem; }
-        .alert-description { font-size: 0.8125rem; margin: 0; opacity: 0.9; }
+        .alert-title { font-weight: 600; font-size: 0.8125rem; margin-bottom: 0.2rem; }
+        .alert-description { font-size: 0.8rem; margin: 0; opacity: 0.9; }
 
-        /* Quote */
-        .quote { font-family: var(--font-display); font-style: italic; font-size: 1.125rem; color: var(--text-primary); border-left: 3px solid var(--teal); padding-left: 1.5rem; margin: 1.5rem 0; }
+        /* ===========================================
+           QUOTE
+           =========================================== */
+        .quote {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            border-left: 2px solid var(--teal);
+            padding-left: 1.25rem;
+            margin: 1.25rem 0;
+            line-height: 1.6;
+        }
 
-        /* Keyboard hint */
-        .keyboard-hint { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; opacity: 0; animation: fadeIn 1s ease 2s forwards; }
-        .keyboard-hint kbd { background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-family: var(--font-mono); }
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        /* Connector icons */
+        /* ===========================================
+           CONNECTOR GRID
+           =========================================== */
         .connector-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.75rem;
             margin-top: 1.5rem;
         }
 
@@ -359,50 +682,85 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
-            padding: 1.25rem;
+            padding: 1.25rem 1rem;
             text-align: center;
-            transition: border-color 0.2s ease, transform 0.2s ease;
+            transition: all 0.3s var(--ease-out-expo);
         }
 
         .connector-card:hover {
             border-color: var(--border-accent);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
-        .connector-icon {
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: center;
-            color: var(--teal);
-        }
-        .connector-icon i { width: 32px; height: 32px; }
+        .connector-icon { margin-bottom: 0.5rem; display: flex; justify-content: center; color: var(--teal); }
+        .connector-icon i { width: 28px; height: 28px; }
+        .connector-name { font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); }
+        .connector-desc { font-size: 0.6875rem; color: var(--text-muted); margin-top: 0.25rem; }
+        .connector-card.coming-soon { border-style: dashed; opacity: 0.6; }
+        .connector-card.coming-soon:hover { opacity: 0.85; }
 
-        .connector-name {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .connector-desc {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        .connector-card.coming-soon {
-            border-style: dashed;
-            opacity: 0.7;
-        }
-
-        /* Timeline */
+        /* ===========================================
+           TIMELINE (animated)
+           =========================================== */
         .timeline { position: relative; padding-left: 2rem; }
-        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
-        .timeline-item { position: relative; margin-bottom: 1.5rem; }
-        .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--teal); border: 2px solid var(--bg-primary); }
-        .timeline-item.amber::before { background: var(--accent); }
-        .timeline-item.purple::before { background: var(--purple); }
+        .timeline::before { content: ''; position: absolute; left: 4px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--teal), var(--accent), var(--purple)); border-radius: 1px; }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 0.5rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.35rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--teal);
+            border: 2px solid var(--bg-primary);
+            box-shadow: 0 0 0 3px rgba(63,185,162,0.2);
+        }
+        .timeline-item.amber::before { background: var(--accent); box-shadow: 0 0 0 3px rgba(240,136,62,0.2); }
+        .timeline-item.purple::before { background: var(--purple); box-shadow: 0 0 0 3px rgba(163,113,247,0.2); }
 
-        /* Utility */
+        /* ===========================================
+           KEYBOARD HINT
+           =========================================== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeInHint 0.8s ease 2.5s forwards;
+            z-index: 200;
+        }
+        .keyboard-hint kbd {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+        }
+        @keyframes fadeInHint { to { opacity: 0.6; } }
+
+        /* ===========================================
+           INLINE ICON
+           =========================================== */
+        .inline-icon { display: inline-flex; vertical-align: middle; margin-right: 0.3rem; }
+        .inline-icon i { width: 18px; height: 18px; }
+
+        /* ===========================================
+           UTILITIES
+           =========================================== */
         .flex { display: flex; }
         .flex-col { flex-direction: column; }
         .items-center { align-items: center; }
@@ -413,37 +771,40 @@
         .mt-2 { margin-top: 0.5rem; }
         .mt-4 { margin-top: 1rem; }
         .mb-2 { margin-bottom: 0.5rem; }
-        .text-sm { font-size: 0.875rem; }
+        .text-sm { font-size: 0.8125rem; }
         .text-muted { color: var(--text-muted); }
 
-        /* Fourth brand color bar */
-        .brand-bar { width: 100%; height: 4px; background: linear-gradient(90deg, #00B69F 0%, #f59e0b 50%, #a78bfa 100%); margin-bottom: 2rem; }
-
-        /* Inline icon helper */
-        .inline-icon { display: inline-flex; vertical-align: middle; margin-right: 0.35rem; }
-        .inline-icon i { width: 20px; height: 20px; }
-
-        /* Responsive */
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 1024px) {
+            .card-grid-5 { grid-template-columns: repeat(3, 1fr); }
+        }
         @media (max-width: 900px) {
             .two-col, .three-col, .card-grid-2, .card-grid-3, .card-grid-4, .card-grid-5, .connector-grid { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 768px) {
             .nav-dots, .keyboard-hint { display: none; }
-            .slide { padding: 2rem 1.5rem; }
+            .slide { padding: 2rem 1.25rem; }
             .card-grid { grid-template-columns: 1fr; }
-            html { font-size: 16px; }
+            html { font-size: 15px; }
+            h1 { font-size: 2.5rem; }
+            .stat { font-size: 2rem; }
+            .label::before { display: none; }
         }
 
         @media (prefers-reduced-motion: reduce) {
             .reveal { transition: opacity 0.3s ease; transform: none; }
+            .card-grid > * { opacity: 1; transform: none; transition: none; }
             html { scroll-behavior: auto; }
-            .keyboard-hint { animation: none; opacity: 1; }
+            .keyboard-hint { animation: none; opacity: 0.6; }
+            .mesh-orb { animation: none; }
+            .progress-bar { animation: none; }
         }
     </style>
 </head>
 <body>
-    <!-- Progress Bar -->
+    <!-- Shimmer Progress Bar -->
     <div class="progress-bar"></div>
 
     <!-- Navigation Dots -->
@@ -453,10 +814,14 @@
          SLIDE 1: TITLE
          ============================================= -->
     <section class="slide title-slide" data-slide="0">
-        <div class="glow-bg glow-teal" style="top: -20%; left: 50%; transform: translateX(-50%);"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb mesh-orb-1"></div>
+            <div class="mesh-orb mesh-orb-2"></div>
+            <div class="mesh-orb mesh-orb-3"></div>
+        </div>
         <div class="slide-content">
-            <p class="label reveal">AI Enablement Team</p>
-            <h1 class="reveal">Status Update</h1>
+            <p class="label reveal" style="justify-content: center;">AI Enablement Team</p>
+            <h1 class="reveal"><span class="gradient-text">Status Update</span></h1>
             <p class="subtitle reveal" style="margin: 0 auto;">Building AI infrastructure that scales &mdash; from individual productivity to enterprise transformation</p>
             <div class="accent-line reveal accent-line-center"></div>
             <p class="meta reveal">David Hayes &bull; February 2026<br>Prepared for Carly Hodges, VP Enterprise Transformation &amp; Technology</p>
@@ -467,39 +832,41 @@
          SLIDE 2: EXECUTIVE SUMMARY
          ============================================= -->
     <section class="slide" data-slide="1">
-        <div class="glow-bg glow-amber" style="top: 10%; right: -20%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(240,136,62,0.3),transparent 70%);top:10%;right:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label label-amber reveal">Executive Summary</p>
-            <h2 class="reveal">Five Projects. One AI-First Vision.</h2>
-            <p class="reveal">Continuous Claude &mdash; our core AI development infrastructure &mdash; is now in production with 200+ commits, adopted by Engineering and Architecture teams, and deploying into the Spark Platform. The marketing team is running live on Fourth Marketing Brain and the Asana Claude Project.</p>
+            <h2 class="reveal">Five Projects. <span class="gradient-text">One Vision.</span></h2>
+            <p class="reveal">Continuous Claude &mdash; our core AI development infrastructure &mdash; is in production with 200+ commits, adopted by Engineering and Architecture teams, and deploying into the Spark Platform. Marketing is live on Fourth Marketing Brain and the Asana Claude Project.</p>
 
             <div class="card-grid card-grid-5 reveal" style="margin-top: 2rem;">
-                <div class="card" style="text-align: center;">
-                    <div class="stat">5</div>
+                <div class="stat-card">
+                    <div class="stat" data-count="5">0</div>
                     <div class="stat-label">Active Projects</div>
                 </div>
-                <div class="card" style="text-align: center;">
-                    <div class="stat stat-amber">80+</div>
+                <div class="stat-card">
+                    <div class="stat stat-amber" data-count="80" data-suffix="+">0</div>
                     <div class="stat-label">Skills Deployed</div>
                 </div>
-                <div class="card" style="text-align: center;">
-                    <div class="stat stat-purple">200+</div>
+                <div class="stat-card">
+                    <div class="stat stat-purple" data-count="200" data-suffix="+">0</div>
                     <div class="stat-label">Commits Since Dec</div>
                 </div>
-                <div class="card" style="text-align: center;">
-                    <div class="stat">18+</div>
+                <div class="stat-card">
+                    <div class="stat" data-count="18" data-suffix="+">0</div>
                     <div class="stat-label">Specialised Agents</div>
                 </div>
-                <div class="card" style="text-align: center;">
-                    <div class="stat stat-amber">35+</div>
+                <div class="stat-card">
+                    <div class="stat stat-amber" data-count="35" data-suffix="+">0</div>
                     <div class="stat-label">Quality Hooks</div>
                 </div>
             </div>
 
-            <div class="highlight-box reveal" style="margin-top: 2rem;">
-                <p style="margin: 0; color: var(--text-primary); font-size: 1.05rem;">
+            <div class="highlight-box reveal" style="margin-top: 1.75rem;">
+                <p style="margin: 0; color: var(--text-primary); font-size: 0.95rem;">
                     <span class="inline-icon" style="color: var(--teal);"><i data-lucide="rocket"></i></span>
-                    <strong>Key Headline:</strong> Continuous Claude is Fourth's core AI infrastructure &mdash; actively improving, adopted org-wide, and now <strong style="color: var(--teal);">deploying into the Spark Platform</strong> as the cross-departmental AI hub.
+                    <strong>Key Headline:</strong> Continuous Claude is Fourth's core AI infrastructure &mdash; actively improving, adopted org-wide, and now <strong style="color: var(--teal-bright);">deploying into the Spark Platform</strong> as the cross-departmental AI hub.
                 </p>
             </div>
         </div>
@@ -509,14 +876,16 @@
          SLIDE 3: ACTIVE PROJECTS OVERVIEW
          ============================================= -->
     <section class="slide" data-slide="2">
-        <div class="glow-bg glow-teal" style="bottom: 10%; left: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(63,185,162,0.25),transparent 70%);bottom:10%;left:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label reveal">Portfolio</p>
             <h2 class="reveal">Active Projects</h2>
 
-            <div class="card-grid reveal" style="margin-top: 1.5rem;">
-                <!-- Continuous Claude - HIGHLIGHT -->
-                <div class="card card-highlight" style="border-left: 3px solid var(--teal); grid-column: 1 / -1;">
+            <div class="card-grid" style="margin-top: 1.5rem;">
+                <!-- Continuous Claude - HEADLINE with animated border -->
+                <div class="card card-glow" style="grid-column: 1 / -1;">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-3">
                             <div class="icon-box"><i data-lucide="code"></i></div>
@@ -524,11 +893,11 @@
                         </div>
                         <span class="badge badge-success">Production &bull; Adopted</span>
                     </div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">continuous-claude &bull; 200+ commits &bull; 35+ hooks &bull; 18+ agents &bull; 80+ skills</p>
-                    <p style="font-size: 0.9375rem; margin: 0;">The AI development infrastructure powering everything. Semantic memory, autonomous orchestrators, cross-session coordination. Adopted by Engineering and Architecture teams. Now deploying into Spark.</p>
+                    <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0.5rem;">continuous-claude &bull; 200+ commits &bull; 35+ hooks &bull; 18+ agents &bull; 80+ skills</p>
+                    <p style="font-size: 0.875rem; margin: 0;">The AI development infrastructure powering everything. Semantic memory, autonomous orchestrators, cross-session coordination. Adopted by Engineering and Architecture teams. Deploying into Spark.</p>
                 </div>
 
-                <div class="card" style="border-left: 3px solid var(--accent);">
+                <div class="card" style="border-left: 2px solid var(--accent);">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-3">
                             <div class="icon-box icon-box-amber"><i data-lucide="layout-dashboard"></i></div>
@@ -536,10 +905,10 @@
                         </div>
                         <span class="badge badge-amber">In Progress</span>
                     </div>
-                    <p style="font-size: 0.9375rem; margin: 0;">Cross-departmental AI hub connecting resources, intelligence, and departments. Dashboard ecosystem with real-time collaboration.</p>
+                    <p style="font-size: 0.875rem; margin: 0;">Cross-departmental AI hub. Connecting resources, intelligence, and departments through a dashboard ecosystem.</p>
                 </div>
 
-                <div class="card" style="border-left: 3px solid var(--purple);">
+                <div class="card" style="border-left: 2px solid var(--purple);">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-3">
                             <div class="icon-box icon-box-purple"><i data-lucide="brain"></i></div>
@@ -547,10 +916,10 @@
                         </div>
                         <span class="badge badge-success">Complete</span>
                     </div>
-                    <p style="font-size: 0.9375rem; margin: 0;">MCP server connecting Claude, ChatGPT, and Copilot to SharePoint marketing content. RAG-style Q&amp;A with confidence scoring.</p>
+                    <p style="font-size: 0.875rem; margin: 0;">MCP server connecting Claude, ChatGPT, Copilot to SharePoint marketing content with RAG Q&amp;A.</p>
                 </div>
 
-                <div class="card" style="border-left: 3px solid var(--info);">
+                <div class="card" style="border-left: 2px solid var(--info);">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-3">
                             <div class="icon-box icon-box-info"><i data-lucide="settings"></i></div>
@@ -558,43 +927,45 @@
                         </div>
                         <span class="badge badge-amber">Mostly Complete</span>
                     </div>
-                    <p style="font-size: 0.9375rem; margin: 0;">Meeting intelligence, proposals, budget tracking, Agent Factory. Pending licence + Azure Foundry decisions. Connects to Spark.</p>
+                    <p style="font-size: 0.875rem; margin: 0;">Meeting intelligence, proposals, budget tracking, Agent Factory. Pending licence + Azure Foundry.</p>
                 </div>
 
-                <div class="card" style="border-left: 3px solid var(--bg-tertiary); opacity: 0.75;">
+                <div class="card" style="border-left: 2px solid var(--bg-tertiary); opacity: 0.6;">
                     <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center gap-3">
-                            <div class="icon-box" style="background: var(--bg-tertiary); color: var(--text-muted);"><i data-lucide="clipboard-list"></i></div>
+                            <div class="icon-box" style="background: rgba(255,255,255,0.03); color: var(--text-muted); border-color: var(--border);"><i data-lucide="clipboard-list"></i></div>
                             <h3 style="margin: 0;">RFP Builder</h3>
                         </div>
-                        <span class="badge">Complete &bull; Awaiting Data</span>
+                        <span class="badge">Awaiting Data</span>
                     </div>
-                    <p style="font-size: 0.9375rem; margin: 0;">95% time reduction (40 hrs to ~2 hrs). Feature-complete but waiting on team data to populate knowledge base.</p>
+                    <p style="font-size: 0.875rem; margin: 0;">95% time reduction (40 hrs to ~2 hrs). Feature-complete, waiting on team data.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 4: CONTINUOUS CLAUDE DEEP-DIVE (HEADLINE)
+         SLIDE 4: CONTINUOUS CLAUDE DEEP-DIVE
          ============================================= -->
     <section class="slide" data-slide="3">
-        <div class="glow-bg glow-teal" style="top: 10%; left: -15%;"></div>
-        <div class="glow-bg glow-amber" style="bottom: -10%; right: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb mesh-orb-1"></div>
+            <div class="mesh-orb mesh-orb-2"></div>
+        </div>
         <div class="slide-content" x-data="{ tab: 'infrastructure' }">
             <p class="label reveal">The Headline</p>
-            <h2 class="reveal">Continuous Claude</h2>
-            <p class="reveal">Fourth's core AI development infrastructure. 200+ commits, adopted by Engineering and Architecture teams, and now deploying into the Spark Platform as the foundation of org-wide AI capabilities.</p>
+            <h2 class="reveal"><span class="gradient-text">Continuous Claude</span></h2>
+            <p class="reveal">Fourth's core AI development infrastructure. 200+ commits, adopted by Engineering and Architecture teams, deploying into the Spark Platform as the foundation of org-wide AI capabilities.</p>
 
-            <div class="tabs reveal" style="margin-top: 1rem;">
+            <div class="tabs reveal" style="margin-top: 1.25rem;">
                 <button class="tab-btn" :class="{ active: tab === 'infrastructure' }" @click="tab = 'infrastructure'">Infrastructure</button>
                 <button class="tab-btn" :class="{ active: tab === 'agents' }" @click="tab = 'agents'">Agents</button>
                 <button class="tab-btn" :class="{ active: tab === 'skills' }" @click="tab = 'skills'">Skills</button>
                 <button class="tab-btn" :class="{ active: tab === 'memory' }" @click="tab = 'memory'">Memory</button>
             </div>
 
-            <div class="tab-content reveal" style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
-                <div x-show="tab === 'infrastructure'">
+            <div class="tab-content reveal">
+                <div class="tab-panel" x-show="tab === 'infrastructure'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                     <h4><span class="inline-icon" style="color: var(--teal);"><i data-lucide="server"></i></span> Infrastructure Layer</h4>
                     <ul>
                         <li><strong>35+ quality hooks</strong> &mdash; automated guardrails for security, consistency, and best practices</li>
@@ -603,78 +974,52 @@
                         <li><strong>Real-time dashboard</strong> &mdash; full visibility into all AI operations and session state</li>
                     </ul>
                 </div>
-                <div x-show="tab === 'agents'" x-cloak>
+                <div class="tab-panel" x-show="tab === 'agents'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                     <h4><span class="inline-icon" style="color: var(--accent);"><i data-lucide="bot"></i></span> 18+ Specialised Agents</h4>
                     <div class="card-grid card-grid-3" style="margin-top: 0.5rem;">
                         <div>
-                            <p style="font-size: 0.85rem; color: var(--teal); font-weight: 600; margin-bottom: 0.25rem;">Technical</p>
-                            <ul style="margin: 0;">
-                                <li>Scout &mdash; codebase exploration</li>
-                                <li>Kraken &mdash; implementation via TDD</li>
-                                <li>Debug Agent &mdash; root cause analysis</li>
-                                <li>Profiler &mdash; performance tuning</li>
-                            </ul>
+                            <p style="font-size: 0.75rem; color: var(--teal); font-weight: 600; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.08em;">Technical</p>
+                            <ul style="margin: 0;"><li>Scout &mdash; codebase exploration</li><li>Kraken &mdash; implementation via TDD</li><li>Debug Agent &mdash; root cause analysis</li><li>Profiler &mdash; performance tuning</li></ul>
                         </div>
                         <div>
-                            <p style="font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-bottom: 0.25rem;">Non-Technical</p>
-                            <ul style="margin: 0;">
-                                <li>Scribe &mdash; documentation &amp; handoffs</li>
-                                <li>Oracle &mdash; research &amp; web lookup</li>
-                                <li>Architect &mdash; design planning</li>
-                                <li>Critic &mdash; review &amp; quality</li>
-                            </ul>
+                            <p style="font-size: 0.75rem; color: var(--accent); font-weight: 600; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.08em;">Non-Technical</p>
+                            <ul style="margin: 0;"><li>Scribe &mdash; documentation &amp; handoffs</li><li>Oracle &mdash; research &amp; web lookup</li><li>Architect &mdash; design planning</li><li>Critic &mdash; review &amp; quality</li></ul>
                         </div>
                         <div>
-                            <p style="font-size: 0.85rem; color: var(--purple); font-weight: 600; margin-bottom: 0.25rem;">Orchestration</p>
-                            <ul style="margin: 0;">
-                                <li>Maestro &mdash; multi-step coordination</li>
-                                <li>Ralph &mdash; autonomous dev mode</li>
-                                <li>Spark &mdash; lightweight fixes</li>
-                                <li>Atlas &mdash; end-to-end testing</li>
-                            </ul>
+                            <p style="font-size: 0.75rem; color: var(--purple); font-weight: 600; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.08em;">Orchestration</p>
+                            <ul style="margin: 0;"><li>Maestro &mdash; multi-step coordination</li><li>Ralph &mdash; autonomous dev mode</li><li>Spark &mdash; lightweight fixes</li><li>Atlas &mdash; end-to-end testing</li></ul>
                         </div>
                     </div>
                 </div>
-                <div x-show="tab === 'skills'" x-cloak>
+                <div class="tab-panel" x-show="tab === 'skills'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                     <h4><span class="inline-icon" style="color: var(--purple);"><i data-lucide="zap"></i></span> 80+ Reusable Skills</h4>
-                    <p style="font-size: 0.9375rem;">Packaged AI capabilities that any team member can invoke. From RFP generation to branded presentations, meeting intelligence to enterprise integrations &mdash; each skill encapsulates expert knowledge into a single command.</p>
+                    <p style="font-size: 0.875rem;">Packaged AI capabilities any team member can invoke &mdash; each skill encapsulates expert knowledge into a single command.</p>
                     <div class="flex gap-2" style="flex-wrap: wrap; margin-top: 0.75rem;">
-                        <span class="badge badge-teal">RFP Builder</span>
-                        <span class="badge badge-teal">Branded Decks</span>
-                        <span class="badge badge-amber">M365 Integration</span>
-                        <span class="badge badge-amber">Meeting Intelligence</span>
-                        <span class="badge badge-purple">Skill Creator</span>
-                        <span class="badge badge-purple">Date Logic</span>
-                        <span class="badge badge-teal">Code Review</span>
-                        <span class="badge badge-amber">Security Audit</span>
-                        <span class="badge">TDD Workflow</span>
-                        <span class="badge">Browser Automation</span>
-                        <span class="badge badge-purple">Knowledge Tree</span>
-                        <span class="badge">+70 more</span>
+                        <span class="badge badge-teal">RFP Builder</span><span class="badge badge-teal">Branded Decks</span><span class="badge badge-amber">M365 Integration</span><span class="badge badge-amber">Meeting Intelligence</span><span class="badge badge-purple">Skill Creator</span><span class="badge badge-purple">Date Logic</span><span class="badge badge-teal">Code Review</span><span class="badge badge-amber">Security Audit</span><span class="badge">TDD Workflow</span><span class="badge">Browser Automation</span><span class="badge badge-purple">Knowledge Tree</span><span class="badge" style="opacity:0.6;">+70 more</span>
                     </div>
                 </div>
-                <div x-show="tab === 'memory'" x-cloak>
+                <div class="tab-panel" x-show="tab === 'memory'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                     <h4><span class="inline-icon" style="color: var(--success);"><i data-lucide="database"></i></span> Semantic Memory System</h4>
                     <ul>
                         <li><strong>PostgreSQL + pgvector</strong> &mdash; persistent learnings with BGE embeddings across all sessions</li>
                         <li><strong>100+ stored learnings</strong> &mdash; decisions, patterns, solutions, and failed approaches</li>
                         <li><strong>Hybrid search</strong> &mdash; combines text and vector search for high-accuracy recall</li>
-                        <li><strong>Auto-extraction</strong> &mdash; hooks automatically capture insights from tool use and session activity</li>
+                        <li><strong>Auto-extraction</strong> &mdash; hooks automatically capture insights from session activity</li>
                     </ul>
                 </div>
             </div>
 
             <div class="flex gap-4 reveal" style="margin-top: 1.5rem;">
-                <div class="highlight-box" style="flex: 1;">
-                    <div class="stat" style="font-size: 1.5rem;">200+</div>
+                <div class="highlight-box" style="flex: 1; text-align: center;">
+                    <div class="stat" style="font-size: 1.75rem;" data-count="200" data-suffix="+">0</div>
                     <div class="stat-label">Commits</div>
                 </div>
-                <div class="highlight-box-amber" style="flex: 1;">
-                    <div class="stat stat-amber" style="font-size: 1.5rem;">2 Teams</div>
+                <div class="highlight-box-amber" style="flex: 1; text-align: center;">
+                    <div class="stat stat-amber" style="font-size: 1.75rem;">2 Teams</div>
                     <div class="stat-label">Adopted By</div>
                 </div>
-                <div class="highlight-box-purple" style="flex: 1;">
-                    <div class="stat stat-purple" style="font-size: 1.5rem;">Spark</div>
+                <div class="highlight-box-purple" style="flex: 1; text-align: center;">
+                    <div class="stat stat-purple" style="font-size: 1.75rem;">Spark</div>
                     <div class="stat-label">Deploying Into</div>
                 </div>
             </div>
@@ -682,14 +1027,16 @@
     </section>
 
     <!-- =============================================
-         SLIDE 5: SPARK PLATFORM DEEP-DIVE
+         SLIDE 5: SPARK PLATFORM
          ============================================= -->
     <section class="slide" data-slide="4">
-        <div class="glow-bg glow-amber" style="bottom: 20%; right: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(240,136,62,0.25),transparent 70%);bottom:20%;right:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label label-amber reveal">Deep Dive</p>
             <h2 class="reveal">Spark Platform</h2>
-            <p class="reveal">The cross-departmental AI hub &mdash; connecting resources, intelligence, and departments under one roof. Continuous Claude capabilities deploy here for org-wide access.</p>
+            <p class="reveal">The cross-departmental AI hub &mdash; connecting resources, intelligence, and departments. Continuous Claude capabilities deploy here for org-wide access.</p>
 
             <div class="two-col" style="margin-top: 2rem;">
                 <div>
@@ -697,26 +1044,26 @@
                         <div class="icon-box icon-box-amber"><i data-lucide="users"></i></div>
                         <div>
                             <h4>Cross-Departmental Hub</h4>
-                            <p>Each department gets its own workspace with shared intelligence. Marketing, engineering, finance &mdash; all connected through a single platform.</p>
+                            <p>Each department gets its own workspace with shared intelligence. Marketing, engineering, finance &mdash; all connected.</p>
                         </div>
                     </div>
                     <div class="feature-item reveal">
                         <div class="icon-box"><i data-lucide="layout-dashboard"></i></div>
                         <div>
                             <h4>Dashboard Ecosystem</h4>
-                            <p>Real-time dashboards for AI operations, department metrics, and project status. AI Architectural Guide connects into this ecosystem.</p>
+                            <p>Real-time dashboards for AI operations, department metrics, and project status. AI Arch Guide connects into this ecosystem.</p>
                         </div>
                     </div>
                     <div class="feature-item reveal">
                         <div class="icon-box icon-box-purple"><i data-lucide="link"></i></div>
                         <div>
                             <h4>Department Connectors</h4>
-                            <p>Each department drives custom connectors for their specific workflows. Salesforce, PowerBI, and more coming Q1 2026.</p>
+                            <p>Each department drives custom connectors for their specific workflows. Salesforce, PowerBI, and more coming Q1.</p>
                         </div>
                     </div>
                 </div>
                 <div class="reveal">
-                    <div class="highlight-box" style="margin-bottom: 1.25rem;">
+                    <div class="highlight-box" style="margin-bottom: 1rem;">
                         <h4 style="color: var(--teal); margin-bottom: 0.5rem;"><span class="inline-icon"><i data-lucide="target"></i></span> Vision</h4>
                         <ul style="margin: 0;">
                             <li>Continuous Claude capabilities accessible org-wide</li>
@@ -727,7 +1074,7 @@
                     </div>
                     <div class="card" style="text-align: center; padding: 1.25rem;">
                         <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Status</span>
-                        <p style="margin: 0.5rem 0 0; font-size: 0.9375rem;">Core platform in development. Continuous Claude integration underway. Launch with department leads driving custom connectors.</p>
+                        <p style="margin: 0.5rem 0 0; font-size: 0.875rem;">Core platform in development. CC integration underway. Launch with dept leads driving custom connectors.</p>
                     </div>
                 </div>
             </div>
@@ -738,11 +1085,13 @@
          SLIDE 6: FOURTH MARKETING BRAIN
          ============================================= -->
     <section class="slide" data-slide="5">
-        <div class="glow-bg glow-purple" style="top: 10%; left: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(163,113,247,0.25),transparent 70%);top:10%;left:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label label-purple reveal">New Project</p>
             <h2 class="reveal">Fourth Marketing Brain</h2>
-            <p class="reveal">An MCP server that connects Claude, ChatGPT, and Microsoft Copilot directly to curated marketing content on SharePoint. The marketing team's AI-powered knowledge base.</p>
+            <p class="reveal">An MCP server connecting Claude, ChatGPT, and Copilot directly to curated marketing content on SharePoint. The marketing team's AI-powered knowledge base.</p>
 
             <div class="two-col" style="margin-top: 2rem;">
                 <div>
@@ -750,33 +1099,33 @@
                         <div class="icon-box icon-box-purple"><i data-lucide="search"></i></div>
                         <div>
                             <h4>search_knowledge</h4>
-                            <p>Full-text search across curated marketing content. Find brand guidelines, campaign materials, and strategic docs instantly.</p>
+                            <p>Full-text search across curated marketing content. Brand guidelines, campaign materials, strategic docs.</p>
                         </div>
                     </div>
                     <div class="feature-item reveal">
                         <div class="icon-box icon-box-amber"><i data-lucide="folder-open"></i></div>
                         <div>
                             <h4>browse_library</h4>
-                            <p>Navigate the folder structure of marketing materials. Explore content categories and discover available resources.</p>
+                            <p>Navigate folder structure of marketing materials. Explore categories and discover resources.</p>
                         </div>
                     </div>
                     <div class="feature-item reveal">
                         <div class="icon-box"><i data-lucide="message-square"></i></div>
                         <div>
                             <h4>ask_question</h4>
-                            <p>RAG-style Q&amp;A with confidence levels &mdash; GROUNDED, PARTIAL, or NO ANSWER. AI knows when it doesn't know.</p>
+                            <p>RAG-style Q&amp;A with confidence levels &mdash; GROUNDED, PARTIAL, or NO ANSWER.</p>
                         </div>
                     </div>
                 </div>
                 <div class="reveal">
-                    <div class="card" style="margin-bottom: 1.25rem;">
-                        <h4 style="color: var(--purple);"><span class="inline-icon"><i data-lucide="check-square"></i></span> Capabilities</h4>
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <h4 style="color: var(--purple);"><span class="inline-icon"><i data-lucide="terminal"></i></span> MCP Tools</h4>
                         <ul style="margin: 0.5rem 0 0;">
                             <li><strong>search_knowledge</strong> &mdash; full-text search</li>
                             <li><strong>browse_library</strong> &mdash; folder navigation</li>
-                            <li><strong>get_document</strong> &mdash; retrieve document text</li>
-                            <li><strong>ask_question</strong> &mdash; RAG Q&amp;A with confidence</li>
-                            <li><strong>list_content_areas</strong> &mdash; content categories</li>
+                            <li><strong>get_document</strong> &mdash; retrieve text</li>
+                            <li><strong>ask_question</strong> &mdash; RAG Q&amp;A</li>
+                            <li><strong>list_content_areas</strong> &mdash; categories</li>
                         </ul>
                     </div>
                     <div class="highlight-box-purple">
@@ -792,23 +1141,23 @@
                 </div>
             </div>
 
-            <div class="flex gap-4 reveal" style="margin-top: 1.5rem;">
-                <div style="flex: 1; text-align: center;">
-                    <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.4rem 1rem;">COMPLETE</span>
-                </div>
+            <div class="reveal" style="margin-top: 1.5rem; text-align: center;">
+                <span class="badge badge-success" style="font-size: 0.8rem; padding: 0.4rem 1.25rem; letter-spacing: 0.1em;">COMPLETE</span>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 7: MARKETING ASANA CLAUDE PROJECT
+         SLIDE 7: MARKETING ASANA PROJECT
          ============================================= -->
     <section class="slide" data-slide="6">
-        <div class="glow-bg glow-teal" style="bottom: 10%; right: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(63,185,162,0.2),transparent 70%);bottom:10%;right:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label reveal">New Project</p>
             <h2 class="reveal">Marketing Asana Claude Project</h2>
-            <p class="reveal">A complete AI-powered project management integration for the marketing team &mdash; skills, orchestration, instructions, and direct Asana connection.</p>
+            <p class="reveal">Complete AI-powered project management for the marketing team &mdash; skills, orchestration, instructions, and direct Asana connection.</p>
 
             <div class="card-grid card-grid-2 reveal" style="margin-top: 1.5rem;">
                 <div class="card">
@@ -816,35 +1165,35 @@
                         <div class="icon-box"><i data-lucide="check-square"></i></div>
                         <h4 style="margin: 0;">Task Management</h4>
                     </div>
-                    <p style="font-size: 0.9375rem; margin: 0;">AI-assisted task creation, status updates, and priority management. The marketing team manages Asana projects through natural language.</p>
+                    <p style="font-size: 0.875rem; margin: 0;">AI-assisted task creation, status updates, priority management. Manage Asana through natural language.</p>
                 </div>
                 <div class="card">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="icon-box icon-box-amber"><i data-lucide="calendar"></i></div>
                         <h4 style="margin: 0;">Project Tracking</h4>
                     </div>
-                    <p style="font-size: 0.9375rem; margin: 0;">Campaign timelines, milestone tracking, and deadline management. AI surfaces blockers and suggests task reordering.</p>
+                    <p style="font-size: 0.875rem; margin: 0;">Campaign timelines, milestone tracking, deadline management. AI surfaces blockers and suggests reordering.</p>
                 </div>
                 <div class="card">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="icon-box icon-box-purple"><i data-lucide="bot"></i></div>
                         <h4 style="margin: 0;">Specialist Bot</h4>
                     </div>
-                    <p style="font-size: 0.9375rem; margin: 0;">A dedicated marketing AI specialist with team-specific instructions, brand knowledge, and workflow understanding baked in.</p>
+                    <p style="font-size: 0.875rem; margin: 0;">Dedicated marketing AI specialist with team-specific instructions, brand knowledge, workflow understanding.</p>
                 </div>
                 <div class="card">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="icon-box icon-box-success"><i data-lucide="zap"></i></div>
                         <h4 style="margin: 0;">Orchestration</h4>
                     </div>
-                    <p style="font-size: 0.9375rem; margin: 0;">Multi-step workflows that chain skills together &mdash; from brief intake to task creation to team assignment, all automated.</p>
+                    <p style="font-size: 0.875rem; margin: 0;">Multi-step workflows from brief intake to task creation to team assignment, all automated.</p>
                 </div>
             </div>
 
             <div class="highlight-box reveal" style="margin-top: 1.5rem;">
-                <p style="margin: 0; color: var(--text-primary); font-size: 1.05rem;">
+                <p style="margin: 0; color: var(--text-primary); font-size: 0.9375rem;">
                     <span class="inline-icon" style="color: var(--success);"><i data-lucide="check-square"></i></span>
-                    <strong>Status: COMPLETE</strong> &mdash; The marketing team is the first department fully running on AI-powered project management. This serves as the proof-of-concept for rolling out similar integrations across other departments.
+                    <strong>Status: COMPLETE</strong> &mdash; First department fully running on AI-powered project management. Proof-of-concept for org-wide rollout.
                 </p>
             </div>
         </div>
@@ -854,11 +1203,13 @@
          SLIDE 8: AI ARCHITECTURAL GUIDE
          ============================================= -->
     <section class="slide" data-slide="7">
-        <div class="glow-bg glow-amber" style="top: 10%; left: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(240,136,62,0.2),transparent 70%);top:10%;left:-10%;"></div>
+        </div>
         <div class="slide-content" x-data="{ tab: 'meetings' }">
             <p class="label label-amber reveal">Deep Dive</p>
             <h2 class="reveal">AI Architectural Guide</h2>
-            <p class="reveal">Full-stack platform for AI-assisted technology decision-making. Mostly complete &mdash; pending licence and Azure Foundry decisions. Will connect into the Spark Dashboard Ecosystem.</p>
+            <p class="reveal">Full-stack platform for AI-assisted technology decision-making. Mostly complete &mdash; pending licence and Azure Foundry. Connects into Spark Dashboard Ecosystem.</p>
 
             <div class="tabs reveal" style="margin-top: 1rem;">
                 <button class="tab-btn" :class="{ active: tab === 'meetings' }" @click="tab = 'meetings'">Meetings</button>
@@ -867,50 +1218,30 @@
                 <button class="tab-btn" :class="{ active: tab === 'budgets' }" @click="tab = 'budgets'">Budgets</button>
             </div>
 
-            <div class="tab-content reveal" style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
-                <div x-show="tab === 'meetings'">
+            <div class="tab-content reveal">
+                <div class="tab-panel" x-show="tab === 'meetings'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                     <h4><span class="inline-icon" style="color: var(--teal);"><i data-lucide="calendar"></i></span> Meeting Intelligence</h4>
-                    <ul>
-                        <li>Automatically extracts action items from meeting transcripts</li>
-                        <li>Tracks decisions across sessions with full context</li>
-                        <li>HMLR memory &mdash; AI remembers past conversations, no more "starting from scratch"</li>
-                        <li>Agenda generation and follow-up reminders</li>
-                    </ul>
+                    <ul><li>Automatically extracts action items from transcripts</li><li>Tracks decisions across sessions with full context</li><li>HMLR memory &mdash; AI remembers past conversations</li><li>Agenda generation and follow-up reminders</li></ul>
                 </div>
-                <div x-show="tab === 'proposals'" x-cloak>
+                <div class="tab-panel" x-show="tab === 'proposals'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                     <h4><span class="inline-icon" style="color: var(--accent);"><i data-lucide="file-text"></i></span> Proposal &amp; RFP Management</h4>
-                    <ul>
-                        <li>AI-assisted drafting with brand compliance checks</li>
-                        <li>Historical proposal context for consistency</li>
-                        <li>Collaborative review with inline AI suggestions</li>
-                        <li>Export to Word, PDF, or presentation formats</li>
-                    </ul>
+                    <ul><li>AI-assisted drafting with brand compliance</li><li>Historical proposal context for consistency</li><li>Collaborative review with inline suggestions</li><li>Export to Word, PDF, or presentation</li></ul>
                 </div>
-                <div x-show="tab === 'agents'" x-cloak>
+                <div class="tab-panel" x-show="tab === 'agents'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                     <h4><span class="inline-icon" style="color: var(--purple);"><i data-lucide="bot"></i></span> Agent Factory</h4>
-                    <ul>
-                        <li>Self-service hub for creating custom AI agents</li>
-                        <li>No coding required &mdash; guided configuration workflow</li>
-                        <li>Pre-built templates for common use cases</li>
-                        <li>Deployed agents accessible to entire team</li>
-                    </ul>
+                    <ul><li>Self-service hub for creating custom AI agents</li><li>No coding required &mdash; guided configuration</li><li>Pre-built templates for common use cases</li><li>Deployed agents accessible to entire team</li></ul>
                 </div>
-                <div x-show="tab === 'budgets'" x-cloak>
+                <div class="tab-panel" x-show="tab === 'budgets'" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                     <h4><span class="inline-icon" style="color: var(--success);"><i data-lucide="trending-up"></i></span> Budget &amp; Cost Tracking</h4>
-                    <ul>
-                        <li>Azure cost dashboards with real-time data</li>
-                        <li>Forecasting and optimisation recommendations</li>
-                        <li>Department-level spending breakdowns</li>
-                        <li>Automated alerts for budget threshold breaches</li>
-                    </ul>
+                    <ul><li>Azure cost dashboards with real-time data</li><li>Forecasting and optimisation recommendations</li><li>Department-level spending breakdowns</li><li>Automated alerts for threshold breaches</li></ul>
                 </div>
             </div>
 
-            <div class="alert alert-warning reveal" style="margin-top: 1.5rem;">
-                <div class="alert-icon"><i data-lucide="alert-triangle" style="width:20px;height:20px;"></i></div>
+            <div class="alert alert-warning reveal" style="margin-top: 1.25rem;">
+                <div class="alert-icon"><i data-lucide="alert-triangle" style="width:18px;height:18px;"></i></div>
                 <div class="alert-content">
                     <div class="alert-title">Pending Decisions</div>
-                    <div class="alert-description" style="color: var(--warning);">Claude licensing approval and Azure Foundry setup required before final deployment. Once resolved, connects directly into the Spark Dashboard Ecosystem.</div>
+                    <div class="alert-description" style="color: var(--warning);">Claude licensing and Azure Foundry setup required. Once resolved, connects directly into Spark Dashboard Ecosystem.</div>
                 </div>
             </div>
         </div>
@@ -920,56 +1251,30 @@
          SLIDE 9: ENTERPRISE INTEGRATIONS
          ============================================= -->
     <section class="slide" data-slide="8">
-        <div class="glow-bg glow-purple" style="top: 10%; left: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(163,113,247,0.2),transparent 70%);top:10%;left:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label label-purple reveal">Enterprise</p>
             <h2 class="reveal">Integration Layer</h2>
-            <p class="reveal">Five production connectors live today, with Salesforce and PowerBI coming next. Bridging AI capabilities with existing enterprise systems.</p>
+            <p class="reveal">Five production connectors live, with Salesforce and PowerBI next. Bridging AI with existing enterprise systems.</p>
 
             <div class="connector-grid reveal">
-                <div class="connector-card">
-                    <div class="connector-icon"><i data-lucide="database"></i></div>
-                    <div class="connector-name">SharePoint</div>
-                    <div class="connector-desc">Document search, upload &amp; site management</div>
-                </div>
-                <div class="connector-card">
-                    <div class="connector-icon"><i data-lucide="message-square"></i></div>
-                    <div class="connector-name">Teams</div>
-                    <div class="connector-desc">Channel messaging &amp; team coordination</div>
-                </div>
-                <div class="connector-card">
-                    <div class="connector-icon"><i data-lucide="mail"></i></div>
-                    <div class="connector-name">Outlook</div>
-                    <div class="connector-desc">Email drafting &amp; calendar management</div>
-                </div>
-                <div class="connector-card">
-                    <div class="connector-icon"><i data-lucide="cloud"></i></div>
-                    <div class="connector-name">OneDrive</div>
-                    <div class="connector-desc">File management &amp; collaborative access</div>
-                </div>
-                <div class="connector-card">
-                    <div class="connector-icon"><i data-lucide="check-square"></i></div>
-                    <div class="connector-name">Asana</div>
-                    <div class="connector-desc">Task management &amp; specialist bot</div>
-                </div>
-                <div class="connector-card coming-soon">
-                    <div class="connector-icon" style="color: var(--accent);"><i data-lucide="bar-chart-3"></i></div>
-                    <div class="connector-name">Salesforce</div>
-                    <div class="connector-desc">Coming Q1 2026</div>
-                </div>
-                <div class="connector-card coming-soon">
-                    <div class="connector-icon" style="color: var(--accent);"><i data-lucide="pie-chart"></i></div>
-                    <div class="connector-name">PowerBI</div>
-                    <div class="connector-desc">Coming Q1 2026</div>
-                </div>
+                <div class="connector-card"><div class="connector-icon"><i data-lucide="database"></i></div><div class="connector-name">SharePoint</div><div class="connector-desc">Document search &amp; management</div></div>
+                <div class="connector-card"><div class="connector-icon"><i data-lucide="message-square"></i></div><div class="connector-name">Teams</div><div class="connector-desc">Messaging &amp; coordination</div></div>
+                <div class="connector-card"><div class="connector-icon"><i data-lucide="mail"></i></div><div class="connector-name">Outlook</div><div class="connector-desc">Email &amp; calendar</div></div>
+                <div class="connector-card"><div class="connector-icon"><i data-lucide="cloud"></i></div><div class="connector-name">OneDrive</div><div class="connector-desc">File management</div></div>
+                <div class="connector-card"><div class="connector-icon"><i data-lucide="check-square"></i></div><div class="connector-name">Asana</div><div class="connector-desc">Task &amp; project mgmt</div></div>
+                <div class="connector-card coming-soon"><div class="connector-icon" style="color: var(--accent);"><i data-lucide="bar-chart-3"></i></div><div class="connector-name">Salesforce</div><div class="connector-desc">Coming Q1 2026</div></div>
+                <div class="connector-card coming-soon"><div class="connector-icon" style="color: var(--accent);"><i data-lucide="pie-chart"></i></div><div class="connector-name">PowerBI</div><div class="connector-desc">Coming Q1 2026</div></div>
             </div>
 
-            <div class="highlight-box reveal" style="margin-top: 2rem;">
+            <div class="highlight-box reveal" style="margin-top: 1.75rem;">
                 <div class="flex items-center gap-3">
                     <div class="icon-box"><i data-lucide="link"></i></div>
                     <div>
                         <h4 style="margin: 0;">M365 Integration v3.0</h4>
-                        <p style="margin: 0.25rem 0 0; font-size: 0.9375rem;">All Microsoft connectors unified under a single skill package. Team members invoke AI capabilities that seamlessly read from and write to their existing M365 tools.</p>
+                        <p style="margin: 0.25rem 0 0; font-size: 0.875rem;">All Microsoft connectors unified under a single skill. Team members seamlessly read from and write to M365 tools.</p>
                     </div>
                 </div>
             </div>
@@ -980,45 +1285,37 @@
          SLIDE 10: STRATEGIC IMPACT
          ============================================= -->
     <section class="slide" data-slide="9">
-        <div class="glow-bg glow-amber" style="top: 20%; left: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(240,136,62,0.2),transparent 70%);top:20%;left:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label label-amber reveal">Strategic Value</p>
             <h2 class="reveal">Impact Across the Organisation</h2>
 
             <div class="card-grid card-grid-2 reveal" style="margin-top: 1.5rem;">
-                <div class="card" style="border-top: 3px solid var(--teal);">
+                <div class="card" style="border-top: 2px solid var(--teal);">
                     <h3><span class="inline-icon" style="color: var(--teal);"><i data-lucide="zap"></i></span> Efficiency</h3>
-                    <p style="font-size: 0.9375rem;">AI-assisted workflows reduce repetitive knowledge work by <strong style="color: var(--teal);">60&ndash;80%</strong>. The RFP Builder alone saves ~38 hours per proposal. Marketing team now manages projects through natural language.</p>
+                    <p>AI-assisted workflows reduce knowledge work by <strong style="color: var(--teal-bright);">60&ndash;80%</strong>. Marketing manages projects through natural language.</p>
                     <div style="margin-top: 1rem;">
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Knowledge Work Automation</span>
-                            <span style="color: var(--teal);">60-80% reduction</span>
-                        </div>
-                        <div class="progress-track">
-                            <div class="progress-fill progress-fill-teal" style="width: 75%;"></div>
-                        </div>
+                        <div class="flex justify-between text-sm mb-2"><span>Knowledge Work Automation</span><span style="color: var(--teal);">60-80%</span></div>
+                        <div class="progress-track"><div class="progress-fill progress-fill-teal" style="--fill-width: 75%;"></div></div>
                     </div>
                 </div>
-                <div class="card" style="border-top: 3px solid var(--accent);">
+                <div class="card" style="border-top: 2px solid var(--accent);">
                     <h3><span class="inline-icon" style="color: var(--accent);"><i data-lucide="shield"></i></span> Risk Reduction</h3>
-                    <p style="font-size: 0.9375rem;">35+ automated quality hooks catch security vulnerabilities, brand compliance issues, and consistency problems <strong style="color: var(--accent);">before they reach production</strong>.</p>
+                    <p>35+ hooks catch security, compliance, and consistency issues <strong style="color: var(--accent);">before production</strong>.</p>
                     <div style="margin-top: 1rem;">
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Automated Quality Coverage</span>
-                            <span style="color: var(--accent);">35+ hooks</span>
-                        </div>
-                        <div class="progress-track">
-                            <div class="progress-fill progress-fill-amber" style="width: 85%;"></div>
-                        </div>
+                        <div class="flex justify-between text-sm mb-2"><span>Quality Coverage</span><span style="color: var(--accent);">35+ hooks</span></div>
+                        <div class="progress-track"><div class="progress-fill progress-fill-amber" style="--fill-width: 85%;"></div></div>
                     </div>
                 </div>
-                <div class="card" style="border-top: 3px solid var(--purple);">
+                <div class="card" style="border-top: 2px solid var(--purple);">
                     <h3><span class="inline-icon" style="color: var(--purple);"><i data-lucide="rocket"></i></span> Competitive Advantage</h3>
-                    <p style="font-size: 0.9375rem;">Continuous Claude gives Fourth internal AI development infrastructure comparable to dedicated platform teams at tech companies. New capabilities ship in <strong style="color: var(--purple);">days, not months</strong>.</p>
+                    <p>Continuous Claude gives Fourth AI dev infrastructure comparable to tech company platform teams. <strong style="color: var(--purple);">Days, not months</strong>.</p>
                 </div>
-                <div class="card" style="border-top: 3px solid var(--success);">
+                <div class="card" style="border-top: 2px solid var(--success);">
                     <h3><span class="inline-icon" style="color: var(--success);"><i data-lucide="trending-up"></i></span> Org-Wide Adoption</h3>
-                    <p style="font-size: 0.9375rem;">Engineering and Architecture teams adopted. Marketing team live on Brain + Asana. Spark Platform brings capabilities to <strong style="color: var(--success);">every department</strong>.</p>
+                    <p>Engineering, Architecture adopted. Marketing live. Spark brings capabilities to <strong style="color: var(--success);">every department</strong>.</p>
                 </div>
             </div>
         </div>
@@ -1028,60 +1325,24 @@
          SLIDE 11: BY THE NUMBERS
          ============================================= -->
     <section class="slide" data-slide="10">
-        <div class="glow-bg glow-teal" style="top: -10%; right: -20%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb mesh-orb-1" style="opacity: 0.15;"></div>
+        </div>
         <div class="slide-content">
             <p class="label reveal">Metrics</p>
             <h2 class="reveal">By the Numbers</h2>
 
             <table class="reveal" style="margin-top: 2rem;">
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Value</th>
-                        <th>Context</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Metric</th><th>Value</th><th>Context</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Active AI Projects</strong></td>
-                        <td style="color: var(--teal); font-weight: 700;">5</td>
-                        <td>Continuous Claude, Spark, AI Arch, Marketing Brain, RFP Builder</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Skills Deployed</strong></td>
-                        <td style="color: var(--accent); font-weight: 700;">80+</td>
-                        <td>RFP Builder, Branded Decks, M365, Meeting Intel, Security, TDD, and more</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Enterprise Connectors</strong></td>
-                        <td style="color: var(--purple); font-weight: 700;">5 (+2 coming)</td>
-                        <td>SharePoint, Teams, Outlook, OneDrive, Asana + Salesforce &amp; PowerBI</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Commits (Dec&ndash;Feb)</strong></td>
-                        <td style="color: var(--teal); font-weight: 700;">200+</td>
-                        <td>Majority in Continuous Claude &mdash; the most active codebase</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Quality Hooks</strong></td>
-                        <td style="color: var(--accent); font-weight: 700;">35+</td>
-                        <td>Automated security, quality, compliance, and workflow checks</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Specialised AI Agents</strong></td>
-                        <td style="color: var(--purple); font-weight: 700;">18+</td>
-                        <td>Scout, Kraken, Oracle, Architect, Scribe, Critic, Profiler, and more</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Teams Adopted</strong></td>
-                        <td style="color: var(--success); font-weight: 700;">3</td>
-                        <td>Engineering, Architecture, and Marketing</td>
-                    </tr>
-                    <tr>
-                        <td><strong>AI Committee Members</strong></td>
-                        <td style="color: var(--teal); font-weight: 700;">15+</td>
-                        <td>Cross-functional stakeholders, bi-weekly cadence</td>
-                    </tr>
+                    <tr><td><strong>Active AI Projects</strong></td><td style="color: var(--teal-bright); font-weight: 700;">5</td><td>Continuous Claude, Spark, AI Arch, Marketing Brain, RFP Builder</td></tr>
+                    <tr><td><strong>Skills Deployed</strong></td><td style="color: var(--accent); font-weight: 700;">80+</td><td>RFP Builder, Branded Decks, M365, Meeting Intel, Security, TDD, and more</td></tr>
+                    <tr><td><strong>Enterprise Connectors</strong></td><td style="color: var(--purple); font-weight: 700;">5 (+2)</td><td>SharePoint, Teams, Outlook, OneDrive, Asana + Salesforce &amp; PowerBI</td></tr>
+                    <tr><td><strong>Commits (Dec&ndash;Feb)</strong></td><td style="color: var(--teal-bright); font-weight: 700;">200+</td><td>Majority in Continuous Claude &mdash; the most active codebase</td></tr>
+                    <tr><td><strong>Quality Hooks</strong></td><td style="color: var(--accent); font-weight: 700;">35+</td><td>Security, quality, compliance, workflow checks</td></tr>
+                    <tr><td><strong>Specialised Agents</strong></td><td style="color: var(--purple); font-weight: 700;">18+</td><td>Scout, Kraken, Oracle, Architect, Scribe, Critic, Profiler, and more</td></tr>
+                    <tr><td><strong>Teams Adopted</strong></td><td style="color: var(--success); font-weight: 700;">3</td><td>Engineering, Architecture, and Marketing</td></tr>
+                    <tr><td><strong>AI Committee</strong></td><td style="color: var(--teal-bright); font-weight: 700;">15+</td><td>Cross-functional stakeholders, bi-weekly cadence</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1091,7 +1352,9 @@
          SLIDE 12: ADOPTION & TRAINING
          ============================================= -->
     <section class="slide" data-slide="11">
-        <div class="glow-bg glow-purple" style="bottom: 10%; left: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(163,113,247,0.2),transparent 70%);bottom:10%;left:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label label-purple reveal">Adoption</p>
             <h2 class="reveal">Training &amp; Community</h2>
@@ -1100,44 +1363,28 @@
                 <div>
                     <div class="feature-item reveal">
                         <div class="icon-box icon-box-purple"><i data-lucide="users"></i></div>
-                        <div>
-                            <h4>AI Architectural Committee</h4>
-                            <p>Bi-weekly sessions with 15+ cross-functional stakeholders. Setting AI strategy, reviewing proposals, sharing learnings.</p>
-                        </div>
+                        <div><h4>AI Architectural Committee</h4><p>Bi-weekly sessions with 15+ cross-functional stakeholders. AI strategy, proposals, shared learnings.</p></div>
                     </div>
                     <div class="feature-item reveal">
                         <div class="icon-box icon-box-amber"><i data-lucide="book-open"></i></div>
-                        <div>
-                            <h4>Training Sessions</h4>
-                            <p>Structured workshops covering Claude basics, skill usage, prompt engineering, and enterprise integration patterns.</p>
-                        </div>
+                        <div><h4>Training Sessions</h4><p>Structured workshops: Claude basics, skill usage, prompt engineering, enterprise integration.</p></div>
                     </div>
                     <div class="feature-item reveal">
                         <div class="icon-box icon-box-success"><i data-lucide="target"></i></div>
-                        <div>
-                            <h4>Marketing Team &mdash; Proof Point</h4>
-                            <p>First department fully running on AI-powered project management (Asana Claude) and knowledge access (Marketing Brain). Model for org-wide rollout.</p>
-                        </div>
+                        <div><h4>Marketing Team &mdash; Proof Point</h4><p>First department on AI-powered project management (Asana) and knowledge access (Brain). Template for org rollout.</p></div>
                     </div>
                 </div>
                 <div class="reveal">
-                    <div class="card" style="margin-bottom: 1.25rem;">
+                    <div class="card" style="margin-bottom: 1rem;">
                         <h4 style="color: var(--purple);"><span class="inline-icon"><i data-lucide="settings"></i></span> Self-Service Vision</h4>
-                        <p style="font-size: 0.9375rem; margin: 0.5rem 0;">The Skill Creator enables non-technical staff to build AI capabilities independently. 80+ skills already deployed &mdash; the library grows with every team interaction.</p>
+                        <p style="font-size: 0.875rem; margin: 0.5rem 0;">Skill Creator enables non-technical staff to build AI capabilities. 80+ skills deployed &mdash; growing with every interaction.</p>
                         <div style="margin-top: 1rem;">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span>Self-service adoption</span>
-                                <span style="color: var(--purple);">Accelerating</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill progress-fill-purple" style="width: 55%;"></div>
-                            </div>
+                            <div class="flex justify-between text-sm mb-2"><span>Self-service adoption</span><span style="color: var(--purple);">Accelerating</span></div>
+                            <div class="progress-track"><div class="progress-fill progress-fill-purple" style="--fill-width: 55%;"></div></div>
                         </div>
                     </div>
                     <div class="highlight-box">
-                        <div class="quote" style="border-left-color: var(--teal);">
-                            "The marketing team's adoption of AI-powered project management proves the model works. Every department can follow this path."
-                        </div>
+                        <div class="quote">"The marketing team's adoption proves the model works. Every department can follow this path."</div>
                     </div>
                 </div>
             </div>
@@ -1148,7 +1395,9 @@
          SLIDE 13: ROADMAP
          ============================================= -->
     <section class="slide" data-slide="12">
-        <div class="glow-bg glow-teal" style="top: 10%; right: -20%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(63,185,162,0.2),transparent 70%);top:10%;right:-10%;"></div>
+        </div>
         <div class="slide-content">
             <p class="label reveal">What's Next</p>
             <h2 class="reveal">Q1 2026 Roadmap</h2>
@@ -1156,94 +1405,74 @@
             <div class="timeline reveal" style="margin-top: 2rem;">
                 <div class="timeline-item">
                     <h4><span class="inline-icon" style="color: var(--teal);"><i data-lucide="bar-chart-3"></i></span> Salesforce Connector</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">AI-powered CRM integration &mdash; opportunity tracking, pipeline analysis, and automated reporting through natural language.</p>
+                    <p style="margin: 0;">AI-powered CRM &mdash; opportunity tracking, pipeline analysis, automated reporting via natural language.</p>
                 </div>
                 <div class="timeline-item amber">
                     <h4><span class="inline-icon" style="color: var(--accent);"><i data-lucide="pie-chart"></i></span> PowerBI Connector</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Connect AI to business intelligence dashboards. Natural language queries across PowerBI datasets and automated insight generation.</p>
+                    <p style="margin: 0;">Natural language queries across PowerBI datasets. Automated insight generation from dashboards.</p>
                 </div>
                 <div class="timeline-item purple">
                     <h4><span class="inline-icon" style="color: var(--purple);"><i data-lucide="rocket"></i></span> Spark Platform Launch</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Department leads drive custom connectors for their specific workflows. Org-wide access to Continuous Claude capabilities through Spark.</p>
+                    <p style="margin: 0;">Department leads drive custom connectors. Org-wide access to Continuous Claude capabilities.</p>
                 </div>
                 <div class="timeline-item">
                     <h4><span class="inline-icon" style="color: var(--teal);"><i data-lucide="link"></i></span> Custom Connectors Per Department</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Each team builds connectors for their unique tools and data sources. Marketing proves the template, other departments follow.</p>
+                    <p style="margin: 0;">Each team builds connectors for unique tools. Marketing proves the template.</p>
                 </div>
                 <div class="timeline-item amber">
                     <h4><span class="inline-icon" style="color: var(--accent);"><i data-lucide="book-open"></i></span> Team Training Programme</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Structured onboarding for AI skill creation and connector development. Goal: every team lead can build basic AI capabilities.</p>
+                    <p style="margin: 0;">Structured onboarding for skill creation. Goal: every team lead can build basic AI capabilities.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 14: DECISIONS NEEDED + CLOSE
+         SLIDE 14: DECISIONS + CLOSE
          ============================================= -->
     <section class="slide" data-slide="13">
-        <div class="glow-bg glow-amber" style="bottom: 20%; left: -15%;"></div>
+        <div class="mesh-bg">
+            <div class="mesh-orb mesh-orb-1" style="opacity: 0.15;"></div>
+            <div class="mesh-orb mesh-orb-2" style="opacity: 0.1;"></div>
+        </div>
         <div class="slide-content">
             <p class="label label-danger reveal">Action Required</p>
             <h2 class="reveal">Decisions Needed</h2>
 
             <div class="card-grid card-grid-3 reveal" style="margin-top: 1.5rem;">
-                <div class="card" style="border-left: 3px solid var(--warning);">
+                <div class="card" style="border-top: 2px solid var(--warning);">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="icon-box icon-box-amber"><i data-lucide="key"></i></div>
-                        <div>
-                            <span class="badge badge-amber">Priority</span>
-                            <h4 style="margin: 0.25rem 0 0;">Claude Licensing</h4>
-                        </div>
+                        <div><span class="badge badge-amber">Priority</span><h4 style="margin: 0.25rem 0 0;">Claude Licensing</h4></div>
                     </div>
-                    <p style="font-size: 0.9375rem;">Current Teams plan limits concurrent users. <strong>Enterprise tier</strong> needed for broader rollout and Spark deployment.</p>
-                    <ul style="margin: 0.5rem 0 0;">
-                        <li>Unlocks SSO &amp; admin controls</li>
-                        <li>Higher rate limits for team workflows</li>
-                        <li>Required for org-wide access</li>
-                    </ul>
+                    <p>Enterprise tier needed for broader rollout and Spark deployment.</p>
+                    <ul style="margin: 0.5rem 0 0;"><li>SSO &amp; admin controls</li><li>Higher rate limits</li><li>Required for org-wide access</li></ul>
                 </div>
-
-                <div class="card" style="border-left: 3px solid var(--info);">
+                <div class="card" style="border-top: 2px solid var(--info);">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="icon-box icon-box-info"><i data-lucide="cloud"></i></div>
-                        <div>
-                            <span class="badge badge-purple">Strategic</span>
-                            <h4 style="margin: 0.25rem 0 0;">Azure Foundry Setup</h4>
-                        </div>
+                        <div><span class="badge badge-purple">Strategic</span><h4 style="margin: 0.25rem 0 0;">Azure Foundry</h4></div>
                     </div>
-                    <p style="font-size: 0.9375rem;">Azure AI Foundry environment needed for AI Architectural Guide production deployment.</p>
-                    <ul style="margin: 0.5rem 0 0;">
-                        <li>Enables Arch Guide final deploy</li>
-                        <li>Connects into Spark ecosystem</li>
-                        <li>Enterprise-grade hosting</li>
-                    </ul>
+                    <p>Azure AI Foundry for Arch Guide production deployment.</p>
+                    <ul style="margin: 0.5rem 0 0;"><li>Enables final deploy</li><li>Connects to Spark</li><li>Enterprise hosting</li></ul>
                 </div>
-
-                <div class="card" style="border-left: 3px solid var(--teal);">
+                <div class="card" style="border-top: 2px solid var(--teal);">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="icon-box"><i data-lucide="server"></i></div>
-                        <div>
-                            <span class="badge badge-teal">Investment</span>
-                            <h4 style="margin: 0.25rem 0 0;">Infrastructure</h4>
-                        </div>
+                        <div><span class="badge badge-teal">Investment</span><h4 style="margin: 0.25rem 0 0;">Infrastructure</h4></div>
                     </div>
-                    <p style="font-size: 0.9375rem;">Spark Platform hosting and connector infrastructure for department-level AI capabilities.</p>
-                    <ul style="margin: 0.5rem 0 0;">
-                        <li>Enables multi-team collaboration</li>
-                        <li>Salesforce &amp; PowerBI connectors</li>
-                        <li>Scales with department adoption</li>
-                    </ul>
+                    <p>Spark hosting and connector infrastructure for dept-level AI.</p>
+                    <ul style="margin: 0.5rem 0 0;"><li>Multi-team collaboration</li><li>SF &amp; PowerBI connectors</li><li>Scales with adoption</li></ul>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 3rem;" class="reveal">
+            <div style="text-align: center; margin-top: 3.5rem;" class="reveal">
                 <div class="accent-line accent-line-center"></div>
                 <p class="meta">
                     David Hayes &bull; AI Enablement Lead<br>
                     <span style="color: var(--teal);">david.hayes@fourth.com</span>
                 </p>
-                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+                <p style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);">
                     Confidential &mdash; Fourth &bull; February 2026
                 </p>
             </div>
@@ -1256,7 +1485,8 @@
     </div>
 
     <!-- ===========================================
-         PRESENTATION CONTROLLER
+         PRESENTATION CONTROLLER v2.0
+         (animated counters + enhanced nav)
          =========================================== -->
     <script>
         class SlidePresentation {
@@ -1266,6 +1496,7 @@
                 this.navDots = document.querySelector('.nav-dots');
                 this.currentSlide = 0;
                 this.totalSlides = this.slides.length;
+                this.countersAnimated = new Set();
                 this.init();
             }
 
@@ -1300,14 +1531,47 @@
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('visible');
-                            this.currentSlide = parseInt(entry.target.dataset.slide);
+                            const slideIdx = parseInt(entry.target.dataset.slide);
+                            this.currentSlide = slideIdx;
                             this.updateNavDots();
                             this.updateProgress();
+                            this.animateCounters(entry.target);
                         }
                     });
-                }, { threshold: 0.5 });
+                }, { threshold: 0.4 });
 
                 this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            animateCounters(slide) {
+                const slideId = slide.dataset.slide;
+                if (this.countersAnimated.has(slideId)) return;
+
+                const counters = slide.querySelectorAll('[data-count]');
+                if (counters.length === 0) return;
+
+                this.countersAnimated.add(slideId);
+
+                counters.forEach(el => {
+                    const target = parseInt(el.dataset.count);
+                    const suffix = el.dataset.suffix || '';
+                    const duration = 1200;
+                    const start = performance.now();
+
+                    const animate = (now) => {
+                        const elapsed = now - start;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const eased = 1 - Math.pow(1 - progress, 3);
+                        const current = Math.round(eased * target);
+                        el.textContent = current + suffix;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(animate);
+                        }
+                    };
+
+                    requestAnimationFrame(animate);
+                });
             }
 
             setupKeyboardNav() {
@@ -1340,21 +1604,16 @@
             }
 
             nextSlide() {
-                if (this.currentSlide < this.totalSlides - 1) {
-                    this.goToSlide(this.currentSlide + 1);
-                }
+                if (this.currentSlide < this.totalSlides - 1) this.goToSlide(this.currentSlide + 1);
             }
 
             prevSlide() {
-                if (this.currentSlide > 0) {
-                    this.goToSlide(this.currentSlide - 1);
-                }
+                if (this.currentSlide > 0) this.goToSlide(this.currentSlide - 1);
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             new SlidePresentation();
-            // Initialize Lucide icons
             lucide.createIcons();
         });
     </script>
