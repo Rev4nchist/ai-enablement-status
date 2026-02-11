@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Enablement Team — Status Update | February 2026</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        /* ===========================================
+           MIDNIGHT EXECUTIVE THEME
+           =========================================== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-card: rgba(30, 41, 59, 0.6);
+            --bg-hover: rgba(51, 65, 85, 0.5);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.15);
+            --teal: #00B69F;
+            --teal-glow: rgba(0, 182, 159, 0.15);
+            --purple: #a78bfa;
+            --purple-glow: rgba(167, 139, 250, 0.15);
+            --success: #22c55e;
+            --success-glow: rgba(34, 197, 94, 0.15);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.15);
+            --warning: #eab308;
+            --info: #3b82f6;
+            --border: rgba(148, 163, 184, 0.1);
+            --border-accent: rgba(0, 182, 159, 0.3);
+            --border-hover: rgba(148, 163, 184, 0.2);
+            --font-display: 'Libre Baskerville', Georgia, serif;
+            --font-body: 'Source Sans 3', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --slide-padding: clamp(2rem, 5vw, 6rem);
+            --content-max-width: 1100px;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-fast: 0.3s;
+            --duration-normal: 0.7s;
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            font-size: 18px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        [x-cloak] { display: none !important; }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--teal), var(--accent));
+            width: 0%;
+            z-index: 100;
+            transition: width 0.2s ease-out;
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-out-expo);
+            opacity: 0.3;
+        }
+
+        .nav-dot:hover { opacity: 0.7; transform: scale(1.3); }
+        .nav-dot.active { background: var(--teal); opacity: 1; box-shadow: 0 0 12px var(--teal-glow); }
+
+        /* Slides */
+        .slide {
+            min-height: 100vh;
+            padding: var(--slide-padding);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-content {
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .title-slide { text-align: center; }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+
+        .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .reveal:nth-child(5) { transition-delay: 0.5s; }
+        .reveal:nth-child(6) { transition-delay: 0.6s; }
+        .reveal:nth-child(7) { transition-delay: 0.7s; }
+
+        /* Typography */
+        .label {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 1rem;
+        }
+        .label-amber { color: var(--accent); }
+        .label-purple { color: var(--purple); }
+        .label-danger { color: var(--danger); }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        h4 {
+            font-family: var(--font-body);
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            max-width: 700px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+        }
+
+        .meta {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+
+        /* Decorative */
+        .accent-line { width: 80px; height: 2px; background: var(--teal); margin: 2rem 0; }
+        .accent-line-center { margin: 2rem auto; }
+
+        .glow-bg {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            opacity: 0.4;
+        }
+        .glow-teal { background: var(--teal-glow); }
+        .glow-amber { background: var(--accent-glow); }
+        .glow-purple { background: var(--purple-glow); }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+        /* Layout */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9375rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { font-weight: 600; color: var(--teal); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        td { color: var(--text-secondary); }
+        tr:last-child td { border-bottom: none; }
+
+        /* Lists */
+        ul { list-style: none; margin: 1rem 0; }
+        ul li { position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem; color: var(--text-secondary); }
+        ul li::before { content: ''; position: absolute; left: 0; top: 0.55rem; width: 6px; height: 6px; background: var(--teal); border-radius: 50%; }
+
+        /* Stats */
+        .stat { font-family: var(--font-display); font-size: 2.25rem; font-weight: 700; color: var(--teal); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-amber { color: var(--accent); }
+        .stat-purple { color: var(--purple); }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* Icon boxes */
+        .icon-box { width: 48px; height: 48px; background: var(--teal-glow); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .icon-box-amber { background: var(--accent-glow); }
+        .icon-box-purple { background: var(--purple-glow); }
+        .icon-box-success { background: var(--success-glow); }
+
+        /* Highlight box */
+        .highlight-box { background: linear-gradient(135deg, var(--teal-glow) 0%, transparent 50%); border: 1px solid rgba(0, 182, 159, 0.2); border-radius: 12px; padding: 1.5rem; }
+        .highlight-box-amber { background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%); border-color: rgba(245, 158, 11, 0.2); }
+        .highlight-box-purple { background: linear-gradient(135deg, var(--purple-glow) 0%, transparent 50%); border-color: rgba(167, 139, 250, 0.2); }
+
+        /* Feature items */
+        .feature-item { display: flex; gap: 1.25rem; margin-bottom: 1.5rem; }
+        .feature-item h4 { color: var(--text-primary); margin-bottom: 0.25rem; }
+        .feature-item p { font-size: 0.9375rem; margin: 0; }
+
+        /* Badges */
+        .badge { display: inline-flex; align-items: center; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 500; border-radius: 9999px; background: var(--bg-tertiary); color: var(--text-secondary); }
+        .badge-teal { background: var(--teal-glow); color: var(--teal); }
+        .badge-amber { background: var(--accent-glow); color: var(--accent); }
+        .badge-purple { background: var(--purple-glow); color: var(--purple); }
+        .badge-success { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+        .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 0.25rem; background: var(--bg-secondary); padding: 0.25rem; border-radius: var(--radius-md); width: fit-content; }
+        .tab-btn { padding: 0.5rem 1rem; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s ease; }
+        .tab-btn:hover { color: var(--text-primary); }
+        .tab-btn.active { background: var(--bg-card); color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .tab-content { margin-top: 1rem; }
+
+        /* Progress bars */
+        .progress-track { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s var(--ease-out-expo); }
+        .progress-fill-teal { background: var(--teal); }
+        .progress-fill-amber { background: var(--accent); }
+        .progress-fill-purple { background: var(--purple); }
+        .progress-fill-success { background: var(--success); }
+
+        /* Alerts */
+        .alert { padding: 1rem 1.25rem; border-radius: var(--radius-md); display: flex; gap: 0.75rem; align-items: flex-start; }
+        .alert-warning { background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.2); color: var(--warning); }
+        .alert-icon { flex-shrink: 0; font-size: 1.25rem; }
+        .alert-content { flex: 1; }
+        .alert-title { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.25rem; }
+        .alert-description { font-size: 0.8125rem; margin: 0; opacity: 0.9; }
+
+        /* Quote */
+        .quote { font-family: var(--font-display); font-style: italic; font-size: 1.125rem; color: var(--text-primary); border-left: 3px solid var(--teal); padding-left: 1.5rem; margin: 1.5rem 0; }
+
+        /* Keyboard hint */
+        .keyboard-hint { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; opacity: 0; animation: fadeIn 1s ease 2s forwards; }
+        .keyboard-hint kbd { background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-family: var(--font-mono); }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Utility */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-muted { color: var(--text-muted); }
+
+        /* Fourth brand color bar */
+        .brand-bar { width: 100%; height: 4px; background: linear-gradient(90deg, #00B69F 0%, #f59e0b 50%, #a78bfa 100%); margin-bottom: 2rem; }
+
+        /* Connector icons */
+        .connector-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .connector-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            text-align: center;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .connector-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-2px);
+        }
+
+        .connector-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .connector-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .connector-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
+        .timeline-item { position: relative; margin-bottom: 1.5rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--teal); border: 2px solid var(--bg-primary); }
+        .timeline-item.amber::before { background: var(--accent); }
+        .timeline-item.purple::before { background: var(--purple); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .two-col, .three-col, .card-grid-2, .card-grid-3, .card-grid-4, .connector-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-dots, .keyboard-hint { display: none; }
+            .slide { padding: 2rem 1.5rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            html { font-size: 16px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { transition: opacity 0.3s ease; transform: none; }
+            html { scroll-behavior: auto; }
+            .keyboard-hint { animation: none; opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Navigation Dots -->
+    <nav class="nav-dots" aria-label="Slide navigation"></nav>
+
+    <!-- =============================================
+         SLIDE 1: TITLE
+         ============================================= -->
+    <section class="slide title-slide" data-slide="0">
+        <div class="glow-bg glow-teal" style="top: -20%; left: 50%; transform: translateX(-50%);"></div>
+        <div class="slide-content">
+            <p class="label reveal">AI Enablement Team</p>
+            <h1 class="reveal">Status Update</h1>
+            <p class="subtitle reveal" style="margin: 0 auto;">Building AI infrastructure that scales — from individual productivity to enterprise transformation</p>
+            <div class="accent-line reveal accent-line-center"></div>
+            <p class="meta reveal">David Hayes &bull; February 2026<br>Prepared for Carly Hodges, VP Enterprise Transformation & Technology</p>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 2: EXECUTIVE SUMMARY
+         ============================================= -->
+    <section class="slide" data-slide="1">
+        <div class="glow-bg glow-amber" style="top: 10%; right: -20%;"></div>
+        <div class="slide-content">
+            <p class="label label-amber reveal">Executive Summary</p>
+            <h2 class="reveal">Four Projects. One Mission.</h2>
+            <p class="reveal">Positioning Fourth as an AI-first organisation through a comprehensive capability stack &mdash; from team-facing skills to enterprise-grade infrastructure.</p>
+
+            <div class="card-grid card-grid-4 reveal" style="margin-top: 2rem;">
+                <div class="card" style="text-align: center;">
+                    <div class="stat">4</div>
+                    <div class="stat-label">Active Projects</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="stat stat-amber">8+</div>
+                    <div class="stat-label">Skills Deployed</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="stat stat-purple">5</div>
+                    <div class="stat-label">Enterprise Connectors</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="stat">200+</div>
+                    <div class="stat-label">Commits Since Dec</div>
+                </div>
+            </div>
+
+            <div class="highlight-box reveal" style="margin-top: 2rem;">
+                <p style="margin: 0; color: var(--text-primary); font-size: 1.05rem;">
+                    <strong>Key Headline:</strong> The RFP Builder reduces proposal completion from ~40 hours to ~2 hours &mdash; a <strong style="color: var(--teal);">95% time reduction</strong>. This pattern of dramatic efficiency gains extends across the entire portfolio.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 3: PROJECT PORTFOLIO OVERVIEW
+         ============================================= -->
+    <section class="slide" data-slide="2">
+        <div class="glow-bg glow-teal" style="bottom: 10%; left: -15%;"></div>
+        <div class="slide-content">
+            <p class="label reveal">Portfolio</p>
+            <h2 class="reveal">Active Projects</h2>
+
+            <div class="card-grid card-grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card" style="border-left: 3px solid var(--teal);">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 style="margin: 0;">AI Architectural Guide</h3>
+                        <span class="badge badge-success">Production</span>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">agent-arch &bull; Azure &bull; 80+ commits</p>
+                    <p style="font-size: 0.9375rem; margin: 0;">Meeting intelligence, proposal management, budget tracking, and self-service agent creation for technology teams.</p>
+                </div>
+                <div class="card" style="border-left: 3px solid var(--accent);">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 style="margin: 0;">SPARK Platform</h3>
+                        <span class="badge badge-amber">In Progress</span>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">spark-platform &bull; Railway &bull; 24 commits</p>
+                    <p style="font-size: 0.9375rem; margin: 0;">Multi-workspace AI collaboration with real-time editing &mdash; Google Docs meets Claude for teams.</p>
+                </div>
+                <div class="card" style="border-left: 3px solid var(--purple);">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 style="margin: 0;">AI Developer Toolkit</h3>
+                        <span class="badge badge-success">Production</span>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">continuous-claude &bull; Local Infra &bull; 80+ commits</p>
+                    <p style="font-size: 0.9375rem; margin: 0;">The engine behind 10x delivery speed: hooks, agents, memory, orchestrators, and a reusable skills library.</p>
+                </div>
+                <div class="card" style="border-left: 3px solid var(--success);">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 style="margin: 0;">Skills for Teams</h3>
+                        <span class="badge badge-success">In Use</span>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Claude-App-Skills &bull; 6 packages</p>
+                    <p style="font-size: 0.9375rem; margin: 0;">RFP Builder, Branded Decks, M365 Integration, Skill Creator &mdash; packaged capabilities for any team member.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 4: SKILLS LIBRARY (Team-Facing)
+         ============================================= -->
+    <section class="slide" data-slide="3">
+        <div class="glow-bg glow-amber" style="top: 20%; right: -15%;"></div>
+        <div class="slide-content">
+            <p class="label label-amber reveal">Team Impact</p>
+            <h2 class="reveal">Skills Library for Teams</h2>
+            <p class="reveal">Packaged AI capabilities that any team member can use &mdash; no coding required.</p>
+
+            <div class="card-grid card-grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box">&#x1f4cb;</div>
+                        <h4 style="margin: 0;">RFP Builder</h4>
+                    </div>
+                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">Reduces proposal completion from <strong style="color: var(--teal);">~40 hrs to ~2 hrs</strong>. Pulls from historical proposals, ensures brand compliance.</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box icon-box-amber">&#x1f3a8;</div>
+                        <h4 style="margin: 0;">Branded Decks</h4>
+                    </div>
+                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">Brand-compliant presentations generated from text briefs. Fourth styling, professional layouts.</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box icon-box-purple">&#x1f4e7;</div>
+                        <h4 style="margin: 0;">M365 Integration v3.0</h4>
+                    </div>
+                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">AI connected to SharePoint, Teams, Outlook, OneDrive, and Calendar. Seamless enterprise workflows.</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box icon-box-success">&#x1f9e0;</div>
+                        <h4 style="margin: 0;">Meeting Intelligence</h4>
+                    </div>
+                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">AI note-taking, action item extraction, decision tracking, and follow-up automation.</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box">&#x2699;&#xfe0f;</div>
+                        <h4 style="margin: 0;">Skill Creator</h4>
+                    </div>
+                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">Enables non-technical staff to <strong>build their own AI capabilities</strong>. Self-service skill factory.</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box icon-box-amber">&#x1f4c5;</div>
+                        <h4 style="margin: 0;">Date Logic & Utilities</h4>
+                    </div>
+                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">Foundational capabilities used across other skills &mdash; date math, formatting, scheduling helpers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 5: AI ARCHITECTURAL GUIDE DEEP-DIVE
+         ============================================= -->
+    <section class="slide" data-slide="4">
+        <div class="glow-bg glow-teal" style="top: 10%; left: -15%;"></div>
+        <div class="slide-content" x-data="{ tab: 'meetings' }">
+            <p class="label reveal">Deep Dive</p>
+            <h2 class="reveal">AI Architectural Guide</h2>
+            <p class="reveal">Full-stack platform for AI-assisted technology decision-making. Deployed on Azure, serving 15+ stakeholders.</p>
+
+            <div class="tabs reveal" style="margin-top: 1rem;">
+                <button class="tab-btn" :class="{ active: tab === 'meetings' }" @click="tab = 'meetings'">Meetings</button>
+                <button class="tab-btn" :class="{ active: tab === 'proposals' }" @click="tab = 'proposals'">Proposals</button>
+                <button class="tab-btn" :class="{ active: tab === 'agents' }" @click="tab = 'agents'">Agent Factory</button>
+                <button class="tab-btn" :class="{ active: tab === 'budgets' }" @click="tab = 'budgets'">Budgets</button>
+            </div>
+
+            <div class="tab-content reveal" style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+                <div x-show="tab === 'meetings'">
+                    <h4>Meeting Intelligence</h4>
+                    <ul>
+                        <li>Automatically extracts action items from meeting transcripts</li>
+                        <li>Tracks decisions across sessions with full context</li>
+                        <li>HMLR memory &mdash; AI remembers past conversations, no more "starting from scratch"</li>
+                        <li>Agenda generation and follow-up reminders</li>
+                    </ul>
+                </div>
+                <div x-show="tab === 'proposals'" x-cloak>
+                    <h4>Proposal & RFP Management</h4>
+                    <ul>
+                        <li>AI-assisted drafting with brand compliance checks</li>
+                        <li>Historical proposal context for consistency</li>
+                        <li>Collaborative review with inline AI suggestions</li>
+                        <li>Export to Word, PDF, or presentation formats</li>
+                    </ul>
+                </div>
+                <div x-show="tab === 'agents'" x-cloak>
+                    <h4>Agent Factory</h4>
+                    <ul>
+                        <li>Self-service hub for creating custom AI agents</li>
+                        <li>No coding required &mdash; guided configuration workflow</li>
+                        <li>Pre-built templates for common use cases</li>
+                        <li>Deployed agents accessible to entire team</li>
+                    </ul>
+                </div>
+                <div x-show="tab === 'budgets'" x-cloak>
+                    <h4>Budget & Cost Tracking</h4>
+                    <ul>
+                        <li>Azure cost dashboards with real-time data</li>
+                        <li>Forecasting and optimisation recommendations</li>
+                        <li>Department-level spending breakdowns</li>
+                        <li>Automated alerts for budget threshold breaches</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex gap-4 reveal" style="margin-top: 1.5rem;">
+                <div class="highlight-box" style="flex: 1;">
+                    <div class="stat" style="font-size: 1.5rem;">80+</div>
+                    <div class="stat-label">Commits</div>
+                </div>
+                <div class="highlight-box-amber" style="flex: 1; background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 1.5rem;">
+                    <div class="stat stat-amber" style="font-size: 1.5rem;">20+</div>
+                    <div class="stat-label">Feature Branches</div>
+                </div>
+                <div class="highlight-box-purple" style="flex: 1; background: linear-gradient(135deg, var(--purple-glow) 0%, transparent 50%); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 12px; padding: 1.5rem;">
+                    <div class="stat stat-purple" style="font-size: 1.5rem;">15+</div>
+                    <div class="stat-label">Stakeholders</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 6: SPARK PLATFORM DEEP-DIVE
+         ============================================= -->
+    <section class="slide" data-slide="5">
+        <div class="glow-bg glow-amber" style="bottom: 20%; right: -15%;"></div>
+        <div class="slide-content">
+            <p class="label label-amber reveal">Deep Dive</p>
+            <h2 class="reveal">SPARK Platform</h2>
+            <p class="reveal">Multi-workspace AI collaboration &mdash; Google Docs meets Claude for enterprise teams.</p>
+
+            <div class="two-col" style="margin-top: 2rem;">
+                <div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-amber">&#x1f465;</div>
+                        <div>
+                            <h4>Multi-Workspace</h4>
+                            <p>Isolated workspaces per team &mdash; marketing, engineering, finance can each have their own AI environment with shared knowledge.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box">&#x270f;&#xfe0f;</div>
+                        <div>
+                            <h4>Real-Time Collaboration</h4>
+                            <p>Multiple users edit simultaneously with AI assistance &mdash; live cursors, conflict resolution, version history.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-purple">&#x1f916;</div>
+                        <div>
+                            <h4>Claude Agent SDK</h4>
+                            <p>Custom AI workflows powered by Anthropic's latest agent framework. Build specialised agents for any team need.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="highlight-box" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: var(--teal); margin-bottom: 0.5rem;">Platform Features</h4>
+                        <ul style="margin: 0;">
+                            <li>Session persistence &amp; cost tracking</li>
+                            <li>Full audit trail for compliance</li>
+                            <li>Stakeholder-facing landing page</li>
+                            <li>Railway deployment pipeline</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 1.25rem;">
+                        <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Status</span>
+                        <p style="margin: 0.5rem 0 0; font-size: 0.9375rem;">Core collaboration engine complete. Multi-workspace and SDK integration in active development.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 7: ENTERPRISE INTEGRATIONS
+         ============================================= -->
+    <section class="slide" data-slide="6">
+        <div class="glow-bg glow-purple" style="top: 10%; left: -15%;"></div>
+        <div class="slide-content">
+            <p class="label label-purple reveal">Enterprise</p>
+            <h2 class="reveal">Integration Layer</h2>
+            <p class="reveal">Five production connectors bridging AI capabilities with existing enterprise systems.</p>
+
+            <div class="connector-grid reveal">
+                <div class="connector-card">
+                    <div class="connector-icon">&#x1f4c1;</div>
+                    <div class="connector-name">SharePoint</div>
+                    <div class="connector-desc">Document search, upload &amp; site management</div>
+                </div>
+                <div class="connector-card">
+                    <div class="connector-icon">&#x1f4ac;</div>
+                    <div class="connector-name">Teams</div>
+                    <div class="connector-desc">Channel messaging &amp; team coordination</div>
+                </div>
+                <div class="connector-card">
+                    <div class="connector-icon">&#x1f4e8;</div>
+                    <div class="connector-name">Outlook</div>
+                    <div class="connector-desc">Email drafting &amp; calendar management</div>
+                </div>
+                <div class="connector-card">
+                    <div class="connector-icon">&#x2601;&#xfe0f;</div>
+                    <div class="connector-name">OneDrive</div>
+                    <div class="connector-desc">File management &amp; collaborative access</div>
+                </div>
+                <div class="connector-card">
+                    <div class="connector-icon">&#x2705;</div>
+                    <div class="connector-name">Asana</div>
+                    <div class="connector-desc">Task management &amp; specialist bot</div>
+                </div>
+            </div>
+
+            <div class="highlight-box reveal" style="margin-top: 2rem;">
+                <div class="flex items-center gap-3">
+                    <div class="icon-box">&#x1f517;</div>
+                    <div>
+                        <h4 style="margin: 0;">M365 Integration v3.0</h4>
+                        <p style="margin: 0.25rem 0 0; font-size: 0.9375rem;">All Microsoft connectors unified under a single skill package. Team members invoke AI capabilities that seamlessly read from and write to their existing M365 tools.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 8: UNDER THE HOOD (AI Developer Toolkit)
+         ============================================= -->
+    <section class="slide" data-slide="7">
+        <div class="glow-bg glow-teal" style="bottom: 10%; right: -15%;"></div>
+        <div class="slide-content">
+            <p class="label reveal">Under the Hood</p>
+            <h2 class="reveal">Why We Ship 10x Faster</h2>
+            <p class="reveal">The AI Developer Toolkit is the engine powering rapid capability delivery. It's why a small team produces enterprise-grade output.</p>
+
+            <div class="card-grid card-grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="card" style="text-align: center;">
+                    <div class="stat">35+</div>
+                    <div class="stat-label">Quality Hooks</div>
+                    <p style="margin: 0.75rem 0 0; font-size: 0.85rem;">Automated guardrails for security, consistency, and best practices</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="stat stat-amber">18+</div>
+                    <div class="stat-label">Specialised Agents</div>
+                    <p style="margin: 0.75rem 0 0; font-size: 0.85rem;">Research, implementation, debugging, code review &mdash; each domain-optimised</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="stat stat-purple">60+</div>
+                    <div class="stat-label">Reusable Skills</div>
+                    <p style="margin: 0.75rem 0 0; font-size: 0.85rem;">Packaged capabilities any team member can invoke immediately</p>
+                </div>
+            </div>
+
+            <div class="two-col reveal" style="margin-top: 1.5rem;">
+                <div>
+                    <h4 style="color: var(--teal);">Key Capabilities</h4>
+                    <ul>
+                        <li><strong>Semantic Memory</strong> &mdash; AI remembers decisions and patterns across sessions</li>
+                        <li><strong>Autonomous Orchestrators</strong> &mdash; Multi-agent projects with human checkpoints</li>
+                        <li><strong>Cross-Session Coordination</strong> &mdash; Multiple AI workstreams without conflicts</li>
+                        <li><strong>Real-Time Dashboard</strong> &mdash; Visibility into all AI operations</li>
+                    </ul>
+                </div>
+                <div class="highlight-box">
+                    <div class="quote" style="border-left-color: var(--teal);">
+                        "New AI capabilities that would typically take weeks to build and validate are delivered in days &mdash; with automated quality checks at every step."
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 9: STRATEGIC IMPACT
+         ============================================= -->
+    <section class="slide" data-slide="8">
+        <div class="glow-bg glow-amber" style="top: 20%; left: -15%;"></div>
+        <div class="slide-content">
+            <p class="label label-amber reveal">Strategic Value</p>
+            <h2 class="reveal">Impact Across the Organisation</h2>
+
+            <div class="card-grid card-grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card" style="border-top: 3px solid var(--teal);">
+                    <h3>&#x26a1; Efficiency</h3>
+                    <p style="font-size: 0.9375rem;">The RFP Builder alone saves ~38 hours per proposal. Across the portfolio, AI-assisted workflows reduce repetitive knowledge work by <strong style="color: var(--teal);">60&ndash;80%</strong>.</p>
+                    <div style="margin-top: 1rem;">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>RFP Builder</span>
+                            <span style="color: var(--teal);">95% reduction</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill progress-fill-teal" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="border-top: 3px solid var(--accent);">
+                    <h3>&#x1f6e1;&#xfe0f; Risk Reduction</h3>
+                    <p style="font-size: 0.9375rem;">Automated quality hooks catch security vulnerabilities, brand compliance issues, and consistency problems <strong style="color: var(--accent);">before they reach production</strong>.</p>
+                    <div style="margin-top: 1rem;">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Automated Quality Coverage</span>
+                            <span style="color: var(--accent);">35+ hooks</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill progress-fill-amber" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="border-top: 3px solid var(--purple);">
+                    <h3>&#x1f680; Competitive Advantage</h3>
+                    <p style="font-size: 0.9375rem;">Fourth now has internal AI development infrastructure comparable to dedicated platform teams at tech companies. New capabilities ship in <strong style="color: var(--purple);">days, not months</strong>.</p>
+                </div>
+                <div class="card" style="border-top: 3px solid var(--success);">
+                    <h3>&#x1f4c8; Scalability</h3>
+                    <p style="font-size: 0.9375rem;">The Skills Library and Agent Factory enable non-technical team members to create AI capabilities independently &mdash; <strong style="color: var(--success);">impact scales beyond headcount</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 10: BY THE NUMBERS
+         ============================================= -->
+    <section class="slide" data-slide="9">
+        <div class="glow-bg glow-teal" style="top: -10%; right: -20%;"></div>
+        <div class="slide-content">
+            <p class="label reveal">Metrics</p>
+            <h2 class="reveal">By the Numbers</h2>
+
+            <table class="reveal" style="margin-top: 2rem;">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Context</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Active AI Projects</strong></td>
+                        <td style="color: var(--teal); font-weight: 700;">4</td>
+                        <td>All progressing on schedule</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Skills Deployed</strong></td>
+                        <td style="color: var(--accent); font-weight: 700;">8+</td>
+                        <td>RFP Builder, Branded Decks, M365, Meeting Intel, and more</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Enterprise Connectors</strong></td>
+                        <td style="color: var(--purple); font-weight: 700;">5</td>
+                        <td>SharePoint, Teams, Outlook, OneDrive, Asana</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Commits (Dec&ndash;Feb)</strong></td>
+                        <td style="color: var(--teal); font-weight: 700;">200+</td>
+                        <td>Across all 4 repositories</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quality Hooks</strong></td>
+                        <td style="color: var(--accent); font-weight: 700;">35+</td>
+                        <td>Automated security, quality, and compliance checks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Specialised AI Agents</strong></td>
+                        <td style="color: var(--purple); font-weight: 700;">18+</td>
+                        <td>Domain-optimised for research, code, review, debug</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RFP Time Reduction</strong></td>
+                        <td style="color: var(--success); font-weight: 700;">~95%</td>
+                        <td>40 hours to ~2 hours per proposal</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI Committee Members</strong></td>
+                        <td style="color: var(--teal); font-weight: 700;">15+</td>
+                        <td>Cross-functional stakeholders, bi-weekly cadence</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 11: ADOPTION & TRAINING
+         ============================================= -->
+    <section class="slide" data-slide="10">
+        <div class="glow-bg glow-purple" style="bottom: 10%; left: -15%;"></div>
+        <div class="slide-content">
+            <p class="label label-purple reveal">Adoption</p>
+            <h2 class="reveal">Training & Community</h2>
+
+            <div class="two-col" style="margin-top: 2rem;">
+                <div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-purple">&#x1f3eb;</div>
+                        <div>
+                            <h4>AI Architectural Committee</h4>
+                            <p>Bi-weekly sessions with 15+ cross-functional stakeholders. Setting AI strategy, reviewing proposals, sharing learnings.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-amber">&#x1f4da;</div>
+                        <div>
+                            <h4>Training Sessions</h4>
+                            <p>Structured workshops covering Claude basics, skill usage, prompt engineering, and enterprise integration patterns.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-success">&#x1f91d;</div>
+                        <div>
+                            <h4>Marketing Team Asana Bot</h4>
+                            <p>Custom AI specialist for marketing team's Asana workflow &mdash; task creation, status updates, project tracking.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="card" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: var(--purple);">Self-Service Vision</h4>
+                        <p style="font-size: 0.9375rem; margin: 0.5rem 0;">The Skill Creator enables non-technical staff to build AI capabilities independently. This is the force multiplier &mdash; the team's impact grows without adding headcount.</p>
+                        <div style="margin-top: 1rem;">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Self-service adoption</span>
+                                <span style="color: var(--purple);">Growing</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill progress-fill-purple" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 12: ROADMAP / NEXT STEPS
+         ============================================= -->
+    <section class="slide" data-slide="11">
+        <div class="glow-bg glow-teal" style="top: 10%; right: -20%;"></div>
+        <div class="slide-content">
+            <p class="label reveal">What's Next</p>
+            <h2 class="reveal">Q1 2026 Roadmap</h2>
+
+            <div class="timeline reveal" style="margin-top: 2rem;">
+                <div class="timeline-item">
+                    <h4>SPARK Platform Launch</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Complete multi-workspace collaboration features for broader team adoption. Target: end of Q1.</p>
+                </div>
+                <div class="timeline-item amber">
+                    <h4>Skills Library Expansion</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Package 5+ additional skills from proven workflows. Focus on high-frequency team requests.</p>
+                </div>
+                <div class="timeline-item purple">
+                    <h4>Enterprise Integration Deepening</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Power Automate and Dynamics 365 connectors. Extend M365 integration to workflow automation.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Team Training Programme</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Structured onboarding for AI skill creation. Goal: every team lead can build basic skills.</p>
+                </div>
+                <div class="timeline-item amber">
+                    <h4>AI Committee Expansion</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Continue bi-weekly cadence. Add representation from operations and finance teams.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 13: DECISIONS NEEDED
+         ============================================= -->
+    <section class="slide" data-slide="12">
+        <div class="glow-bg glow-amber" style="bottom: 20%; left: -15%;"></div>
+        <div class="slide-content">
+            <p class="label label-danger reveal">Action Required</p>
+            <h2 class="reveal">Decisions Needed</h2>
+
+            <div class="card-grid reveal" style="margin-top: 1.5rem;">
+                <div class="card" style="border-left: 3px solid var(--warning);">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="badge badge-amber">Priority</span>
+                        <h4 style="margin: 0;">Claude Licensing</h4>
+                    </div>
+                    <p style="font-size: 0.9375rem;">Current Teams plan limits concurrent users. <strong>Enterprise tier</strong> ($60/user/month) needed for broader rollout.</p>
+                    <ul style="margin: 0.5rem 0 0;">
+                        <li>Unlocks SSO &amp; admin controls</li>
+                        <li>Higher rate limits for team workflows</li>
+                        <li>Required for SPARK multi-user deployment</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-left: 3px solid var(--info);">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="badge badge-purple">Strategic</span>
+                        <h4 style="margin: 0;">Microsoft AI Platform Direction</h4>
+                    </div>
+                    <p style="font-size: 0.9375rem;">Copilot Studio vs. custom Claude integration for M365 workflows.</p>
+                    <ul style="margin: 0.5rem 0 0;">
+                        <li>Recommend <strong>hybrid approach</strong></li>
+                        <li>Claude for complex reasoning &amp; generation</li>
+                        <li>Copilot for native M365 automation</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-left: 3px solid var(--teal);">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="badge badge-teal">Low Cost</span>
+                        <h4 style="margin: 0;">SPARK Infrastructure</h4>
+                    </div>
+                    <p style="font-size: 0.9375rem;">Railway hosting for SPARK Platform production deployment.</p>
+                    <ul style="margin: 0.5rem 0 0;">
+                        <li>$20&ndash;$50/month estimated cost</li>
+                        <li>Enables multi-team collaboration</li>
+                        <li>Alternative: Azure deployment (higher cost, more control)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 14: CLOSE
+         ============================================= -->
+    <section class="slide title-slide" data-slide="13">
+        <div class="glow-bg glow-teal" style="top: -20%; left: 50%; transform: translateX(-50%);"></div>
+        <div class="glow-bg glow-amber" style="bottom: -20%; left: 30%;"></div>
+        <div class="slide-content">
+            <p class="label reveal">Thank You</p>
+            <h1 class="reveal" style="font-size: clamp(2rem, 4vw, 3rem);">Building the AI-First Future</h1>
+            <p class="subtitle reveal" style="margin: 0 auto;">From individual productivity tools to enterprise-grade AI infrastructure &mdash; Fourth is positioned to lead.</p>
+            <div class="accent-line reveal accent-line-center"></div>
+            <p class="meta reveal">
+                David Hayes &bull; AI Enablement Lead<br>
+                <span style="color: var(--teal);">david.hayes@fourth.com</span>
+            </p>
+            <p class="reveal" style="margin-top: 2rem; font-size: 0.8rem; color: var(--text-muted);">
+                Confidential &mdash; Fourth &bull; February 2026
+            </p>
+        </div>
+    </section>
+
+    <!-- Keyboard Hint -->
+    <div class="keyboard-hint">
+        Press <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>Space</kbd> to navigate
+    </div>
+
+    <!-- ===========================================
+         PRESENTATION CONTROLLER
+         =========================================== -->
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.progressBar = document.querySelector('.progress-bar');
+                this.navDots = document.querySelector('.nav-dots');
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                this.init();
+            }
+
+            init() {
+                this.createNavDots();
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupScrollListener();
+                this.updateProgress();
+            }
+
+            createNavDots() {
+                this.slides.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot';
+                    dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                    this.navDots.appendChild(dot);
+                });
+                this.updateNavDots();
+            }
+
+            updateNavDots() {
+                const dots = this.navDots.querySelectorAll('.nav-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+
+            setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            this.currentSlide = parseInt(entry.target.dataset.slide);
+                            this.updateNavDots();
+                            this.updateProgress();
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        this.nextSlide();
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        this.prevSlide();
+                    }
+                });
+            }
+
+            setupScrollListener() {
+                window.addEventListener('scroll', () => this.updateProgress(), { passive: true });
+            }
+
+            updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                this.progressBar.style.width = `${progress}%`;
+            }
+
+            goToSlide(index) {
+                if (index >= 0 && index < this.totalSlides) {
+                    this.slides[index].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides - 1) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => new SlidePresentation());
+    </script>
+</body>
+</html>
