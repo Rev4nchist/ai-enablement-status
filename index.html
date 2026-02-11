@@ -14,6 +14,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         /* ===========================================
            MIDNIGHT EXECUTIVE THEME
@@ -248,6 +251,12 @@
         .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
         .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
         .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .card-grid-5 { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+
+        .card-highlight {
+            border-color: var(--teal);
+            box-shadow: 0 0 20px var(--teal-glow);
+        }
 
         /* Layout */
         .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
@@ -272,15 +281,27 @@
         .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
 
         /* Icon boxes */
-        .icon-box { width: 48px; height: 48px; background: var(--teal-glow); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
-        .icon-box-amber { background: var(--accent-glow); }
-        .icon-box-purple { background: var(--purple-glow); }
-        .icon-box-success { background: var(--success-glow); }
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: var(--teal-glow);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--teal);
+        }
+        .icon-box i { width: 24px; height: 24px; }
+        .icon-box-amber { background: var(--accent-glow); color: var(--accent); }
+        .icon-box-purple { background: var(--purple-glow); color: var(--purple); }
+        .icon-box-success { background: var(--success-glow); color: var(--success); }
+        .icon-box-info { background: rgba(59, 130, 246, 0.15); color: var(--info); }
 
         /* Highlight box */
         .highlight-box { background: linear-gradient(135deg, var(--teal-glow) 0%, transparent 50%); border: 1px solid rgba(0, 182, 159, 0.2); border-radius: 12px; padding: 1.5rem; }
-        .highlight-box-amber { background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%); border-color: rgba(245, 158, 11, 0.2); }
-        .highlight-box-purple { background: linear-gradient(135deg, var(--purple-glow) 0%, transparent 50%); border-color: rgba(167, 139, 250, 0.2); }
+        .highlight-box-amber { background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 1.5rem; }
+        .highlight-box-purple { background: linear-gradient(135deg, var(--purple-glow) 0%, transparent 50%); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 12px; padding: 1.5rem; }
 
         /* Feature items */
         .feature-item { display: flex; gap: 1.25rem; margin-bottom: 1.5rem; }
@@ -296,7 +317,7 @@
         .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
 
         /* Tabs */
-        .tabs { display: flex; gap: 0.25rem; background: var(--bg-secondary); padding: 0.25rem; border-radius: var(--radius-md); width: fit-content; }
+        .tabs { display: flex; gap: 0.25rem; background: var(--bg-secondary); padding: 0.25rem; border-radius: var(--radius-md); width: fit-content; flex-wrap: wrap; }
         .tab-btn { padding: 0.5rem 1rem; border: none; background: transparent; color: var(--text-muted); font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s ease; }
         .tab-btn:hover { color: var(--text-primary); }
         .tab-btn.active { background: var(--bg-card); color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
@@ -326,27 +347,10 @@
         .keyboard-hint kbd { background: var(--bg-secondary); padding: 0.25rem 0.5rem; border-radius: 4px; font-family: var(--font-mono); }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* Utility */
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-2 { gap: 0.5rem; }
-        .gap-3 { gap: 0.75rem; }
-        .gap-4 { gap: 1rem; }
-        .mt-2 { margin-top: 0.5rem; }
-        .mt-4 { margin-top: 1rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .text-sm { font-size: 0.875rem; }
-        .text-muted { color: var(--text-muted); }
-
-        /* Fourth brand color bar */
-        .brand-bar { width: 100%; height: 4px; background: linear-gradient(90deg, #00B69F 0%, #f59e0b 50%, #a78bfa 100%); margin-bottom: 2rem; }
-
         /* Connector icons */
         .connector-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
             margin-top: 1.5rem;
         }
@@ -366,9 +370,12 @@
         }
 
         .connector-icon {
-            font-size: 2rem;
             margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+            color: var(--teal);
         }
+        .connector-icon i { width: 32px; height: 32px; }
 
         .connector-name {
             font-size: 0.875rem;
@@ -382,6 +389,11 @@
             margin-top: 0.25rem;
         }
 
+        .connector-card.coming-soon {
+            border-style: dashed;
+            opacity: 0.7;
+        }
+
         /* Timeline */
         .timeline { position: relative; padding-left: 2rem; }
         .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
@@ -390,9 +402,30 @@
         .timeline-item.amber::before { background: var(--accent); }
         .timeline-item.purple::before { background: var(--purple); }
 
+        /* Utility */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-muted { color: var(--text-muted); }
+
+        /* Fourth brand color bar */
+        .brand-bar { width: 100%; height: 4px; background: linear-gradient(90deg, #00B69F 0%, #f59e0b 50%, #a78bfa 100%); margin-bottom: 2rem; }
+
+        /* Inline icon helper */
+        .inline-icon { display: inline-flex; vertical-align: middle; margin-right: 0.35rem; }
+        .inline-icon i { width: 20px; height: 20px; }
+
         /* Responsive */
         @media (max-width: 900px) {
-            .two-col, .three-col, .card-grid-2, .card-grid-3, .card-grid-4, .connector-grid { grid-template-columns: 1fr; }
+            .two-col, .three-col, .card-grid-2, .card-grid-3, .card-grid-4, .card-grid-5, .connector-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -424,9 +457,9 @@
         <div class="slide-content">
             <p class="label reveal">AI Enablement Team</p>
             <h1 class="reveal">Status Update</h1>
-            <p class="subtitle reveal" style="margin: 0 auto;">Building AI infrastructure that scales — from individual productivity to enterprise transformation</p>
+            <p class="subtitle reveal" style="margin: 0 auto;">Building AI infrastructure that scales &mdash; from individual productivity to enterprise transformation</p>
             <div class="accent-line reveal accent-line-center"></div>
-            <p class="meta reveal">David Hayes &bull; February 2026<br>Prepared for Carly Hodges, VP Enterprise Transformation & Technology</p>
+            <p class="meta reveal">David Hayes &bull; February 2026<br>Prepared for Carly Hodges, VP Enterprise Transformation &amp; Technology</p>
         </div>
     </section>
 
@@ -437,38 +470,43 @@
         <div class="glow-bg glow-amber" style="top: 10%; right: -20%;"></div>
         <div class="slide-content">
             <p class="label label-amber reveal">Executive Summary</p>
-            <h2 class="reveal">Four Projects. One Mission.</h2>
-            <p class="reveal">Positioning Fourth as an AI-first organisation through a comprehensive capability stack &mdash; from team-facing skills to enterprise-grade infrastructure.</p>
+            <h2 class="reveal">Five Projects. One AI-First Vision.</h2>
+            <p class="reveal">Continuous Claude &mdash; our core AI development infrastructure &mdash; is now in production with 200+ commits, adopted by Engineering and Architecture teams, and deploying into the Spark Platform. The marketing team is running live on Fourth Marketing Brain and the Asana Claude Project.</p>
 
-            <div class="card-grid card-grid-4 reveal" style="margin-top: 2rem;">
+            <div class="card-grid card-grid-5 reveal" style="margin-top: 2rem;">
                 <div class="card" style="text-align: center;">
-                    <div class="stat">4</div>
+                    <div class="stat">5</div>
                     <div class="stat-label">Active Projects</div>
                 </div>
                 <div class="card" style="text-align: center;">
-                    <div class="stat stat-amber">8+</div>
+                    <div class="stat stat-amber">80+</div>
                     <div class="stat-label">Skills Deployed</div>
                 </div>
                 <div class="card" style="text-align: center;">
-                    <div class="stat stat-purple">5</div>
-                    <div class="stat-label">Enterprise Connectors</div>
+                    <div class="stat stat-purple">200+</div>
+                    <div class="stat-label">Commits Since Dec</div>
                 </div>
                 <div class="card" style="text-align: center;">
-                    <div class="stat">200+</div>
-                    <div class="stat-label">Commits Since Dec</div>
+                    <div class="stat">18+</div>
+                    <div class="stat-label">Specialised Agents</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="stat stat-amber">35+</div>
+                    <div class="stat-label">Quality Hooks</div>
                 </div>
             </div>
 
             <div class="highlight-box reveal" style="margin-top: 2rem;">
                 <p style="margin: 0; color: var(--text-primary); font-size: 1.05rem;">
-                    <strong>Key Headline:</strong> The RFP Builder reduces proposal completion from ~40 hours to ~2 hours &mdash; a <strong style="color: var(--teal);">95% time reduction</strong>. This pattern of dramatic efficiency gains extends across the entire portfolio.
+                    <span class="inline-icon" style="color: var(--teal);"><i data-lucide="rocket"></i></span>
+                    <strong>Key Headline:</strong> Continuous Claude is Fourth's core AI infrastructure &mdash; actively improving, adopted org-wide, and now <strong style="color: var(--teal);">deploying into the Spark Platform</strong> as the cross-departmental AI hub.
                 </p>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 3: PROJECT PORTFOLIO OVERVIEW
+         SLIDE 3: ACTIVE PROJECTS OVERVIEW
          ============================================= -->
     <section class="slide" data-slide="2">
         <div class="glow-bg glow-teal" style="bottom: 10%; left: -15%;"></div>
@@ -476,109 +514,351 @@
             <p class="label reveal">Portfolio</p>
             <h2 class="reveal">Active Projects</h2>
 
-            <div class="card-grid card-grid-2 reveal" style="margin-top: 1.5rem;">
-                <div class="card" style="border-left: 3px solid var(--teal);">
+            <div class="card-grid reveal" style="margin-top: 1.5rem;">
+                <!-- Continuous Claude - HIGHLIGHT -->
+                <div class="card card-highlight" style="border-left: 3px solid var(--teal); grid-column: 1 / -1;">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 style="margin: 0;">AI Architectural Guide</h3>
-                        <span class="badge badge-success">Production</span>
+                        <div class="flex items-center gap-3">
+                            <div class="icon-box"><i data-lucide="code"></i></div>
+                            <h3 style="margin: 0;">Continuous Claude</h3>
+                        </div>
+                        <span class="badge badge-success">Production &bull; Adopted</span>
                     </div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">agent-arch &bull; Azure &bull; 80+ commits</p>
-                    <p style="font-size: 0.9375rem; margin: 0;">Meeting intelligence, proposal management, budget tracking, and self-service agent creation for technology teams.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">continuous-claude &bull; 200+ commits &bull; 35+ hooks &bull; 18+ agents &bull; 80+ skills</p>
+                    <p style="font-size: 0.9375rem; margin: 0;">The AI development infrastructure powering everything. Semantic memory, autonomous orchestrators, cross-session coordination. Adopted by Engineering and Architecture teams. Now deploying into Spark.</p>
                 </div>
+
                 <div class="card" style="border-left: 3px solid var(--accent);">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 style="margin: 0;">SPARK Platform</h3>
+                        <div class="flex items-center gap-3">
+                            <div class="icon-box icon-box-amber"><i data-lucide="layout-dashboard"></i></div>
+                            <h3 style="margin: 0;">Spark Platform</h3>
+                        </div>
                         <span class="badge badge-amber">In Progress</span>
                     </div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">spark-platform &bull; Railway &bull; 24 commits</p>
-                    <p style="font-size: 0.9375rem; margin: 0;">Multi-workspace AI collaboration with real-time editing &mdash; Google Docs meets Claude for teams.</p>
+                    <p style="font-size: 0.9375rem; margin: 0;">Cross-departmental AI hub connecting resources, intelligence, and departments. Dashboard ecosystem with real-time collaboration.</p>
                 </div>
+
                 <div class="card" style="border-left: 3px solid var(--purple);">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 style="margin: 0;">AI Developer Toolkit</h3>
-                        <span class="badge badge-success">Production</span>
+                        <div class="flex items-center gap-3">
+                            <div class="icon-box icon-box-purple"><i data-lucide="brain"></i></div>
+                            <h3 style="margin: 0;">Fourth Marketing Brain</h3>
+                        </div>
+                        <span class="badge badge-success">Complete</span>
                     </div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">continuous-claude &bull; Local Infra &bull; 80+ commits</p>
-                    <p style="font-size: 0.9375rem; margin: 0;">The engine behind 10x delivery speed: hooks, agents, memory, orchestrators, and a reusable skills library.</p>
+                    <p style="font-size: 0.9375rem; margin: 0;">MCP server connecting Claude, ChatGPT, and Copilot to SharePoint marketing content. RAG-style Q&amp;A with confidence scoring.</p>
                 </div>
-                <div class="card" style="border-left: 3px solid var(--success);">
+
+                <div class="card" style="border-left: 3px solid var(--info);">
                     <div class="flex justify-between items-center mb-2">
-                        <h3 style="margin: 0;">Skills for Teams</h3>
-                        <span class="badge badge-success">In Use</span>
+                        <div class="flex items-center gap-3">
+                            <div class="icon-box icon-box-info"><i data-lucide="settings"></i></div>
+                            <h3 style="margin: 0;">AI Architectural Guide</h3>
+                        </div>
+                        <span class="badge badge-amber">Mostly Complete</span>
                     </div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Claude-App-Skills &bull; 6 packages</p>
-                    <p style="font-size: 0.9375rem; margin: 0;">RFP Builder, Branded Decks, M365 Integration, Skill Creator &mdash; packaged capabilities for any team member.</p>
+                    <p style="font-size: 0.9375rem; margin: 0;">Meeting intelligence, proposals, budget tracking, Agent Factory. Pending licence + Azure Foundry decisions. Connects to Spark.</p>
+                </div>
+
+                <div class="card" style="border-left: 3px solid var(--bg-tertiary); opacity: 0.75;">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="icon-box" style="background: var(--bg-tertiary); color: var(--text-muted);"><i data-lucide="clipboard-list"></i></div>
+                            <h3 style="margin: 0;">RFP Builder</h3>
+                        </div>
+                        <span class="badge">Complete &bull; Awaiting Data</span>
+                    </div>
+                    <p style="font-size: 0.9375rem; margin: 0;">95% time reduction (40 hrs to ~2 hrs). Feature-complete but waiting on team data to populate knowledge base.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 4: SKILLS LIBRARY (Team-Facing)
+         SLIDE 4: CONTINUOUS CLAUDE DEEP-DIVE (HEADLINE)
          ============================================= -->
     <section class="slide" data-slide="3">
-        <div class="glow-bg glow-amber" style="top: 20%; right: -15%;"></div>
-        <div class="slide-content">
-            <p class="label label-amber reveal">Team Impact</p>
-            <h2 class="reveal">Skills Library for Teams</h2>
-            <p class="reveal">Packaged AI capabilities that any team member can use &mdash; no coding required.</p>
+        <div class="glow-bg glow-teal" style="top: 10%; left: -15%;"></div>
+        <div class="glow-bg glow-amber" style="bottom: -10%; right: -15%;"></div>
+        <div class="slide-content" x-data="{ tab: 'infrastructure' }">
+            <p class="label reveal">The Headline</p>
+            <h2 class="reveal">Continuous Claude</h2>
+            <p class="reveal">Fourth's core AI development infrastructure. 200+ commits, adopted by Engineering and Architecture teams, and now deploying into the Spark Platform as the foundation of org-wide AI capabilities.</p>
 
-            <div class="card-grid card-grid-3 reveal" style="margin-top: 1.5rem;">
-                <div class="card">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="icon-box">&#x1f4cb;</div>
-                        <h4 style="margin: 0;">RFP Builder</h4>
-                    </div>
-                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">Reduces proposal completion from <strong style="color: var(--teal);">~40 hrs to ~2 hrs</strong>. Pulls from historical proposals, ensures brand compliance.</p>
+            <div class="tabs reveal" style="margin-top: 1rem;">
+                <button class="tab-btn" :class="{ active: tab === 'infrastructure' }" @click="tab = 'infrastructure'">Infrastructure</button>
+                <button class="tab-btn" :class="{ active: tab === 'agents' }" @click="tab = 'agents'">Agents</button>
+                <button class="tab-btn" :class="{ active: tab === 'skills' }" @click="tab = 'skills'">Skills</button>
+                <button class="tab-btn" :class="{ active: tab === 'memory' }" @click="tab = 'memory'">Memory</button>
+            </div>
+
+            <div class="tab-content reveal" style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
+                <div x-show="tab === 'infrastructure'">
+                    <h4><span class="inline-icon" style="color: var(--teal);"><i data-lucide="server"></i></span> Infrastructure Layer</h4>
+                    <ul>
+                        <li><strong>35+ quality hooks</strong> &mdash; automated guardrails for security, consistency, and best practices</li>
+                        <li><strong>Cross-session coordination</strong> &mdash; multiple AI workstreams without conflicts via PostgreSQL</li>
+                        <li><strong>Autonomous orchestrators</strong> &mdash; Ralph and Maestro run multi-agent projects with human checkpoints</li>
+                        <li><strong>Real-time dashboard</strong> &mdash; full visibility into all AI operations and session state</li>
+                    </ul>
                 </div>
-                <div class="card">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="icon-box icon-box-amber">&#x1f3a8;</div>
-                        <h4 style="margin: 0;">Branded Decks</h4>
+                <div x-show="tab === 'agents'" x-cloak>
+                    <h4><span class="inline-icon" style="color: var(--accent);"><i data-lucide="bot"></i></span> 18+ Specialised Agents</h4>
+                    <div class="card-grid card-grid-3" style="margin-top: 0.5rem;">
+                        <div>
+                            <p style="font-size: 0.85rem; color: var(--teal); font-weight: 600; margin-bottom: 0.25rem;">Technical</p>
+                            <ul style="margin: 0;">
+                                <li>Scout &mdash; codebase exploration</li>
+                                <li>Kraken &mdash; implementation via TDD</li>
+                                <li>Debug Agent &mdash; root cause analysis</li>
+                                <li>Profiler &mdash; performance tuning</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p style="font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-bottom: 0.25rem;">Non-Technical</p>
+                            <ul style="margin: 0;">
+                                <li>Scribe &mdash; documentation &amp; handoffs</li>
+                                <li>Oracle &mdash; research &amp; web lookup</li>
+                                <li>Architect &mdash; design planning</li>
+                                <li>Critic &mdash; review &amp; quality</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p style="font-size: 0.85rem; color: var(--purple); font-weight: 600; margin-bottom: 0.25rem;">Orchestration</p>
+                            <ul style="margin: 0;">
+                                <li>Maestro &mdash; multi-step coordination</li>
+                                <li>Ralph &mdash; autonomous dev mode</li>
+                                <li>Spark &mdash; lightweight fixes</li>
+                                <li>Atlas &mdash; end-to-end testing</li>
+                            </ul>
+                        </div>
                     </div>
-                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">Brand-compliant presentations generated from text briefs. Fourth styling, professional layouts.</p>
                 </div>
-                <div class="card">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="icon-box icon-box-purple">&#x1f4e7;</div>
-                        <h4 style="margin: 0;">M365 Integration v3.0</h4>
+                <div x-show="tab === 'skills'" x-cloak>
+                    <h4><span class="inline-icon" style="color: var(--purple);"><i data-lucide="zap"></i></span> 80+ Reusable Skills</h4>
+                    <p style="font-size: 0.9375rem;">Packaged AI capabilities that any team member can invoke. From RFP generation to branded presentations, meeting intelligence to enterprise integrations &mdash; each skill encapsulates expert knowledge into a single command.</p>
+                    <div class="flex gap-2" style="flex-wrap: wrap; margin-top: 0.75rem;">
+                        <span class="badge badge-teal">RFP Builder</span>
+                        <span class="badge badge-teal">Branded Decks</span>
+                        <span class="badge badge-amber">M365 Integration</span>
+                        <span class="badge badge-amber">Meeting Intelligence</span>
+                        <span class="badge badge-purple">Skill Creator</span>
+                        <span class="badge badge-purple">Date Logic</span>
+                        <span class="badge badge-teal">Code Review</span>
+                        <span class="badge badge-amber">Security Audit</span>
+                        <span class="badge">TDD Workflow</span>
+                        <span class="badge">Browser Automation</span>
+                        <span class="badge badge-purple">Knowledge Tree</span>
+                        <span class="badge">+70 more</span>
                     </div>
-                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">AI connected to SharePoint, Teams, Outlook, OneDrive, and Calendar. Seamless enterprise workflows.</p>
                 </div>
-                <div class="card">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="icon-box icon-box-success">&#x1f9e0;</div>
-                        <h4 style="margin: 0;">Meeting Intelligence</h4>
-                    </div>
-                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">AI note-taking, action item extraction, decision tracking, and follow-up automation.</p>
+                <div x-show="tab === 'memory'" x-cloak>
+                    <h4><span class="inline-icon" style="color: var(--success);"><i data-lucide="database"></i></span> Semantic Memory System</h4>
+                    <ul>
+                        <li><strong>PostgreSQL + pgvector</strong> &mdash; persistent learnings with BGE embeddings across all sessions</li>
+                        <li><strong>100+ stored learnings</strong> &mdash; decisions, patterns, solutions, and failed approaches</li>
+                        <li><strong>Hybrid search</strong> &mdash; combines text and vector search for high-accuracy recall</li>
+                        <li><strong>Auto-extraction</strong> &mdash; hooks automatically capture insights from tool use and session activity</li>
+                    </ul>
                 </div>
-                <div class="card">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="icon-box">&#x2699;&#xfe0f;</div>
-                        <h4 style="margin: 0;">Skill Creator</h4>
-                    </div>
-                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">Enables non-technical staff to <strong>build their own AI capabilities</strong>. Self-service skill factory.</p>
+            </div>
+
+            <div class="flex gap-4 reveal" style="margin-top: 1.5rem;">
+                <div class="highlight-box" style="flex: 1;">
+                    <div class="stat" style="font-size: 1.5rem;">200+</div>
+                    <div class="stat-label">Commits</div>
                 </div>
-                <div class="card">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="icon-box icon-box-amber">&#x1f4c5;</div>
-                        <h4 style="margin: 0;">Date Logic & Utilities</h4>
-                    </div>
-                    <p style="font-size: 0.9rem; margin: 0.5rem 0 0;">Foundational capabilities used across other skills &mdash; date math, formatting, scheduling helpers.</p>
+                <div class="highlight-box-amber" style="flex: 1;">
+                    <div class="stat stat-amber" style="font-size: 1.5rem;">2 Teams</div>
+                    <div class="stat-label">Adopted By</div>
+                </div>
+                <div class="highlight-box-purple" style="flex: 1;">
+                    <div class="stat stat-purple" style="font-size: 1.5rem;">Spark</div>
+                    <div class="stat-label">Deploying Into</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 5: AI ARCHITECTURAL GUIDE DEEP-DIVE
+         SLIDE 5: SPARK PLATFORM DEEP-DIVE
          ============================================= -->
     <section class="slide" data-slide="4">
-        <div class="glow-bg glow-teal" style="top: 10%; left: -15%;"></div>
+        <div class="glow-bg glow-amber" style="bottom: 20%; right: -15%;"></div>
+        <div class="slide-content">
+            <p class="label label-amber reveal">Deep Dive</p>
+            <h2 class="reveal">Spark Platform</h2>
+            <p class="reveal">The cross-departmental AI hub &mdash; connecting resources, intelligence, and departments under one roof. Continuous Claude capabilities deploy here for org-wide access.</p>
+
+            <div class="two-col" style="margin-top: 2rem;">
+                <div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-amber"><i data-lucide="users"></i></div>
+                        <div>
+                            <h4>Cross-Departmental Hub</h4>
+                            <p>Each department gets its own workspace with shared intelligence. Marketing, engineering, finance &mdash; all connected through a single platform.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box"><i data-lucide="layout-dashboard"></i></div>
+                        <div>
+                            <h4>Dashboard Ecosystem</h4>
+                            <p>Real-time dashboards for AI operations, department metrics, and project status. AI Architectural Guide connects into this ecosystem.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-purple"><i data-lucide="link"></i></div>
+                        <div>
+                            <h4>Department Connectors</h4>
+                            <p>Each department drives custom connectors for their specific workflows. Salesforce, PowerBI, and more coming Q1 2026.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="highlight-box" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: var(--teal); margin-bottom: 0.5rem;"><span class="inline-icon"><i data-lucide="target"></i></span> Vision</h4>
+                        <ul style="margin: 0;">
+                            <li>Continuous Claude capabilities accessible org-wide</li>
+                            <li>Department leads drive their own AI connectors</li>
+                            <li>Shared intelligence across team boundaries</li>
+                            <li>Single pane of glass for all AI operations</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 1.25rem;">
+                        <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Status</span>
+                        <p style="margin: 0.5rem 0 0; font-size: 0.9375rem;">Core platform in development. Continuous Claude integration underway. Launch with department leads driving custom connectors.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 6: FOURTH MARKETING BRAIN
+         ============================================= -->
+    <section class="slide" data-slide="5">
+        <div class="glow-bg glow-purple" style="top: 10%; left: -15%;"></div>
+        <div class="slide-content">
+            <p class="label label-purple reveal">New Project</p>
+            <h2 class="reveal">Fourth Marketing Brain</h2>
+            <p class="reveal">An MCP server that connects Claude, ChatGPT, and Microsoft Copilot directly to curated marketing content on SharePoint. The marketing team's AI-powered knowledge base.</p>
+
+            <div class="two-col" style="margin-top: 2rem;">
+                <div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-purple"><i data-lucide="search"></i></div>
+                        <div>
+                            <h4>search_knowledge</h4>
+                            <p>Full-text search across curated marketing content. Find brand guidelines, campaign materials, and strategic docs instantly.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box icon-box-amber"><i data-lucide="folder-open"></i></div>
+                        <div>
+                            <h4>browse_library</h4>
+                            <p>Navigate the folder structure of marketing materials. Explore content categories and discover available resources.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item reveal">
+                        <div class="icon-box"><i data-lucide="message-square"></i></div>
+                        <div>
+                            <h4>ask_question</h4>
+                            <p>RAG-style Q&amp;A with confidence levels &mdash; GROUNDED, PARTIAL, or NO ANSWER. AI knows when it doesn't know.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="card" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: var(--purple);"><span class="inline-icon"><i data-lucide="check-square"></i></span> Capabilities</h4>
+                        <ul style="margin: 0.5rem 0 0;">
+                            <li><strong>search_knowledge</strong> &mdash; full-text search</li>
+                            <li><strong>browse_library</strong> &mdash; folder navigation</li>
+                            <li><strong>get_document</strong> &mdash; retrieve document text</li>
+                            <li><strong>ask_question</strong> &mdash; RAG Q&amp;A with confidence</li>
+                            <li><strong>list_content_areas</strong> &mdash; content categories</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box-purple">
+                        <h4 style="color: var(--purple); margin-bottom: 0.5rem;"><span class="inline-icon"><i data-lucide="shield"></i></span> Architecture</h4>
+                        <ul style="margin: 0;">
+                            <li>Python MCP Server</li>
+                            <li>SharePoint + Azure AD OAuth</li>
+                            <li>Microsoft Graph API backend</li>
+                            <li>Claude, ChatGPT, Copilot compatible</li>
+                            <li>Local, HTTP, or Railway deploy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4 reveal" style="margin-top: 1.5rem;">
+                <div style="flex: 1; text-align: center;">
+                    <span class="badge badge-success" style="font-size: 0.85rem; padding: 0.4rem 1rem;">COMPLETE</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 7: MARKETING ASANA CLAUDE PROJECT
+         ============================================= -->
+    <section class="slide" data-slide="6">
+        <div class="glow-bg glow-teal" style="bottom: 10%; right: -15%;"></div>
+        <div class="slide-content">
+            <p class="label reveal">New Project</p>
+            <h2 class="reveal">Marketing Asana Claude Project</h2>
+            <p class="reveal">A complete AI-powered project management integration for the marketing team &mdash; skills, orchestration, instructions, and direct Asana connection.</p>
+
+            <div class="card-grid card-grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box"><i data-lucide="check-square"></i></div>
+                        <h4 style="margin: 0;">Task Management</h4>
+                    </div>
+                    <p style="font-size: 0.9375rem; margin: 0;">AI-assisted task creation, status updates, and priority management. The marketing team manages Asana projects through natural language.</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box icon-box-amber"><i data-lucide="calendar"></i></div>
+                        <h4 style="margin: 0;">Project Tracking</h4>
+                    </div>
+                    <p style="font-size: 0.9375rem; margin: 0;">Campaign timelines, milestone tracking, and deadline management. AI surfaces blockers and suggests task reordering.</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box icon-box-purple"><i data-lucide="bot"></i></div>
+                        <h4 style="margin: 0;">Specialist Bot</h4>
+                    </div>
+                    <p style="font-size: 0.9375rem; margin: 0;">A dedicated marketing AI specialist with team-specific instructions, brand knowledge, and workflow understanding baked in.</p>
+                </div>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="icon-box icon-box-success"><i data-lucide="zap"></i></div>
+                        <h4 style="margin: 0;">Orchestration</h4>
+                    </div>
+                    <p style="font-size: 0.9375rem; margin: 0;">Multi-step workflows that chain skills together &mdash; from brief intake to task creation to team assignment, all automated.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box reveal" style="margin-top: 1.5rem;">
+                <p style="margin: 0; color: var(--text-primary); font-size: 1.05rem;">
+                    <span class="inline-icon" style="color: var(--success);"><i data-lucide="check-square"></i></span>
+                    <strong>Status: COMPLETE</strong> &mdash; The marketing team is the first department fully running on AI-powered project management. This serves as the proof-of-concept for rolling out similar integrations across other departments.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 8: AI ARCHITECTURAL GUIDE
+         ============================================= -->
+    <section class="slide" data-slide="7">
+        <div class="glow-bg glow-amber" style="top: 10%; left: -15%;"></div>
         <div class="slide-content" x-data="{ tab: 'meetings' }">
-            <p class="label reveal">Deep Dive</p>
+            <p class="label label-amber reveal">Deep Dive</p>
             <h2 class="reveal">AI Architectural Guide</h2>
-            <p class="reveal">Full-stack platform for AI-assisted technology decision-making. Deployed on Azure, serving 15+ stakeholders.</p>
+            <p class="reveal">Full-stack platform for AI-assisted technology decision-making. Mostly complete &mdash; pending licence and Azure Foundry decisions. Will connect into the Spark Dashboard Ecosystem.</p>
 
             <div class="tabs reveal" style="margin-top: 1rem;">
                 <button class="tab-btn" :class="{ active: tab === 'meetings' }" @click="tab = 'meetings'">Meetings</button>
@@ -589,7 +869,7 @@
 
             <div class="tab-content reveal" style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border);">
                 <div x-show="tab === 'meetings'">
-                    <h4>Meeting Intelligence</h4>
+                    <h4><span class="inline-icon" style="color: var(--teal);"><i data-lucide="calendar"></i></span> Meeting Intelligence</h4>
                     <ul>
                         <li>Automatically extracts action items from meeting transcripts</li>
                         <li>Tracks decisions across sessions with full context</li>
@@ -598,7 +878,7 @@
                     </ul>
                 </div>
                 <div x-show="tab === 'proposals'" x-cloak>
-                    <h4>Proposal & RFP Management</h4>
+                    <h4><span class="inline-icon" style="color: var(--accent);"><i data-lucide="file-text"></i></span> Proposal &amp; RFP Management</h4>
                     <ul>
                         <li>AI-assisted drafting with brand compliance checks</li>
                         <li>Historical proposal context for consistency</li>
@@ -607,7 +887,7 @@
                     </ul>
                 </div>
                 <div x-show="tab === 'agents'" x-cloak>
-                    <h4>Agent Factory</h4>
+                    <h4><span class="inline-icon" style="color: var(--purple);"><i data-lucide="bot"></i></span> Agent Factory</h4>
                     <ul>
                         <li>Self-service hub for creating custom AI agents</li>
                         <li>No coding required &mdash; guided configuration workflow</li>
@@ -616,7 +896,7 @@
                     </ul>
                 </div>
                 <div x-show="tab === 'budgets'" x-cloak>
-                    <h4>Budget & Cost Tracking</h4>
+                    <h4><span class="inline-icon" style="color: var(--success);"><i data-lucide="trending-up"></i></span> Budget &amp; Cost Tracking</h4>
                     <ul>
                         <li>Azure cost dashboards with real-time data</li>
                         <li>Forecasting and optimisation recommendations</li>
@@ -626,117 +906,67 @@
                 </div>
             </div>
 
-            <div class="flex gap-4 reveal" style="margin-top: 1.5rem;">
-                <div class="highlight-box" style="flex: 1;">
-                    <div class="stat" style="font-size: 1.5rem;">80+</div>
-                    <div class="stat-label">Commits</div>
-                </div>
-                <div class="highlight-box-amber" style="flex: 1; background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 1.5rem;">
-                    <div class="stat stat-amber" style="font-size: 1.5rem;">20+</div>
-                    <div class="stat-label">Feature Branches</div>
-                </div>
-                <div class="highlight-box-purple" style="flex: 1; background: linear-gradient(135deg, var(--purple-glow) 0%, transparent 50%); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 12px; padding: 1.5rem;">
-                    <div class="stat stat-purple" style="font-size: 1.5rem;">15+</div>
-                    <div class="stat-label">Stakeholders</div>
+            <div class="alert alert-warning reveal" style="margin-top: 1.5rem;">
+                <div class="alert-icon"><i data-lucide="alert-triangle" style="width:20px;height:20px;"></i></div>
+                <div class="alert-content">
+                    <div class="alert-title">Pending Decisions</div>
+                    <div class="alert-description" style="color: var(--warning);">Claude licensing approval and Azure Foundry setup required before final deployment. Once resolved, connects directly into the Spark Dashboard Ecosystem.</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 6: SPARK PLATFORM DEEP-DIVE
+         SLIDE 9: ENTERPRISE INTEGRATIONS
          ============================================= -->
-    <section class="slide" data-slide="5">
-        <div class="glow-bg glow-amber" style="bottom: 20%; right: -15%;"></div>
-        <div class="slide-content">
-            <p class="label label-amber reveal">Deep Dive</p>
-            <h2 class="reveal">SPARK Platform</h2>
-            <p class="reveal">Multi-workspace AI collaboration &mdash; Google Docs meets Claude for enterprise teams.</p>
-
-            <div class="two-col" style="margin-top: 2rem;">
-                <div>
-                    <div class="feature-item reveal">
-                        <div class="icon-box icon-box-amber">&#x1f465;</div>
-                        <div>
-                            <h4>Multi-Workspace</h4>
-                            <p>Isolated workspaces per team &mdash; marketing, engineering, finance can each have their own AI environment with shared knowledge.</p>
-                        </div>
-                    </div>
-                    <div class="feature-item reveal">
-                        <div class="icon-box">&#x270f;&#xfe0f;</div>
-                        <div>
-                            <h4>Real-Time Collaboration</h4>
-                            <p>Multiple users edit simultaneously with AI assistance &mdash; live cursors, conflict resolution, version history.</p>
-                        </div>
-                    </div>
-                    <div class="feature-item reveal">
-                        <div class="icon-box icon-box-purple">&#x1f916;</div>
-                        <div>
-                            <h4>Claude Agent SDK</h4>
-                            <p>Custom AI workflows powered by Anthropic's latest agent framework. Build specialised agents for any team need.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="reveal">
-                    <div class="highlight-box" style="margin-bottom: 1.25rem;">
-                        <h4 style="color: var(--teal); margin-bottom: 0.5rem;">Platform Features</h4>
-                        <ul style="margin: 0;">
-                            <li>Session persistence &amp; cost tracking</li>
-                            <li>Full audit trail for compliance</li>
-                            <li>Stakeholder-facing landing page</li>
-                            <li>Railway deployment pipeline</li>
-                        </ul>
-                    </div>
-                    <div class="card" style="text-align: center; padding: 1.25rem;">
-                        <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Status</span>
-                        <p style="margin: 0.5rem 0 0; font-size: 0.9375rem;">Core collaboration engine complete. Multi-workspace and SDK integration in active development.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- =============================================
-         SLIDE 7: ENTERPRISE INTEGRATIONS
-         ============================================= -->
-    <section class="slide" data-slide="6">
+    <section class="slide" data-slide="8">
         <div class="glow-bg glow-purple" style="top: 10%; left: -15%;"></div>
         <div class="slide-content">
             <p class="label label-purple reveal">Enterprise</p>
             <h2 class="reveal">Integration Layer</h2>
-            <p class="reveal">Five production connectors bridging AI capabilities with existing enterprise systems.</p>
+            <p class="reveal">Five production connectors live today, with Salesforce and PowerBI coming next. Bridging AI capabilities with existing enterprise systems.</p>
 
             <div class="connector-grid reveal">
                 <div class="connector-card">
-                    <div class="connector-icon">&#x1f4c1;</div>
+                    <div class="connector-icon"><i data-lucide="database"></i></div>
                     <div class="connector-name">SharePoint</div>
                     <div class="connector-desc">Document search, upload &amp; site management</div>
                 </div>
                 <div class="connector-card">
-                    <div class="connector-icon">&#x1f4ac;</div>
+                    <div class="connector-icon"><i data-lucide="message-square"></i></div>
                     <div class="connector-name">Teams</div>
                     <div class="connector-desc">Channel messaging &amp; team coordination</div>
                 </div>
                 <div class="connector-card">
-                    <div class="connector-icon">&#x1f4e8;</div>
+                    <div class="connector-icon"><i data-lucide="mail"></i></div>
                     <div class="connector-name">Outlook</div>
                     <div class="connector-desc">Email drafting &amp; calendar management</div>
                 </div>
                 <div class="connector-card">
-                    <div class="connector-icon">&#x2601;&#xfe0f;</div>
+                    <div class="connector-icon"><i data-lucide="cloud"></i></div>
                     <div class="connector-name">OneDrive</div>
                     <div class="connector-desc">File management &amp; collaborative access</div>
                 </div>
                 <div class="connector-card">
-                    <div class="connector-icon">&#x2705;</div>
+                    <div class="connector-icon"><i data-lucide="check-square"></i></div>
                     <div class="connector-name">Asana</div>
                     <div class="connector-desc">Task management &amp; specialist bot</div>
+                </div>
+                <div class="connector-card coming-soon">
+                    <div class="connector-icon" style="color: var(--accent);"><i data-lucide="bar-chart-3"></i></div>
+                    <div class="connector-name">Salesforce</div>
+                    <div class="connector-desc">Coming Q1 2026</div>
+                </div>
+                <div class="connector-card coming-soon">
+                    <div class="connector-icon" style="color: var(--accent);"><i data-lucide="pie-chart"></i></div>
+                    <div class="connector-name">PowerBI</div>
+                    <div class="connector-desc">Coming Q1 2026</div>
                 </div>
             </div>
 
             <div class="highlight-box reveal" style="margin-top: 2rem;">
                 <div class="flex items-center gap-3">
-                    <div class="icon-box">&#x1f517;</div>
+                    <div class="icon-box"><i data-lucide="link"></i></div>
                     <div>
                         <h4 style="margin: 0;">M365 Integration v3.0</h4>
                         <p style="margin: 0.25rem 0 0; font-size: 0.9375rem;">All Microsoft connectors unified under a single skill package. Team members invoke AI capabilities that seamlessly read from and write to their existing M365 tools.</p>
@@ -747,56 +977,9 @@
     </section>
 
     <!-- =============================================
-         SLIDE 8: UNDER THE HOOD (AI Developer Toolkit)
+         SLIDE 10: STRATEGIC IMPACT
          ============================================= -->
-    <section class="slide" data-slide="7">
-        <div class="glow-bg glow-teal" style="bottom: 10%; right: -15%;"></div>
-        <div class="slide-content">
-            <p class="label reveal">Under the Hood</p>
-            <h2 class="reveal">Why We Ship 10x Faster</h2>
-            <p class="reveal">The AI Developer Toolkit is the engine powering rapid capability delivery. It's why a small team produces enterprise-grade output.</p>
-
-            <div class="card-grid card-grid-3 reveal" style="margin-top: 1.5rem;">
-                <div class="card" style="text-align: center;">
-                    <div class="stat">35+</div>
-                    <div class="stat-label">Quality Hooks</div>
-                    <p style="margin: 0.75rem 0 0; font-size: 0.85rem;">Automated guardrails for security, consistency, and best practices</p>
-                </div>
-                <div class="card" style="text-align: center;">
-                    <div class="stat stat-amber">18+</div>
-                    <div class="stat-label">Specialised Agents</div>
-                    <p style="margin: 0.75rem 0 0; font-size: 0.85rem;">Research, implementation, debugging, code review &mdash; each domain-optimised</p>
-                </div>
-                <div class="card" style="text-align: center;">
-                    <div class="stat stat-purple">60+</div>
-                    <div class="stat-label">Reusable Skills</div>
-                    <p style="margin: 0.75rem 0 0; font-size: 0.85rem;">Packaged capabilities any team member can invoke immediately</p>
-                </div>
-            </div>
-
-            <div class="two-col reveal" style="margin-top: 1.5rem;">
-                <div>
-                    <h4 style="color: var(--teal);">Key Capabilities</h4>
-                    <ul>
-                        <li><strong>Semantic Memory</strong> &mdash; AI remembers decisions and patterns across sessions</li>
-                        <li><strong>Autonomous Orchestrators</strong> &mdash; Multi-agent projects with human checkpoints</li>
-                        <li><strong>Cross-Session Coordination</strong> &mdash; Multiple AI workstreams without conflicts</li>
-                        <li><strong>Real-Time Dashboard</strong> &mdash; Visibility into all AI operations</li>
-                    </ul>
-                </div>
-                <div class="highlight-box">
-                    <div class="quote" style="border-left-color: var(--teal);">
-                        "New AI capabilities that would typically take weeks to build and validate are delivered in days &mdash; with automated quality checks at every step."
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- =============================================
-         SLIDE 9: STRATEGIC IMPACT
-         ============================================= -->
-    <section class="slide" data-slide="8">
+    <section class="slide" data-slide="9">
         <div class="glow-bg glow-amber" style="top: 20%; left: -15%;"></div>
         <div class="slide-content">
             <p class="label label-amber reveal">Strategic Value</p>
@@ -804,21 +987,21 @@
 
             <div class="card-grid card-grid-2 reveal" style="margin-top: 1.5rem;">
                 <div class="card" style="border-top: 3px solid var(--teal);">
-                    <h3>&#x26a1; Efficiency</h3>
-                    <p style="font-size: 0.9375rem;">The RFP Builder alone saves ~38 hours per proposal. Across the portfolio, AI-assisted workflows reduce repetitive knowledge work by <strong style="color: var(--teal);">60&ndash;80%</strong>.</p>
+                    <h3><span class="inline-icon" style="color: var(--teal);"><i data-lucide="zap"></i></span> Efficiency</h3>
+                    <p style="font-size: 0.9375rem;">AI-assisted workflows reduce repetitive knowledge work by <strong style="color: var(--teal);">60&ndash;80%</strong>. The RFP Builder alone saves ~38 hours per proposal. Marketing team now manages projects through natural language.</p>
                     <div style="margin-top: 1rem;">
                         <div class="flex justify-between text-sm mb-2">
-                            <span>RFP Builder</span>
-                            <span style="color: var(--teal);">95% reduction</span>
+                            <span>Knowledge Work Automation</span>
+                            <span style="color: var(--teal);">60-80% reduction</span>
                         </div>
                         <div class="progress-track">
-                            <div class="progress-fill progress-fill-teal" style="width: 95%;"></div>
+                            <div class="progress-fill progress-fill-teal" style="width: 75%;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="card" style="border-top: 3px solid var(--accent);">
-                    <h3>&#x1f6e1;&#xfe0f; Risk Reduction</h3>
-                    <p style="font-size: 0.9375rem;">Automated quality hooks catch security vulnerabilities, brand compliance issues, and consistency problems <strong style="color: var(--accent);">before they reach production</strong>.</p>
+                    <h3><span class="inline-icon" style="color: var(--accent);"><i data-lucide="shield"></i></span> Risk Reduction</h3>
+                    <p style="font-size: 0.9375rem;">35+ automated quality hooks catch security vulnerabilities, brand compliance issues, and consistency problems <strong style="color: var(--accent);">before they reach production</strong>.</p>
                     <div style="margin-top: 1rem;">
                         <div class="flex justify-between text-sm mb-2">
                             <span>Automated Quality Coverage</span>
@@ -830,21 +1013,21 @@
                     </div>
                 </div>
                 <div class="card" style="border-top: 3px solid var(--purple);">
-                    <h3>&#x1f680; Competitive Advantage</h3>
-                    <p style="font-size: 0.9375rem;">Fourth now has internal AI development infrastructure comparable to dedicated platform teams at tech companies. New capabilities ship in <strong style="color: var(--purple);">days, not months</strong>.</p>
+                    <h3><span class="inline-icon" style="color: var(--purple);"><i data-lucide="rocket"></i></span> Competitive Advantage</h3>
+                    <p style="font-size: 0.9375rem;">Continuous Claude gives Fourth internal AI development infrastructure comparable to dedicated platform teams at tech companies. New capabilities ship in <strong style="color: var(--purple);">days, not months</strong>.</p>
                 </div>
                 <div class="card" style="border-top: 3px solid var(--success);">
-                    <h3>&#x1f4c8; Scalability</h3>
-                    <p style="font-size: 0.9375rem;">The Skills Library and Agent Factory enable non-technical team members to create AI capabilities independently &mdash; <strong style="color: var(--success);">impact scales beyond headcount</strong>.</p>
+                    <h3><span class="inline-icon" style="color: var(--success);"><i data-lucide="trending-up"></i></span> Org-Wide Adoption</h3>
+                    <p style="font-size: 0.9375rem;">Engineering and Architecture teams adopted. Marketing team live on Brain + Asana. Spark Platform brings capabilities to <strong style="color: var(--success);">every department</strong>.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 10: BY THE NUMBERS
+         SLIDE 11: BY THE NUMBERS
          ============================================= -->
-    <section class="slide" data-slide="9">
+    <section class="slide" data-slide="10">
         <div class="glow-bg glow-teal" style="top: -10%; right: -20%;"></div>
         <div class="slide-content">
             <p class="label reveal">Metrics</p>
@@ -861,38 +1044,38 @@
                 <tbody>
                     <tr>
                         <td><strong>Active AI Projects</strong></td>
-                        <td style="color: var(--teal); font-weight: 700;">4</td>
-                        <td>All progressing on schedule</td>
+                        <td style="color: var(--teal); font-weight: 700;">5</td>
+                        <td>Continuous Claude, Spark, AI Arch, Marketing Brain, RFP Builder</td>
                     </tr>
                     <tr>
                         <td><strong>Skills Deployed</strong></td>
-                        <td style="color: var(--accent); font-weight: 700;">8+</td>
-                        <td>RFP Builder, Branded Decks, M365, Meeting Intel, and more</td>
+                        <td style="color: var(--accent); font-weight: 700;">80+</td>
+                        <td>RFP Builder, Branded Decks, M365, Meeting Intel, Security, TDD, and more</td>
                     </tr>
                     <tr>
                         <td><strong>Enterprise Connectors</strong></td>
-                        <td style="color: var(--purple); font-weight: 700;">5</td>
-                        <td>SharePoint, Teams, Outlook, OneDrive, Asana</td>
+                        <td style="color: var(--purple); font-weight: 700;">5 (+2 coming)</td>
+                        <td>SharePoint, Teams, Outlook, OneDrive, Asana + Salesforce &amp; PowerBI</td>
                     </tr>
                     <tr>
                         <td><strong>Commits (Dec&ndash;Feb)</strong></td>
                         <td style="color: var(--teal); font-weight: 700;">200+</td>
-                        <td>Across all 4 repositories</td>
+                        <td>Majority in Continuous Claude &mdash; the most active codebase</td>
                     </tr>
                     <tr>
                         <td><strong>Quality Hooks</strong></td>
                         <td style="color: var(--accent); font-weight: 700;">35+</td>
-                        <td>Automated security, quality, and compliance checks</td>
+                        <td>Automated security, quality, compliance, and workflow checks</td>
                     </tr>
                     <tr>
                         <td><strong>Specialised AI Agents</strong></td>
                         <td style="color: var(--purple); font-weight: 700;">18+</td>
-                        <td>Domain-optimised for research, code, review, debug</td>
+                        <td>Scout, Kraken, Oracle, Architect, Scribe, Critic, Profiler, and more</td>
                     </tr>
                     <tr>
-                        <td><strong>RFP Time Reduction</strong></td>
-                        <td style="color: var(--success); font-weight: 700;">~95%</td>
-                        <td>40 hours to ~2 hours per proposal</td>
+                        <td><strong>Teams Adopted</strong></td>
+                        <td style="color: var(--success); font-weight: 700;">3</td>
+                        <td>Engineering, Architecture, and Marketing</td>
                     </tr>
                     <tr>
                         <td><strong>AI Committee Members</strong></td>
@@ -905,50 +1088,55 @@
     </section>
 
     <!-- =============================================
-         SLIDE 11: ADOPTION & TRAINING
+         SLIDE 12: ADOPTION & TRAINING
          ============================================= -->
-    <section class="slide" data-slide="10">
+    <section class="slide" data-slide="11">
         <div class="glow-bg glow-purple" style="bottom: 10%; left: -15%;"></div>
         <div class="slide-content">
             <p class="label label-purple reveal">Adoption</p>
-            <h2 class="reveal">Training & Community</h2>
+            <h2 class="reveal">Training &amp; Community</h2>
 
             <div class="two-col" style="margin-top: 2rem;">
                 <div>
                     <div class="feature-item reveal">
-                        <div class="icon-box icon-box-purple">&#x1f3eb;</div>
+                        <div class="icon-box icon-box-purple"><i data-lucide="users"></i></div>
                         <div>
                             <h4>AI Architectural Committee</h4>
                             <p>Bi-weekly sessions with 15+ cross-functional stakeholders. Setting AI strategy, reviewing proposals, sharing learnings.</p>
                         </div>
                     </div>
                     <div class="feature-item reveal">
-                        <div class="icon-box icon-box-amber">&#x1f4da;</div>
+                        <div class="icon-box icon-box-amber"><i data-lucide="book-open"></i></div>
                         <div>
                             <h4>Training Sessions</h4>
                             <p>Structured workshops covering Claude basics, skill usage, prompt engineering, and enterprise integration patterns.</p>
                         </div>
                     </div>
                     <div class="feature-item reveal">
-                        <div class="icon-box icon-box-success">&#x1f91d;</div>
+                        <div class="icon-box icon-box-success"><i data-lucide="target"></i></div>
                         <div>
-                            <h4>Marketing Team Asana Bot</h4>
-                            <p>Custom AI specialist for marketing team's Asana workflow &mdash; task creation, status updates, project tracking.</p>
+                            <h4>Marketing Team &mdash; Proof Point</h4>
+                            <p>First department fully running on AI-powered project management (Asana Claude) and knowledge access (Marketing Brain). Model for org-wide rollout.</p>
                         </div>
                     </div>
                 </div>
                 <div class="reveal">
                     <div class="card" style="margin-bottom: 1.25rem;">
-                        <h4 style="color: var(--purple);">Self-Service Vision</h4>
-                        <p style="font-size: 0.9375rem; margin: 0.5rem 0;">The Skill Creator enables non-technical staff to build AI capabilities independently. This is the force multiplier &mdash; the team's impact grows without adding headcount.</p>
+                        <h4 style="color: var(--purple);"><span class="inline-icon"><i data-lucide="settings"></i></span> Self-Service Vision</h4>
+                        <p style="font-size: 0.9375rem; margin: 0.5rem 0;">The Skill Creator enables non-technical staff to build AI capabilities independently. 80+ skills already deployed &mdash; the library grows with every team interaction.</p>
                         <div style="margin-top: 1rem;">
                             <div class="flex justify-between text-sm mb-2">
                                 <span>Self-service adoption</span>
-                                <span style="color: var(--purple);">Growing</span>
+                                <span style="color: var(--purple);">Accelerating</span>
                             </div>
                             <div class="progress-track">
-                                <div class="progress-fill progress-fill-purple" style="width: 40%;"></div>
+                                <div class="progress-fill progress-fill-purple" style="width: 55%;"></div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="highlight-box">
+                        <div class="quote" style="border-left-color: var(--teal);">
+                            "The marketing team's adoption of AI-powered project management proves the model works. Every department can follow this path."
                         </div>
                     </div>
                 </div>
@@ -957,9 +1145,9 @@
     </section>
 
     <!-- =============================================
-         SLIDE 12: ROADMAP / NEXT STEPS
+         SLIDE 13: ROADMAP
          ============================================= -->
-    <section class="slide" data-slide="11">
+    <section class="slide" data-slide="12">
         <div class="glow-bg glow-teal" style="top: 10%; right: -20%;"></div>
         <div class="slide-content">
             <p class="label reveal">What's Next</p>
@@ -967,99 +1155,98 @@
 
             <div class="timeline reveal" style="margin-top: 2rem;">
                 <div class="timeline-item">
-                    <h4>SPARK Platform Launch</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Complete multi-workspace collaboration features for broader team adoption. Target: end of Q1.</p>
+                    <h4><span class="inline-icon" style="color: var(--teal);"><i data-lucide="bar-chart-3"></i></span> Salesforce Connector</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">AI-powered CRM integration &mdash; opportunity tracking, pipeline analysis, and automated reporting through natural language.</p>
                 </div>
                 <div class="timeline-item amber">
-                    <h4>Skills Library Expansion</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Package 5+ additional skills from proven workflows. Focus on high-frequency team requests.</p>
+                    <h4><span class="inline-icon" style="color: var(--accent);"><i data-lucide="pie-chart"></i></span> PowerBI Connector</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Connect AI to business intelligence dashboards. Natural language queries across PowerBI datasets and automated insight generation.</p>
                 </div>
                 <div class="timeline-item purple">
-                    <h4>Enterprise Integration Deepening</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Power Automate and Dynamics 365 connectors. Extend M365 integration to workflow automation.</p>
+                    <h4><span class="inline-icon" style="color: var(--purple);"><i data-lucide="rocket"></i></span> Spark Platform Launch</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Department leads drive custom connectors for their specific workflows. Org-wide access to Continuous Claude capabilities through Spark.</p>
                 </div>
                 <div class="timeline-item">
-                    <h4>Team Training Programme</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Structured onboarding for AI skill creation. Goal: every team lead can build basic skills.</p>
+                    <h4><span class="inline-icon" style="color: var(--teal);"><i data-lucide="link"></i></span> Custom Connectors Per Department</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Each team builds connectors for their unique tools and data sources. Marketing proves the template, other departments follow.</p>
                 </div>
                 <div class="timeline-item amber">
-                    <h4>AI Committee Expansion</h4>
-                    <p style="font-size: 0.9375rem; margin: 0;">Continue bi-weekly cadence. Add representation from operations and finance teams.</p>
+                    <h4><span class="inline-icon" style="color: var(--accent);"><i data-lucide="book-open"></i></span> Team Training Programme</h4>
+                    <p style="font-size: 0.9375rem; margin: 0;">Structured onboarding for AI skill creation and connector development. Goal: every team lead can build basic AI capabilities.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- =============================================
-         SLIDE 13: DECISIONS NEEDED
+         SLIDE 14: DECISIONS NEEDED + CLOSE
          ============================================= -->
-    <section class="slide" data-slide="12">
+    <section class="slide" data-slide="13">
         <div class="glow-bg glow-amber" style="bottom: 20%; left: -15%;"></div>
         <div class="slide-content">
             <p class="label label-danger reveal">Action Required</p>
             <h2 class="reveal">Decisions Needed</h2>
 
-            <div class="card-grid reveal" style="margin-top: 1.5rem;">
+            <div class="card-grid card-grid-3 reveal" style="margin-top: 1.5rem;">
                 <div class="card" style="border-left: 3px solid var(--warning);">
                     <div class="flex items-center gap-3 mb-2">
-                        <span class="badge badge-amber">Priority</span>
-                        <h4 style="margin: 0;">Claude Licensing</h4>
+                        <div class="icon-box icon-box-amber"><i data-lucide="key"></i></div>
+                        <div>
+                            <span class="badge badge-amber">Priority</span>
+                            <h4 style="margin: 0.25rem 0 0;">Claude Licensing</h4>
+                        </div>
                     </div>
-                    <p style="font-size: 0.9375rem;">Current Teams plan limits concurrent users. <strong>Enterprise tier</strong> ($60/user/month) needed for broader rollout.</p>
+                    <p style="font-size: 0.9375rem;">Current Teams plan limits concurrent users. <strong>Enterprise tier</strong> needed for broader rollout and Spark deployment.</p>
                     <ul style="margin: 0.5rem 0 0;">
                         <li>Unlocks SSO &amp; admin controls</li>
                         <li>Higher rate limits for team workflows</li>
-                        <li>Required for SPARK multi-user deployment</li>
+                        <li>Required for org-wide access</li>
                     </ul>
                 </div>
 
                 <div class="card" style="border-left: 3px solid var(--info);">
                     <div class="flex items-center gap-3 mb-2">
-                        <span class="badge badge-purple">Strategic</span>
-                        <h4 style="margin: 0;">Microsoft AI Platform Direction</h4>
+                        <div class="icon-box icon-box-info"><i data-lucide="cloud"></i></div>
+                        <div>
+                            <span class="badge badge-purple">Strategic</span>
+                            <h4 style="margin: 0.25rem 0 0;">Azure Foundry Setup</h4>
+                        </div>
                     </div>
-                    <p style="font-size: 0.9375rem;">Copilot Studio vs. custom Claude integration for M365 workflows.</p>
+                    <p style="font-size: 0.9375rem;">Azure AI Foundry environment needed for AI Architectural Guide production deployment.</p>
                     <ul style="margin: 0.5rem 0 0;">
-                        <li>Recommend <strong>hybrid approach</strong></li>
-                        <li>Claude for complex reasoning &amp; generation</li>
-                        <li>Copilot for native M365 automation</li>
+                        <li>Enables Arch Guide final deploy</li>
+                        <li>Connects into Spark ecosystem</li>
+                        <li>Enterprise-grade hosting</li>
                     </ul>
                 </div>
 
                 <div class="card" style="border-left: 3px solid var(--teal);">
                     <div class="flex items-center gap-3 mb-2">
-                        <span class="badge badge-teal">Low Cost</span>
-                        <h4 style="margin: 0;">SPARK Infrastructure</h4>
+                        <div class="icon-box"><i data-lucide="server"></i></div>
+                        <div>
+                            <span class="badge badge-teal">Investment</span>
+                            <h4 style="margin: 0.25rem 0 0;">Infrastructure</h4>
+                        </div>
                     </div>
-                    <p style="font-size: 0.9375rem;">Railway hosting for SPARK Platform production deployment.</p>
+                    <p style="font-size: 0.9375rem;">Spark Platform hosting and connector infrastructure for department-level AI capabilities.</p>
                     <ul style="margin: 0.5rem 0 0;">
-                        <li>$20&ndash;$50/month estimated cost</li>
                         <li>Enables multi-team collaboration</li>
-                        <li>Alternative: Azure deployment (higher cost, more control)</li>
+                        <li>Salesforce &amp; PowerBI connectors</li>
+                        <li>Scales with department adoption</li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- =============================================
-         SLIDE 14: CLOSE
-         ============================================= -->
-    <section class="slide title-slide" data-slide="13">
-        <div class="glow-bg glow-teal" style="top: -20%; left: 50%; transform: translateX(-50%);"></div>
-        <div class="glow-bg glow-amber" style="bottom: -20%; left: 30%;"></div>
-        <div class="slide-content">
-            <p class="label reveal">Thank You</p>
-            <h1 class="reveal" style="font-size: clamp(2rem, 4vw, 3rem);">Building the AI-First Future</h1>
-            <p class="subtitle reveal" style="margin: 0 auto;">From individual productivity tools to enterprise-grade AI infrastructure &mdash; Fourth is positioned to lead.</p>
-            <div class="accent-line reveal accent-line-center"></div>
-            <p class="meta reveal">
-                David Hayes &bull; AI Enablement Lead<br>
-                <span style="color: var(--teal);">david.hayes@fourth.com</span>
-            </p>
-            <p class="reveal" style="margin-top: 2rem; font-size: 0.8rem; color: var(--text-muted);">
-                Confidential &mdash; Fourth &bull; February 2026
-            </p>
+            <div style="text-align: center; margin-top: 3rem;" class="reveal">
+                <div class="accent-line accent-line-center"></div>
+                <p class="meta">
+                    David Hayes &bull; AI Enablement Lead<br>
+                    <span style="color: var(--teal);">david.hayes@fourth.com</span>
+                </p>
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+                    Confidential &mdash; Fourth &bull; February 2026
+                </p>
+            </div>
         </div>
     </section>
 
@@ -1165,7 +1352,11 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => new SlidePresentation());
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlidePresentation();
+            // Initialize Lucide icons
+            lucide.createIcons();
+        });
     </script>
 </body>
 </html>
