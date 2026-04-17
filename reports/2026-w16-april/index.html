@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Enablement Status · Week 16 · April 2026</title>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap">
+  <style>
+    /* ============================================
+       ROOT — Fourth Midnight Palette
+       ============================================ */
+    :root {
+      --bg:        #07091E;
+      --surface:   #0D1130;
+      --surface-2: #141840;
+      --border:    rgba(255,255,255,0.07);
+      --teal:      #00D4C8;
+      --orange:    #FF8C42;
+      --purple:    #7B6FF0;
+      --blue:      #3B9EFF;
+      --text:      #F0F2FF;
+      --muted:     #8B93B4;
+      --font-d:    'Clash Display', sans-serif;
+      --font-b:    'Satoshi', sans-serif;
+      --ease:      cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-b);
+      overflow-x: hidden;
+    }
+
+    /* ============================================
+       SLIDE BASE
+       ============================================ */
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3.5rem clamp(2rem, 6vw, 5.5rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ============================================
+       REVEAL ANIMATIONS
+       Triggered by .visible class via IntersectionObserver
+       ============================================ */
+    .r {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+    }
+    .slide.visible .r { opacity: 1; transform: translateY(0); }
+    .slide.visible .r:nth-child(1) { transition-delay: 0.04s; }
+    .slide.visible .r:nth-child(2) { transition-delay: 0.10s; }
+    .slide.visible .r:nth-child(3) { transition-delay: 0.16s; }
+    .slide.visible .r:nth-child(4) { transition-delay: 0.22s; }
+    .slide.visible .r:nth-child(5) { transition-delay: 0.28s; }
+    .slide.visible .r:nth-child(6) { transition-delay: 0.34s; }
+    .slide.visible .r:nth-child(7) { transition-delay: 0.40s; }
+    .slide.visible .r:nth-child(8) { transition-delay: 0.46s; }
+
+    /* ============================================
+       CHROME: PROGRESS BAR · NAV DOTS · COUNTER
+       ============================================ */
+    .progress-bar {
+      position: fixed; top: 0; left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--purple));
+      z-index: 200;
+      transition: width 0.35s var(--ease);
+      width: 0;
+    }
+
+    .nav-dots {
+      position: fixed; right: 1.4rem; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 0.45rem;
+      z-index: 200;
+    }
+    .nav-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .nav-dot.active { background: var(--teal); transform: scale(1.6); }
+
+    .slide-counter {
+      position: fixed; bottom: 1.4rem; right: 2.2rem;
+      font-family: var(--font-d);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      z-index: 200;
+    }
+
+    /* ============================================
+       AMBIENT GLOW ACCENTS (per slide)
+       ============================================ */
+    .glow-teal::before {
+      content: ''; position: absolute;
+      top: -15%; right: -5%; width: 50%; height: 80%;
+      background: radial-gradient(ellipse, rgba(0,212,200,0.055) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .glow-orange::before {
+      content: ''; position: absolute;
+      top: -15%; right: -5%; width: 50%; height: 80%;
+      background: radial-gradient(ellipse, rgba(255,140,66,0.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .glow-purple::before {
+      content: ''; position: absolute;
+      top: -15%; right: -5%; width: 50%; height: 80%;
+      background: radial-gradient(ellipse, rgba(123,111,240,0.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .glow-blue::before {
+      content: ''; position: absolute;
+      top: -15%; right: -5%; width: 50%; height: 80%;
+      background: radial-gradient(ellipse, rgba(59,158,255,0.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* ============================================
+       BADGES
+       ============================================ */
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      font-family: var(--font-d);
+    }
+    .badge-live    { background: rgba(0,212,200,0.1);  border: 1px solid rgba(0,212,200,0.35);  color: var(--teal); }
+    .badge-prog    { background: rgba(255,140,66,0.1); border: 1px solid rgba(255,140,66,0.35); color: var(--orange); }
+    .badge-forming { background: rgba(59,158,255,0.1); border: 1px solid rgba(59,158,255,0.35); color: var(--blue); }
+    .badge-new     { background: rgba(123,111,240,0.1);border: 1px solid rgba(123,111,240,0.35);color: var(--purple); }
+
+    /* ============================================
+       SHARED LABELS
+       ============================================ */
+    .eyebrow {
+      font-family: var(--font-d);
+      font-size: 0.72rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 0.9rem;
+    }
+    .panel-label {
+      font-family: var(--font-d);
+      font-size: 0.67rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--muted);
+      margin-bottom: 0.55rem;
+    }
+
+    /* ============================================
+       PANEL CARDS (right column on project slides)
+       ============================================ */
+    .panel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.15rem 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .panel-card:last-child { margin-bottom: 0; }
+    .panel-card p { font-size: 0.88rem; line-height: 1.65; color: var(--text); }
+    .panel-card strong { font-weight: 600; }
+    .blocker-card { border-left: 3px solid var(--orange); }
+    .forming-card { border-left: 3px solid var(--blue); }
+    .panel-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .panel-list li {
+      font-size: 0.87rem; line-height: 1.5;
+      padding-left: 1rem; position: relative;
+    }
+    .panel-list li::before {
+      content: '→'; position: absolute; left: 0;
+      color: var(--teal); font-size: 0.74rem;
+      top: 0.05em;
+    }
+
+    /* ============================================
+       SLIDE 1: TITLE
+       ============================================ */
+    .slide-title::after {
+      content: ''; position: absolute;
+      bottom: -25%; left: -8%; width: 55%; height: 70%;
+      background: radial-gradient(ellipse, rgba(123,111,240,0.045) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .t-eyebrow {
+      font-family: var(--font-d);
+      font-size: 0.75rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 1.4rem;
+    }
+    .t-heading {
+      font-family: var(--font-d);
+      font-size: clamp(3.2rem, 5.5vw, 5rem);
+      font-weight: 700; line-height: 1.04;
+      letter-spacing: -0.025em; margin-bottom: 1rem;
+    }
+    .t-rule {
+      width: 3rem; height: 2px;
+      background: linear-gradient(90deg, var(--teal), transparent);
+      margin-bottom: 1.75rem;
+    }
+    .t-sub { font-size: 1rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .t-meta { display: flex; gap: 3rem; }
+    .t-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+    .t-meta-label {
+      font-family: var(--font-d); font-size: 0.67rem;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+    }
+    .t-meta-value { font-size: 0.92rem; font-weight: 500; }
+
+    /* ============================================
+       SLIDE 2: WEEK IN BRIEF
+       ============================================ */
+    .brief-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .brief-heading {
+      font-family: var(--font-d);
+      font-size: clamp(2rem, 3.2vw, 2.8rem);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .brief-body { font-size: 0.95rem; color: var(--muted); line-height: 1.7; }
+
+    .win-list { display: flex; flex-direction: column; gap: 0.7rem; }
+    .win-item {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      padding: 0.8rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--teal);
+      border-radius: 8px;
+    }
+    .win-icon { font-size: 0.95rem; flex-shrink: 0; margin-top: 0.05rem; }
+    .win-text { font-size: 0.87rem; line-height: 1.5; }
+    .win-text strong { color: var(--teal); font-weight: 600; }
+
+    /* ============================================
+       SLIDE 3: PORTFOLIO SNAPSHOT
+       ============================================ */
+    .portfolio-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.65rem; margin-top: 1.5rem;
+    }
+    .portfolio-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.8rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .portfolio-row:hover { border-color: rgba(255,255,255,0.13); }
+    .p-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .dot-l { background: var(--teal); box-shadow: 0 0 5px rgba(0,212,200,0.6); }
+    .dot-p { background: var(--orange); }
+    .dot-f { background: var(--blue); }
+    .dot-n { background: var(--purple); }
+    .p-name { font-family: var(--font-d); font-size: 0.82rem; font-weight: 600; flex: 1; }
+    .p-signal { font-size: 0.73rem; color: var(--muted); }
+    .p-badge { font-size: 0.62rem; padding: 0.14rem 0.5rem; }
+
+    /* ============================================
+       PROJECT SLIDES (4–10) — two-column layout
+       ============================================ */
+    .proj-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4.5rem; align-items: start;
+    }
+    .proj-num {
+      font-family: var(--font-d); font-size: 0.72rem;
+      letter-spacing: 0.1em; color: var(--muted);
+      margin-bottom: 0.45rem;
+    }
+    .proj-accent {
+      height: 2px; width: 2.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .proj-name {
+      font-family: var(--font-d);
+      font-size: clamp(1.8rem, 2.7vw, 2.4rem);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 0.7rem;
+    }
+    .proj-status-row {
+      display: flex; align-items: center; gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .proj-signal { font-size: 0.82rem; color: var(--muted); }
+    .update-label {
+      font-family: var(--font-d); font-size: 0.67rem;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--muted); margin-bottom: 0.55rem;
+    }
+    .update-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .update-list li {
+      font-size: 0.88rem; line-height: 1.55;
+      padding-left: 0.95rem; position: relative;
+      color: var(--text);
+    }
+    .update-list li::before {
+      content: '';
+      position: absolute; left: 0; top: 0.55em;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--teal);
+    }
+    .update-list li.hl { font-weight: 500; }
+    .update-list li.hl::before { background: var(--teal); box-shadow: 0 0 4px rgba(0,212,200,0.5); }
+
+    /* ============================================
+       SLIDE 11: DECISIONS & NEXT WEEK
+       ============================================ */
+    .dec-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .dec-heading {
+      font-family: var(--font-d);
+      font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 1.25rem;
+    }
+    .dec-card {
+      background: var(--surface);
+      border: 1px solid rgba(255,140,66,0.2);
+      border-left: 3px solid var(--orange);
+      border-radius: 10px;
+      padding: 1.1rem 1.15rem;
+      margin-bottom: 0.65rem;
+    }
+    .dec-project {
+      font-family: var(--font-d); font-size: 0.65rem;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--orange); margin-bottom: 0.3rem;
+    }
+    .dec-text { font-size: 0.87rem; line-height: 1.55; }
+
+    .nw-list { display: flex; flex-direction: column; gap: 0.55rem; }
+    .nw-item {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      padding: 0.7rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .nw-num {
+      font-family: var(--font-d); font-size: 0.68rem;
+      color: var(--muted); font-weight: 600;
+      flex-shrink: 0; min-width: 1.2rem; margin-top: 0.05rem;
+    }
+    .nw-text { font-size: 0.86rem; line-height: 1.45; }
+    .nw-text strong { font-weight: 600; }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .brief-layout, .portfolio-grid,
+      .proj-layout, .dec-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .nav-dots { display: none; }
+      .slide { padding: 2.5rem 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .r { transition: opacity 0.25s; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots"></nav>
+<div class="slide-counter" id="slideCounter">01 / 11</div>
+
+<!-- ============================================================
+     SLIDE 1 — TITLE
+     ============================================================ -->
+<section class="slide slide-title glow-teal" id="s1">
+  <p class="t-eyebrow r">AI Enablement · Fourth</p>
+  <h1 class="t-heading r">Weekly Status<br>Report</h1>
+  <div class="t-rule r"></div>
+  <p class="t-sub r">Week 16 · April 14–18, 2026</p>
+  <div class="t-meta r">
+    <div class="t-meta-item">
+      <span class="t-meta-label">Prepared for</span>
+      <span class="t-meta-value">Carly Hodges · VP Enterprise Transformation &amp; Technology</span>
+    </div>
+    <div class="t-meta-item">
+      <span class="t-meta-label">Presented by</span>
+      <span class="t-meta-value">David Hayes · AI Enablement</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 — WEEK IN BRIEF
+     ============================================================ -->
+<section class="slide glow-teal" id="s2">
+  <div class="brief-layout">
+    <div>
+      <p class="eyebrow r">This Week</p>
+      <h2 class="brief-heading r">A strong week<br>across the board</h2>
+      <p class="brief-body r">Three platforms now live in production. The Salesforce MCP connector cleared two weeks of IT/Security navigation and is now in build. A CTO ad-hoc deliverable was researched, geocoded, and delivered in one week at zero API cost. A brand-new GTM Risk Intelligence initiative went from kickoff to five working data-backed reports in a single sprint.</p>
+    </div>
+    <div class="win-list">
+      <div class="win-item r">
+        <span class="win-icon">✅</span>
+        <span class="win-text"><strong>EBR Presentation Suite LIVE</strong> — end-to-end CSM flow operational, from raw data to polished deck via Fourth Connect</span>
+      </div>
+      <div class="win-item r">
+        <span class="win-icon">✅</span>
+        <span class="win-text"><strong>Marketing Brain v3 shipped</strong> — FastMCP v3, Intelligent App UI in Claude.ai, and full write-back CRUD on the knowledge base</span>
+      </div>
+      <div class="win-item r">
+        <span class="win-icon">✅</span>
+        <span class="win-text"><strong>Agent-Arch: Skills Marketplace launched</strong> — 19 curated skills, 6 categories; MCP sections transformed into 5-tab educational references</span>
+      </div>
+      <div class="win-item r">
+        <span class="win-icon">✅</span>
+        <span class="win-text"><strong>Salesforce MCP unblocked</strong> — Azure infrastructure path agreed with IT; Danny Shine starting server build this week</span>
+      </div>
+      <div class="win-item r">
+        <span class="win-icon">✅</span>
+        <span class="win-text"><strong>CTO deliverable shipped</strong> — 21,759 HotSchedules locations geocoded and tier-tagged for World Cup 2026 in one week, zero API spend</span>
+      </div>
+      <div class="win-item r">
+        <span class="win-icon">🆕</span>
+        <span class="win-text"><strong>GTM Risk Dashboard: kickoff week</strong> — 5 working report formats against real data (50 signals / 23 accounts) already built with Syndi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 — PORTFOLIO SNAPSHOT
+     ============================================================ -->
+<section class="slide" id="s3">
+  <p class="eyebrow r">Portfolio</p>
+  <h2 class="brief-heading r" style="margin-bottom:0.25rem;">Seven projects · Week 16 status</h2>
+  <div class="portfolio-grid">
+    <div class="portfolio-row r">
+      <div class="p-dot dot-l"></div>
+      <div class="p-name">EBR Presentation Suite</div>
+      <span class="badge badge-live p-badge">Live</span>
+      <div class="p-signal">Expanding to live data</div>
+    </div>
+    <div class="portfolio-row r">
+      <div class="p-dot dot-l"></div>
+      <div class="p-name">Marketing / Enterprise Brain</div>
+      <span class="badge badge-live p-badge">Live</span>
+      <div class="p-signal">Major v3 upgrade</div>
+    </div>
+    <div class="portfolio-row r">
+      <div class="p-dot dot-l"></div>
+      <div class="p-name">Fourth Connect</div>
+      <span class="badge badge-live p-badge">Live</span>
+      <div class="p-signal">UX iteration</div>
+    </div>
+    <div class="portfolio-row r">
+      <div class="p-dot dot-p"></div>
+      <div class="p-name">Salesforce MCP Connector</div>
+      <span class="badge badge-prog p-badge">Unblocking</span>
+      <div class="p-signal">Build starts</div>
+    </div>
+    <div class="portfolio-row r">
+      <div class="p-dot dot-p"></div>
+      <div class="p-name">Agent-Arch Platform</div>
+      <span class="badge badge-prog p-badge">In Progress</span>
+      <div class="p-signal">Major release</div>
+    </div>
+    <div class="portfolio-row r">
+      <div class="p-dot dot-f"></div>
+      <div class="p-name">Fourth PerformanceOS</div>
+      <span class="badge badge-forming p-badge">Forming</span>
+      <div class="p-signal">Foundation laid</div>
+    </div>
+    <div class="portfolio-row r">
+      <div class="p-dot dot-n"></div>
+      <div class="p-name">GTM Risk Intelligence Dashboard</div>
+      <span class="badge badge-new p-badge">New</span>
+      <div class="p-signal">Kickoff week</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 — EBR PRESENTATION SUITE
+     ============================================================ -->
+<section class="slide glow-teal" id="s4">
+  <div class="proj-layout">
+    <div>
+      <p class="proj-num r">Project 01 of 07</p>
+      <div class="proj-accent r" style="background:var(--teal);"></div>
+      <h2 class="proj-name r">EBR<br>Presentation Suite</h2>
+      <div class="proj-status-row r">
+        <span class="badge badge-live">Live</span>
+        <span class="proj-signal">Expanding to live data connectors</span>
+      </div>
+      <p class="update-label r">This Week</p>
+      <ul class="update-list r">
+        <li class="hl">Full end-to-end CSM flow now live in production</li>
+        <li>Raw data ingestion → polished HTML presentation via Fourth Connect — fully operational</li>
+        <li>4 data streams integrated: SQL usage, Zendesk tickets, Gong calls, LMS training</li>
+        <li>Rollout sequence: US Enterprise → EMEA → Emerging → SMB one-pagers</li>
+      </ul>
+    </div>
+    <div>
+      <div class="panel-card r">
+        <p class="panel-label">What's Next</p>
+        <p>Building <strong>live connectors to product usage and event data</strong> — the next strategic layer that makes EBRs dynamic and self-updating rather than point-in-time. Once wired in, the suite becomes a continuous insights engine rather than a presentation builder.</p>
+      </div>
+      <div class="panel-card r">
+        <p class="panel-label">Why It Matters</p>
+        <p>EBR was the AI Tools Task Force's chosen first-implementation target. Live data connectors complete the transition from static builder to a <strong>continuously updated insights pipeline</strong> — the proof that the end-to-end connector strategy works.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 — MARKETING / ENTERPRISE BRAIN
+     ============================================================ -->
+<section class="slide glow-purple" id="s5">
+  <div class="proj-layout">
+    <div>
+      <p class="proj-num r">Project 02 of 07</p>
+      <div class="proj-accent r" style="background:var(--purple);"></div>
+      <h2 class="proj-name r">Marketing /<br>Enterprise Brain</h2>
+      <div class="proj-status-row r">
+        <span class="badge badge-live">Live</span>
+        <span class="proj-signal">FastMCP v3 · major upgrade week</span>
+      </div>
+      <p class="update-label r">Shipped This Week</p>
+      <ul class="update-list r">
+        <li class="hl">FastMCP v3 upgrade — smart middleware, background tasks, gateway composition, built-in dashboard</li>
+        <li class="hl">Intelligent App UI in Claude.ai — Content Browser, Competitive Radar, Content Editor</li>
+        <li class="hl">Write-back CRUD — AI can now draft, save, update, and delete documents in the knowledge base</li>
+        <li>3 swappable backends: Mock (dev), Cosmos DB (production), SharePoint (read-only)</li>
+        <li>Deployed to Azure Container Apps, West Europe</li>
+      </ul>
+    </div>
+    <div>
+      <div class="panel-card r">
+        <p class="panel-label">What's Next</p>
+        <ul class="panel-list">
+          <li>Remote MCP server — HTTP transport + Azure AD auth</li>
+          <li>MCP Servers detail page on agent-arch.fourth.com — documenting this as the reference implementation</li>
+        </ul>
+      </div>
+      <div class="panel-card r">
+        <p class="panel-label">Strategic Role</p>
+        <p>Marketing/Enterprise Brain is now both a working production tool and the <strong>canonical reference implementation</strong> — the pattern Salesforce, Zendesk, and Sales Brain connectors will follow. Write-back is the transition from passive knowledge access to active content lifecycle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 6 — FOURTH CONNECT
+     ============================================================ -->
+<section class="slide glow-blue" id="s6">
+  <div class="proj-layout">
+    <div>
+      <p class="proj-num r">Project 03 of 07</p>
+      <div class="proj-accent r" style="background:var(--blue);"></div>
+      <h2 class="proj-name r">Fourth<br>Connect</h2>
+      <div class="proj-status-row r">
+        <span class="badge badge-live">Live</span>
+        <span class="proj-signal">Ongoing UX iteration</span>
+      </div>
+      <p class="update-label r">This Week's Focus</p>
+      <ul class="update-list r">
+        <li>Folder organization — structuring presentations by client / account / use-case</li>
+        <li>Sharing improvements — access tiers: Admin / Editor / Viewer / Guest</li>
+        <li>Editing capabilities — in-platform refinements vs. full re-upload cycles</li>
+        <li>Production stable; iterating on day-to-day CSM usability gaps</li>
+      </ul>
+    </div>
+    <div>
+      <div class="panel-card r">
+        <p class="panel-label">What It Is</p>
+        <p>Presentation hosting platform for Fourth's Customer Success team. CSMs upload HTML presentations, share via URL, and collect slide-anchored threaded comments from clients and internal stakeholders.</p>
+      </div>
+      <div class="panel-card r">
+        <p class="panel-label">Why It Matters</p>
+        <p>Fourth Connect is the <strong>delivery surface for everything the EBR Presentation Suite produces</strong>. Every improvement to sharing, editing, and organisation directly compounds CSM productivity — across every EBR delivered.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7 — SALESFORCE MCP CONNECTOR
+     ============================================================ -->
+<section class="slide glow-orange" id="s7">
+  <div class="proj-layout">
+    <div>
+      <p class="proj-num r">Project 04 of 07</p>
+      <div class="proj-accent r" style="background:var(--orange);"></div>
+      <h2 class="proj-name r">Salesforce MCP<br>Connector</h2>
+      <div class="proj-status-row r">
+        <span class="badge badge-prog">Unblocking</span>
+        <span class="proj-signal">Build phase starting</span>
+      </div>
+      <p class="update-label r">This Week</p>
+      <ul class="update-list r">
+        <li class="hl">Azure infrastructure path agreed with Danny Shine (IT Security &amp; Architecture)</li>
+        <li>Hosting confirmed in <code style="font-size:0.8em;background:rgba(255,255,255,0.07);padding:0.1em 0.35em;border-radius:3px;">rg-agent-architecture</code> resource group — Landing Zone migration to follow</li>
+        <li>2× dedicated servers being built in a dedicated resource group within our Azure subscription</li>
+        <li>Auth pattern confirmed: Microsoft Entra ID token exchange</li>
+        <li>Custom MCP connector approved over generic connector — maximum flexibility, read-only initially</li>
+      </ul>
+    </div>
+    <div>
+      <div class="panel-card blocker-card r">
+        <p class="panel-label" style="color:var(--orange);">⚠ Active Item</p>
+        <p><strong>IT Information Request form</strong> pending from Ivan — covering ongoing maintenance and support. Form delivered; some unknowns acceptable for discussion. Needed before Danny can finalise the infrastructure design.</p>
+      </div>
+      <div class="panel-card r">
+        <p class="panel-label">Why It Matters</p>
+        <p>Salesforce is the highest-value connector target. The pattern established here — <strong>Azure infra + Entra ID + custom FastMCP + IT/Security collaboration</strong> — becomes the template for all future connectors: Power BI, Zendesk, Sales Brain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 8 — AGENT-ARCH PLATFORM
+     ============================================================ -->
+<section class="slide glow-teal" id="s8">
+  <div class="proj-layout">
+    <div>
+      <p class="proj-num r">Project 05 of 07</p>
+      <div class="proj-accent r" style="background:var(--teal);"></div>
+      <h2 class="proj-name r">Agent-Arch<br>Platform</h2>
+      <div class="proj-status-row r">
+        <span class="badge badge-prog">In Progress</span>
+        <span class="proj-signal">Major release week</span>
+      </div>
+      <p class="update-label r">Shipped This Week</p>
+      <ul class="update-list r">
+        <li class="hl">MCP Server section rebuilt as 5-tab educational reference — Overview, Tools, Use Cases, Connect, Architecture (20 documented tools)</li>
+        <li class="hl">Skills Marketplace launched — 19 curated skills across 6 categories</li>
+        <li>Knowledge Library promoted to default Resources tab; new slide-out drawer UX replacing modal</li>
+        <li>Now the centralised registry for MCPs, Skills, Knowledge, and AI Tool governance across Fourth — AI Tool Standardization now lives here</li>
+      </ul>
+    </div>
+    <div>
+      <div class="panel-card r">
+        <p class="panel-label">Scope Note</p>
+        <p>AI Tool Standardization is now <strong>part of Agent-Arch Platform</strong> — not a separate project. MCPs, skills, and the knowledge library are all governed and distributed from this single platform, for both developer and business users.</p>
+      </div>
+      <div class="panel-card r">
+        <p class="panel-label">What's Next</p>
+        <ul class="panel-list">
+          <li>Real engagement telemetry for Skills Marketplace (currently demo data)</li>
+          <li>Expand MCP detail pages as new connectors ship</li>
+          <li>GTM Risk Dashboard V2 will be the first live operational dashboard hosted here</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 9 — FOURTH PERFORMANCEOS
+     ============================================================ -->
+<section class="slide glow-blue" id="s9">
+  <div class="proj-layout">
+    <div>
+      <p class="proj-num r">Project 06 of 07</p>
+      <div class="proj-accent r" style="background:var(--blue);"></div>
+      <h2 class="proj-name r">Fourth<br>PerformanceOS</h2>
+      <div class="proj-status-row r">
+        <span class="badge badge-forming">Forming</span>
+        <span class="proj-signal">Foundation laid this week</span>
+      </div>
+      <p class="update-label r">This Week</p>
+      <ul class="update-list r">
+        <li class="hl">Foundation session with Christian (CTO) — vision and scope aligned this week</li>
+        <li>Grows directly from FastMCP v3 work and AI Tool Standardization decisions — the platform layer that connects them</li>
+        <li>Formerly scoped as "Fourth Workbook" — renamed and repositioned as the intelligence operations layer for Fourth's product suite</li>
+      </ul>
+    </div>
+    <div>
+      <div class="panel-card forming-card r">
+        <p class="panel-label" style="color:var(--blue);">Vision</p>
+        <p>Fourth as an <strong>intelligence platform</strong>, not just WFM. PerformanceOS layers AI intelligence across Fourth's product suite — scheduling, inventory, HR, payroll, POS — with governed agents, structured tooling, and a unified operator experience.</p>
+      </div>
+      <div class="panel-card r">
+        <p class="panel-label">What's Next</p>
+        <p>Build sequence and first milestone definition. FastMCP v3 and the connector pattern from Marketing Brain are the technical foundation. Shape to solidify with CB over the coming weeks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 10 — GTM RISK INTELLIGENCE DASHBOARD
+     ============================================================ -->
+<section class="slide glow-purple" id="s10">
+  <div class="proj-layout">
+    <div>
+      <p class="proj-num r">Project 07 of 07</p>
+      <div class="proj-accent r" style="background:var(--purple);"></div>
+      <h2 class="proj-name r">GTM Risk<br>Intelligence Dashboard</h2>
+      <div class="proj-status-row r">
+        <span class="badge badge-new">New</span>
+        <span class="proj-signal">Kickoff week · Syndi (CS sponsor)</span>
+      </div>
+      <p class="update-label r">Kickoff Week</p>
+      <ul class="update-list r">
+        <li class="hl">5 working report formats built against real data — already past original V1 scope in week one</li>
+        <li>50 signals across 23 accounts and 21 reps in a 3-day window (Apr 14–16)</li>
+        <li>3 risk buckets: CNS (Customer Not Supported), P2V (Price to Value), PGF (Product Gaps &amp; Features)</li>
+        <li>GTM leaders: KG (large chain), David Pierce (US Emerging), Alec Frazier (EMEA)</li>
+        <li>8 accounts currently in the Red Zone — triggering all 3 risk buckets simultaneously</li>
+      </ul>
+    </div>
+    <div>
+      <div class="panel-card r">
+        <p class="panel-label">Why It Matters</p>
+        <p>Gong and Slack already capture at-risk signals — but they're noise without aggregation. GTM leaders have no structured view of which accounts are at risk, why, or how to prioritise by territory. This gives them that lens.</p>
+      </div>
+      <div class="panel-card r">
+        <p class="panel-label">Roadmap</p>
+        <ul class="panel-list">
+          <li><strong>V1:</strong> Scheduled Claude report posted to Slack — Syndi review Monday April 20</li>
+          <li><strong>V2:</strong> Interactive web UI on agent-arch.fourth.com — first live operational dashboard on the platform</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 11 — DECISIONS & NEXT WEEK
+     ============================================================ -->
+<section class="slide glow-orange" id="s11">
+  <div class="dec-layout">
+    <div>
+      <p class="eyebrow r">Action Required</p>
+      <h2 class="dec-heading r">Decisions<br>&amp; open items</h2>
+      <div class="dec-card r">
+        <p class="dec-project">Salesforce MCP Connector</p>
+        <p class="dec-text">IT Information Request form pending from Ivan — covering ongoing maintenance and support. Needed before Danny Shine can finalise the infrastructure design and begin the full server build.</p>
+      </div>
+      <div class="dec-card r">
+        <p class="dec-project">GTM Risk Intelligence Dashboard</p>
+        <p class="dec-text">Syndi review Monday April 20 — finalise V1 Slack report format. Decide V2 scope and hosting approach on agent-arch.fourth.com. Account-to-GTM-leader mapping needs one agreed source of truth.</p>
+      </div>
+      <div class="dec-card r">
+        <p class="dec-project">Fourth PerformanceOS</p>
+        <p class="dec-text">Foundation aligned with Christian this week. Build sequence and first concrete milestone to be defined as shape solidifies over the coming weeks.</p>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow r">Next Week</p>
+      <div class="nw-list">
+        <div class="nw-item r">
+          <span class="nw-num">01</span>
+          <span class="nw-text"><strong>Salesforce MCP</strong> — IT form from Ivan; finalise design; Danny begins server build</span>
+        </div>
+        <div class="nw-item r">
+          <span class="nw-num">02</span>
+          <span class="nw-text"><strong>EBR Suite</strong> — kick off product-usage / event-data live connector work</span>
+        </div>
+        <div class="nw-item r">
+          <span class="nw-num">03</span>
+          <span class="nw-text"><strong>Marketing Brain</strong> — remote MCP server, HTTP transport + Azure AD auth</span>
+        </div>
+        <div class="nw-item r">
+          <span class="nw-num">04</span>
+          <span class="nw-text"><strong>Agent-Arch</strong> — real engagement telemetry in Skills Marketplace; expand MCP detail pages</span>
+        </div>
+        <div class="nw-item r">
+          <span class="nw-num">05</span>
+          <span class="nw-text"><strong>GTM Risk Dashboard</strong> — Syndi review; finalise V1; spec V2 on agent-arch.fourth.com</span>
+        </div>
+        <div class="nw-item r">
+          <span class="nw-num">06</span>
+          <span class="nw-text"><strong>Fourth PerformanceOS</strong> — first milestone and build sequence definition with CB</span>
+        </div>
+        <div class="nw-item r">
+          <span class="nw-num">07</span>
+          <span class="nw-text"><strong>Connector pattern</strong> — formalise the template (Marketing Brain → Salesforce → next) to compress future build times</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   PRESENTATION CONTROLLER
+   Scroll-snap navigation with keyboard + dot nav support
+   ============================================================ */
+const slides    = document.querySelectorAll('.slide');
+const total     = slides.length;
+const dotsEl    = document.getElementById('navDots');
+const progressEl = document.getElementById('progressBar');
+const counterEl = document.getElementById('slideCounter');
+
+// Build nav dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'nav-dot';
+  d.addEventListener('click', () => slides[i].scrollIntoView({ behavior: 'smooth' }));
+  dotsEl.appendChild(d);
+});
+
+const dots = document.querySelectorAll('.nav-dot');
+
+// Activate slide: reveals, dots, progress, counter
+function activateSlide(idx) {
+  slides[idx].classList.add('visible');
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  progressEl.style.width = ((idx + 1) / total * 100) + '%';
+  counterEl.textContent =
+    String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+}
+
+// IntersectionObserver — triggers reveals and chrome updates
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = Array.from(slides).indexOf(e.target);
+      activateSlide(idx);
+    }
+  });
+}, { threshold: 0.45 });
+
+slides.forEach(s => observer.observe(s));
+
+// Keyboard navigation
+function currentIndex() {
+  return Array.from(slides).findIndex(s => {
+    const r = s.getBoundingClientRect();
+    return r.top >= -80 && r.top < window.innerHeight * 0.55;
+  });
+}
+
+document.addEventListener('keydown', e => {
+  const cur = currentIndex();
+  if (['ArrowDown', 'ArrowRight', ' '].includes(e.key) && cur < total - 1) {
+    e.preventDefault();
+    slides[cur + 1].scrollIntoView({ behavior: 'smooth' });
+  }
+  if (['ArrowUp', 'ArrowLeft'].includes(e.key) && cur > 0) {
+    e.preventDefault();
+    slides[cur - 1].scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+// Initialise first slide
+activateSlide(0);
+</script>
+</body>
+</html>
